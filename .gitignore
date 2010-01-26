@@ -1,9 +1,7 @@
-xcode noise
+#code noise
 build/*
 *.pbxuser
-*.model1v3
-*.xcodeproj/
-*.pch
+*.mode1v3
 
 #osx noise
 .DS_Store
