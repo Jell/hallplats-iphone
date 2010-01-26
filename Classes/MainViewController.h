@@ -8,8 +8,10 @@
 
 #import "FlipsideViewController.h"
 
-@interface MainViewController : UIViewController <FlipsideViewControllerDelegate> {
+@interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate> {
+	UIAccelerometer *accelerometer;
 }
+@property (nonatomic, retain) UIAccelerometer *accelerometer;
 
 - (IBAction)showInfo;
 

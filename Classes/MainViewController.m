@@ -11,7 +11,7 @@
 
 
 @implementation MainViewController
-
+@synthesize accelerometer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -21,12 +21,11 @@
 }
 
 
-/*
- // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
- - (void)viewDidLoad {
- [super viewDidLoad];
- }
- */
+// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	accelerometer = [UIAccelerometer sharedAccelerometer];
+}
 
 
 /*
@@ -65,6 +64,11 @@
  }
  */
 
+-(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
+{
+
+}
+
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -73,12 +77,14 @@
 }
 
 - (void)viewDidUnload {
+	[accelerometer release];
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
 
 
 - (void)dealloc {
+	[accelerometer release];
     [super dealloc];
 }
 
