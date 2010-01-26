@@ -19,6 +19,12 @@
 		F441737F110F221D00CBFE29 /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F441737D110F221D00CBFE29 /* MainView.xib */; };
 		F441738C110F232600CBFE29 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F441738B110F232600CBFE29 /* MainViewController.m */; };
 		F44173DA110F252C00CBFE29 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44173D9110F252C00CBFE29 /* FlipsideViewController.m */; };
+		F4417462110F365A00CBFE29 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = F4417457110F365A00CBFE29 /* NSObject+SBJSON.m */; };
+		F4417463110F365A00CBFE29 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = F4417459110F365A00CBFE29 /* NSString+SBJSON.m */; };
+		F4417464110F365A00CBFE29 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = F441745B110F365A00CBFE29 /* SBJSON.m */; };
+		F4417465110F365A00CBFE29 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = F441745D110F365A00CBFE29 /* SBJsonBase.m */; };
+		F4417466110F365A00CBFE29 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F441745F110F365A00CBFE29 /* SBJsonParser.m */; };
+		F4417467110F365A00CBFE29 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F4417461110F365A00CBFE29 /* SBJsonWriter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +48,19 @@
 		F44173D8110F252C00CBFE29 /* FlipsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlipsideViewController.h; path = Classes/FlipsideViewController.h; sourceTree = "<group>"; };
 		F44173D9110F252C00CBFE29 /* FlipsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlipsideViewController.m; path = Classes/FlipsideViewController.m; sourceTree = "<group>"; };
 		F4417439110F31FF00CBFE29 /* AugmentedMPN_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AugmentedMPN_Prefix.pch; sourceTree = "<group>"; };
+		F4417455110F365A00CBFE29 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		F4417456110F365A00CBFE29 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
+		F4417457110F365A00CBFE29 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
+		F4417458110F365A00CBFE29 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
+		F4417459110F365A00CBFE29 /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
+		F441745A110F365A00CBFE29 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
+		F441745B110F365A00CBFE29 /* SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJSON.m; sourceTree = "<group>"; };
+		F441745C110F365A00CBFE29 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
+		F441745D110F365A00CBFE29 /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonBase.m; sourceTree = "<group>"; };
+		F441745E110F365A00CBFE29 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		F441745F110F365A00CBFE29 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
+		F4417460110F365A00CBFE29 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		F4417461110F365A00CBFE29 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +120,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				F4417454110F365A00CBFE29 /* JSON */,
 				289233A00DB2D0730083E9F9 /* Main View */,
 				281C6CD70DB2D82200F60ACC /* Flipside View */,
 				080E96DDFE201D6D7F000001 /* Application Delegate */,
@@ -140,6 +160,26 @@
 				288765580DF743DE002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F4417454110F365A00CBFE29 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				F4417455110F365A00CBFE29 /* JSON.h */,
+				F4417456110F365A00CBFE29 /* NSObject+SBJSON.h */,
+				F4417457110F365A00CBFE29 /* NSObject+SBJSON.m */,
+				F4417458110F365A00CBFE29 /* NSString+SBJSON.h */,
+				F4417459110F365A00CBFE29 /* NSString+SBJSON.m */,
+				F441745A110F365A00CBFE29 /* SBJSON.h */,
+				F441745B110F365A00CBFE29 /* SBJSON.m */,
+				F441745C110F365A00CBFE29 /* SBJsonBase.h */,
+				F441745D110F365A00CBFE29 /* SBJsonBase.m */,
+				F441745E110F365A00CBFE29 /* SBJsonParser.h */,
+				F441745F110F365A00CBFE29 /* SBJsonParser.m */,
+				F4417460110F365A00CBFE29 /* SBJsonWriter.h */,
+				F4417461110F365A00CBFE29 /* SBJsonWriter.m */,
+			);
+			path = JSON;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,6 +250,12 @@
 				289233A70DB2D0840083E9F9 /* MainView.m in Sources */,
 				F441738C110F232600CBFE29 /* MainViewController.m in Sources */,
 				F44173DA110F252C00CBFE29 /* FlipsideViewController.m in Sources */,
+				F4417462110F365A00CBFE29 /* NSObject+SBJSON.m in Sources */,
+				F4417463110F365A00CBFE29 /* NSString+SBJSON.m in Sources */,
+				F4417464110F365A00CBFE29 /* SBJSON.m in Sources */,
+				F4417465110F365A00CBFE29 /* SBJsonBase.m in Sources */,
+				F4417466110F365A00CBFE29 /* SBJsonParser.m in Sources */,
+				F4417467110F365A00CBFE29 /* SBJsonWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
