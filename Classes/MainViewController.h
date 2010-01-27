@@ -7,11 +7,18 @@
 //
 
 #import "FlipsideViewController.h"
+#import "MapViewController.h"
+#import "AugmentedViewController.h"
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate> {
+	IBOutlet UIView *viewDisplayed;
+	UIViewController *viewDisplayedController;
 	UIAccelerometer *accelerometer;
+	bool augmentedIsOn;
 }
+
 @property (nonatomic, retain) UIAccelerometer *accelerometer;
+@property (nonatomic, retain) UIViewController *viewDisplayedController;
 
 - (IBAction)showInfo;
 

@@ -15,6 +15,13 @@
 		288765590DF743DE002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765580DF743DE002DB57D /* CoreGraphics.framework */; };
 		289233A60DB2D0840083E9F9 /* FlipsideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A30DB2D0840083E9F9 /* FlipsideView.m */; };
 		289233A70DB2D0840083E9F9 /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A50DB2D0840083E9F9 /* MainView.m */; };
+		F43B4CC41110331E00C312F4 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4CC21110331E00C312F4 /* MapViewController.m */; };
+		F43B4CC81110334800C312F4 /* MapView.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4CC71110334800C312F4 /* MapView.m */; };
+		F43B4D00111033CA00C312F4 /* AugmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4CFE111033CA00C312F4 /* AugmentedViewController.m */; };
+		F43B4D01111033CA00C312F4 /* AugmentedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F43B4CFF111033CA00C312F4 /* AugmentedView.xib */; };
+		F43B4D04111033D800C312F4 /* AugmentedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4D03111033D800C312F4 /* AugmentedView.m */; };
+		F43B4DDC111048D600C312F4 /* MapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F43B4DDB111048D600C312F4 /* MapView.xib */; };
+		F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4DE711104AF900C312F4 /* MapKit.framework */; };
 		F441737E110F221D00CBFE29 /* FlipsideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F441737C110F221D00CBFE29 /* FlipsideView.xib */; };
 		F441737F110F221D00CBFE29 /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F441737D110F221D00CBFE29 /* MainView.xib */; };
 		F441738C110F232600CBFE29 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F441738B110F232600CBFE29 /* MainViewController.m */; };
@@ -41,6 +48,17 @@
 		289233A50DB2D0840083E9F9 /* MainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainView.m; path = Classes/MainView.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* AugmentedMPN-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AugmentedMPN-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		F43B4CC11110331E00C312F4 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		F43B4CC21110331E00C312F4 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		F43B4CC61110334800C312F4 /* MapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapView.h; sourceTree = "<group>"; };
+		F43B4CC71110334800C312F4 /* MapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapView.m; sourceTree = "<group>"; };
+		F43B4CFD111033CA00C312F4 /* AugmentedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AugmentedViewController.h; sourceTree = "<group>"; };
+		F43B4CFE111033CA00C312F4 /* AugmentedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AugmentedViewController.m; sourceTree = "<group>"; };
+		F43B4CFF111033CA00C312F4 /* AugmentedView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AugmentedView.xib; sourceTree = "<group>"; };
+		F43B4D02111033D800C312F4 /* AugmentedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AugmentedView.h; sourceTree = "<group>"; };
+		F43B4D03111033D800C312F4 /* AugmentedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AugmentedView.m; sourceTree = "<group>"; };
+		F43B4DDB111048D600C312F4 /* MapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapView.xib; sourceTree = "<group>"; };
+		F43B4DE711104AF900C312F4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		F441737C110F221D00CBFE29 /* FlipsideView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FlipsideView.xib; sourceTree = "<group>"; };
 		F441737D110F221D00CBFE29 /* MainView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainView.xib; sourceTree = "<group>"; };
 		F441738A110F232600CBFE29 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Classes/MainViewController.h; sourceTree = "<group>"; };
@@ -71,6 +89,7 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765590DF743DE002DB57D /* CoreGraphics.framework in Frameworks */,
+				F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +139,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				F43B4CBB111032AA00C312F4 /* AugmentedView */,
+				F43B4CBA111032A100C312F4 /* MapView */,
 				F4417454110F365A00CBFE29 /* JSON */,
 				289233A00DB2D0730083E9F9 /* Main View */,
 				281C6CD70DB2D82200F60ACC /* Flipside View */,
@@ -144,6 +165,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F43B4DDB111048D600C312F4 /* MapView.xib */,
+				F43B4CFF111033CA00C312F4 /* AugmentedView.xib */,
 				F441737C110F221D00CBFE29 /* FlipsideView.xib */,
 				F441737D110F221D00CBFE29 /* MainView.xib */,
 				280E754C0DD40C5E005A515E /* MainWindow.xib */,
@@ -155,11 +178,34 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F43B4DE711104AF900C312F4 /* MapKit.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765580DF743DE002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F43B4CBA111032A100C312F4 /* MapView */ = {
+			isa = PBXGroup;
+			children = (
+				F43B4CC11110331E00C312F4 /* MapViewController.h */,
+				F43B4CC21110331E00C312F4 /* MapViewController.m */,
+				F43B4CC61110334800C312F4 /* MapView.h */,
+				F43B4CC71110334800C312F4 /* MapView.m */,
+			);
+			name = MapView;
+			sourceTree = "<group>";
+		};
+		F43B4CBB111032AA00C312F4 /* AugmentedView */ = {
+			isa = PBXGroup;
+			children = (
+				F43B4CFD111033CA00C312F4 /* AugmentedViewController.h */,
+				F43B4CFE111033CA00C312F4 /* AugmentedViewController.m */,
+				F43B4D02111033D800C312F4 /* AugmentedView.h */,
+				F43B4D03111033D800C312F4 /* AugmentedView.m */,
+			);
+			name = AugmentedView;
 			sourceTree = "<group>";
 		};
 		F4417454110F365A00CBFE29 /* JSON */ = {
@@ -234,6 +280,8 @@
 				280E754F0DD40C5E005A515E /* MainWindow.xib in Resources */,
 				F441737E110F221D00CBFE29 /* FlipsideView.xib in Resources */,
 				F441737F110F221D00CBFE29 /* MainView.xib in Resources */,
+				F43B4D01111033CA00C312F4 /* AugmentedView.xib in Resources */,
+				F43B4DDC111048D600C312F4 /* MapView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +304,10 @@
 				F4417465110F365A00CBFE29 /* SBJsonBase.m in Sources */,
 				F4417466110F365A00CBFE29 /* SBJsonParser.m in Sources */,
 				F4417467110F365A00CBFE29 /* SBJsonWriter.m in Sources */,
+				F43B4CC41110331E00C312F4 /* MapViewController.m in Sources */,
+				F43B4CC81110334800C312F4 /* MapView.m in Sources */,
+				F43B4D00111033CA00C312F4 /* AugmentedViewController.m in Sources */,
+				F43B4D04111033D800C312F4 /* AugmentedView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
