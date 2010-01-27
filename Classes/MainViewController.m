@@ -9,9 +9,9 @@
 #import "MainViewController.h"
 #import "MainView.h"
 
-
 @implementation MainViewController
 @synthesize accelerometer;
+@synthesize viewDisplayedController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -24,7 +24,15 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
+	
 	accelerometer = [UIAccelerometer sharedAccelerometer];
+	[accelerometer setUpdateInterval:1.0f / 60.0f];
+	[accelerometer setDelegate:self];
+	
+	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
+	[viewDisplayed addSubview:viewDisplayedController.view];
+	augmentedIsOn = TRUE;
+	
 }
 
 
@@ -47,7 +55,7 @@
 	
 	FlipsideViewController *controller = [[FlipsideViewController alloc] initWithNibName:@"FlipsideView" bundle:nil];
 	controller.delegate = self;
-	
+
 	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	[self presentModalViewController:controller animated:YES];
 	
@@ -67,6 +75,23 @@
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
 
+	if(augmentedIsOn){
+		if(acceleration.z < -0.7){
+			[viewDisplayedController release];
+			[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
+			viewDisplayedController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
+			[viewDisplayed addSubview:viewDisplayedController.view];
+			augmentedIsOn = FALSE;
+		}
+	}else{
+		if(acceleration.z > -0.5){
+			[viewDisplayedController release];
+			[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
+			viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
+			[viewDisplayed addSubview:viewDisplayedController.view];
+			augmentedIsOn = TRUE;
+		}
+	}
 }
 
 - (void)didReceiveMemoryWarning {
@@ -78,6 +103,7 @@
 
 - (void)viewDidUnload {
 	[accelerometer release];
+	[viewDisplayedController release];
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
@@ -85,6 +111,7 @@
 
 - (void)dealloc {
 	[accelerometer release];
+	[viewDisplayedController release];
     [super dealloc];
 }
 
