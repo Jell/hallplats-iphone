@@ -91,6 +91,12 @@
 			[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
 			viewDisplayedController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
 			[viewDisplayed addSubview:viewDisplayedController.view];
+			CATransition *applicationLoadViewIn = [CATransition animation];
+			[applicationLoadViewIn setDuration:0.5];
+			[applicationLoadViewIn setType:kCATransitionReveal];
+			[applicationLoadViewIn setSubtype:kCATransitionFromLeft];
+			[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+			[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];
 			augmentedIsOn = FALSE;
 		}
 	}else{
@@ -99,6 +105,12 @@
 			[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
 			viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 			[viewDisplayed addSubview:viewDisplayedController.view];
+			CATransition *applicationLoadViewIn = [CATransition animation];
+			[applicationLoadViewIn setDuration:0.5];
+			[applicationLoadViewIn setType:kCATransitionReveal];
+			[applicationLoadViewIn setSubtype:kCATransitionFromRight];
+			[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+			[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];			
 			augmentedIsOn = TRUE;
 		}
 	}
