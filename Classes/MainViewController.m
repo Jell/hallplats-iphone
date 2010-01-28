@@ -46,13 +46,12 @@
 }
 
 
-/*
+
  // Override to allow orientations other than the default portrait orientation.
  - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
  // Return YES for supported orientations
- return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	 return YES;
  }
- */
 
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
@@ -71,29 +70,25 @@
 	
 	[controller release];
 }
-
-
-
-/*
- // Override to allow orientations other than the default portrait orientation.
- - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
- // Return YES for supported orientations
- return (interfaceOrientation == UIInterfaceOrientationPortrait);
- }
- */
+ 
 
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
 
 	if(augmentedIsOn){
 		if(acceleration.z < -0.7){
-			[viewDisplayedController release];
 			[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
+			[viewDisplayedController release];
 			viewDisplayedController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
+			if(self.interfaceOrientation == UIInterfaceOrientationPortrait){
+				[viewDisplayedController.view setFrame:CGRectMake(0, 0, 480, 460)];
+			}else{
+				[viewDisplayedController.view setFrame:CGRectMake(0, -70, 480, 460)];
+			}
 			[viewDisplayed addSubview:viewDisplayedController.view];
 			CATransition *applicationLoadViewIn = [CATransition animation];
 			[applicationLoadViewIn setDuration:0.5];
-			[applicationLoadViewIn setType:kCATransitionReveal];
+			[applicationLoadViewIn setType:kCATransitionPush];
 			[applicationLoadViewIn setSubtype:kCATransitionFromLeft];
 			[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 			[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];
@@ -101,13 +96,18 @@
 		}
 	}else{
 		if(acceleration.z > -0.5){
-			[viewDisplayedController release];
 			[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
+			[viewDisplayedController release];
 			viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
+			if(self.interfaceOrientation == UIInterfaceOrientationPortrait){
+				[viewDisplayedController.view setFrame:CGRectMake(-80, 0, 480, 460)];
+			}else{
+				[viewDisplayedController.view setFrame:CGRectMake(0, -70, 480, 460)];
+			}
 			[viewDisplayed addSubview:viewDisplayedController.view];
 			CATransition *applicationLoadViewIn = [CATransition animation];
 			[applicationLoadViewIn setDuration:0.5];
-			[applicationLoadViewIn setType:kCATransitionReveal];
+			[applicationLoadViewIn setType:kCATransitionPush];
 			[applicationLoadViewIn setSubtype:kCATransitionFromRight];
 			[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 			[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];			
