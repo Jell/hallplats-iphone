@@ -9,6 +9,7 @@
 #import "FlipsideViewController.h"
 #import "MapViewController.h"
 #import "AugmentedViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate> {
 	IBOutlet UIView *viewDisplayed;

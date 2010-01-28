@@ -33,13 +33,13 @@
 			</object>
 			<object class="IBUIView" id="883825266">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">274</int>
+				<int key="NSvFlags">319</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBMKMapView" id="140844522">
 						<reference key="NSNextResponder" ref="883825266"/>
-						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{-130, -41}, {580, 580}}</string>
+						<int key="NSvFlags">319</int>
+						<string key="NSFrame">{{-130, -60}, {580, 580}}</string>
 						<reference key="NSSuperview" ref="883825266"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -56,6 +56,7 @@
 						<int key="NSID">2</int>
 					</object>
 				</object>
+				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 			</object>
@@ -136,7 +137,7 @@
 					<string>MapViewController</string>
 					<string>UIResponder</string>
 					<string>MapView</string>
-					<string>{{769, 323}, {320, 480}}</string>
+					<string>{{1117, 192}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
