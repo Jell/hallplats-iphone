@@ -9,10 +9,6 @@
 #import "MainViewController.h"
 #import "MainView.h"
 
-#if TARGET_IPHONE_SIMULATOR
-#import "zUIAccelerometer.h"
-#endif
-
 @implementation MainViewController
 @synthesize accelerometer;
 @synthesize viewDisplayedController;
@@ -30,14 +26,8 @@
 	[super viewDidLoad];
 	
 	accelerometer = [UIAccelerometer sharedAccelerometer];
-#if TARGET_IPHONE_SIMULATOR
-	accelerometer = [[[zUIAccelerometer alloc] init] autorelease];
-#endif
 	[accelerometer setUpdateInterval:1.0f / 60.0f];
 	[accelerometer setDelegate:self];
-#if TARGET_IPHONE_SIMULATOR
-	[accelerometer startFakeAccelerometer];
-#endif
 	
 	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 	[viewDisplayed addSubview:viewDisplayedController.view];
