@@ -65,7 +65,7 @@
 	FlipsideViewController *controller = [[FlipsideViewController alloc] initWithNibName:@"FlipsideView" bundle:nil];
 	controller.delegate = self;
 
-	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+	controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 	[self presentModalViewController:controller animated:YES];
 	
 	[controller release];
@@ -89,7 +89,7 @@
 			CATransition *applicationLoadViewIn = [CATransition animation];
 			[applicationLoadViewIn setDuration:0.5];
 			[applicationLoadViewIn setType:kCATransitionPush];
-			[applicationLoadViewIn setSubtype:kCATransitionFromLeft];
+			[applicationLoadViewIn setSubtype:kCATransitionFromTop];
 			[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 			[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];
 			augmentedIsOn = FALSE;
@@ -108,7 +108,7 @@
 			CATransition *applicationLoadViewIn = [CATransition animation];
 			[applicationLoadViewIn setDuration:0.5];
 			[applicationLoadViewIn setType:kCATransitionPush];
-			[applicationLoadViewIn setSubtype:kCATransitionFromRight];
+			[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
 			[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 			[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];			
 			augmentedIsOn = TRUE;
