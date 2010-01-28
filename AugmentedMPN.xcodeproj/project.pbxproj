@@ -22,6 +22,7 @@
 		F43B4D04111033D800C312F4 /* AugmentedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4D03111033D800C312F4 /* AugmentedView.m */; };
 		F43B4DDC111048D600C312F4 /* MapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F43B4DDB111048D600C312F4 /* MapView.xib */; };
 		F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4DE711104AF900C312F4 /* MapKit.framework */; };
+		F43B4E871110725E00C312F4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4E861110725E00C312F4 /* QuartzCore.framework */; };
 		F441737E110F221D00CBFE29 /* FlipsideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F441737C110F221D00CBFE29 /* FlipsideView.xib */; };
 		F441737F110F221D00CBFE29 /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F441737D110F221D00CBFE29 /* MainView.xib */; };
 		F441738C110F232600CBFE29 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F441738B110F232600CBFE29 /* MainViewController.m */; };
@@ -59,6 +60,7 @@
 		F43B4D03111033D800C312F4 /* AugmentedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AugmentedView.m; sourceTree = "<group>"; };
 		F43B4DDB111048D600C312F4 /* MapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapView.xib; sourceTree = "<group>"; };
 		F43B4DE711104AF900C312F4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		F43B4E861110725E00C312F4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F441737C110F221D00CBFE29 /* FlipsideView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FlipsideView.xib; sourceTree = "<group>"; };
 		F441737D110F221D00CBFE29 /* MainView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainView.xib; sourceTree = "<group>"; };
 		F441738A110F232600CBFE29 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Classes/MainViewController.h; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765590DF743DE002DB57D /* CoreGraphics.framework in Frameworks */,
 				F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */,
+				F43B4E871110725E00C312F4 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,6 +181,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F43B4E861110725E00C312F4 /* QuartzCore.framework */,
 				F43B4DE711104AF900C312F4 /* MapKit.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
