@@ -22,7 +22,6 @@
 		F43B4D04111033D800C312F4 /* AugmentedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4D03111033D800C312F4 /* AugmentedView.m */; };
 		F43B4DDC111048D600C312F4 /* MapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F43B4DDB111048D600C312F4 /* MapView.xib */; };
 		F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4DE711104AF900C312F4 /* MapKit.framework */; };
-		F43B4E7D11106BF000C312F4 /* zUIAccelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4E7B11106BF000C312F4 /* zUIAccelerometer.m */; };
 		F43B4E871110725E00C312F4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4E861110725E00C312F4 /* QuartzCore.framework */; };
 		F441737E110F221D00CBFE29 /* FlipsideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F441737C110F221D00CBFE29 /* FlipsideView.xib */; };
 		F441737F110F221D00CBFE29 /* MainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F441737D110F221D00CBFE29 /* MainView.xib */; };
@@ -61,8 +60,6 @@
 		F43B4D03111033D800C312F4 /* AugmentedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AugmentedView.m; sourceTree = "<group>"; };
 		F43B4DDB111048D600C312F4 /* MapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapView.xib; sourceTree = "<group>"; };
 		F43B4DE711104AF900C312F4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		F43B4E7B11106BF000C312F4 /* zUIAccelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = zUIAccelerometer.m; sourceTree = "<group>"; };
-		F43B4E7C11106BF000C312F4 /* zUIAccelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zUIAccelerometer.h; sourceTree = "<group>"; };
 		F43B4E861110725E00C312F4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F441737C110F221D00CBFE29 /* FlipsideView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FlipsideView.xib; sourceTree = "<group>"; };
 		F441737D110F221D00CBFE29 /* MainView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainView.xib; sourceTree = "<group>"; };
@@ -162,8 +159,6 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				F43B4E7B11106BF000C312F4 /* zUIAccelerometer.m */,
-				F43B4E7C11106BF000C312F4 /* zUIAccelerometer.h */,
 				F4417439110F31FF00CBFE29 /* AugmentedMPN_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
@@ -317,7 +312,6 @@
 				F43B4CC81110334800C312F4 /* MapView.m in Sources */,
 				F43B4D00111033CA00C312F4 /* AugmentedViewController.m in Sources */,
 				F43B4D04111033D800C312F4 /* AugmentedView.m in Sources */,
-				F43B4E7D11106BF000C312F4 /* zUIAccelerometer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

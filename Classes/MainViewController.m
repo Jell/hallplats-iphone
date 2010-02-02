@@ -9,10 +9,6 @@
 #import "MainViewController.h"
 #import "MainView.h"
 
-#if TARGET_IPHONE_SIMULATOR
-#import "zUIAccelerometer.h"
-#endif
-
 @implementation MainViewController
 @synthesize accelerometer;
 @synthesize viewDisplayedController;
@@ -28,16 +24,9 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
 	accelerometer = [UIAccelerometer sharedAccelerometer];
-#if TARGET_IPHONE_SIMULATOR
-	accelerometer = [[[zUIAccelerometer alloc] init] autorelease];
-#endif
 	[accelerometer setUpdateInterval:1.0f / 60.0f];
 	[accelerometer setDelegate:self];
-#if TARGET_IPHONE_SIMULATOR
-	[accelerometer startFakeAccelerometer];
-#endif
 	
 	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 	[viewDisplayed addSubview:viewDisplayedController.view];
@@ -74,13 +63,17 @@
 
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
-
+	
 	if(augmentedIsOn){
-		if(acceleration.z < -0.7){
+		if(acceleration.z < -0.9 && (acceleration.y > -0.2 &&
+									 acceleration.y <  0.2 &&
+									 acceleration.x > -0.2 &&
+									 acceleration.x <  0.2)){
 			[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
 			[viewDisplayedController release];
 			viewDisplayedController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
-			if(self.interfaceOrientation == UIInterfaceOrientationPortrait){
+			if(self.interfaceOrientation == UIInterfaceOrientationPortrait ||
+				self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
 				[viewDisplayedController.view setFrame:CGRectMake(0, 0, 480, 460)];
 			}else{
 				[viewDisplayedController.view setFrame:CGRectMake(0, -70, 480, 460)];
@@ -95,12 +88,16 @@
 			augmentedIsOn = FALSE;
 		}
 	}else{
-		if(acceleration.z > -0.5){
+		if(acceleration.z > -0.7 &&
+		   acceleration.z <  0.0 && (acceleration.y < -0.8 ||
+									 acceleration.y >  0.8 ||
+									 acceleration.x < -0.8 ||
+									 acceleration.x >  0.8) ){
 			[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
 			[viewDisplayedController release];
 			viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
-			if(self.interfaceOrientation == UIInterfaceOrientationPortrait){
-				[viewDisplayedController.view setFrame:CGRectMake(-80, 0, 480, 460)];
+			if(self.interfaceOrientation == UIInterfaceOrientationPortrait ||
+			   self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
 			}else{
 				[viewDisplayedController.view setFrame:CGRectMake(0, -70, 480, 460)];
 			}
