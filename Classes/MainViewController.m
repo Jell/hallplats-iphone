@@ -49,7 +49,7 @@
  // Override to allow orientations other than the default portrait orientation.
  - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
  // Return YES for supported orientations
-	 return FALSE;
+	 return NO;
  }
 
 
@@ -122,12 +122,6 @@
 	[viewDisplayedController release];
 	viewDisplayedController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
 	
-	/*if(self.interfaceOrientation == UIInterfaceOrientationPortrait ||
-	 self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
-	 [viewDisplayedController.view setFrame:CGRectMake(0, 0, 480, 460)];
-	 }else{
-	 [viewDisplayedController.view setFrame:CGRectMake(0, -70, 480, 460)];
-	 }*/
 	[viewDisplayed addSubview:viewDisplayedController.view];
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
@@ -143,12 +137,7 @@
 	[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
 	[viewDisplayedController release];
 	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
-	/*
-	 if(self.interfaceOrientation == UIInterfaceOrientationPortrait ||
-	 self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
-	 }else{
-	 [viewDisplayedController.view setFrame:CGRectMake(0, -70, 480, 460)];
-	 }*/
+	
 	[viewDisplayed addSubview:viewDisplayedController.view];
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];

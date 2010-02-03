@@ -13,6 +13,7 @@
 
 @synthesize poiList;
 @synthesize currentLocation;
+@synthesize mpnApiHandler;
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -27,6 +28,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
 	[activityIndicator startAnimating];
 	
@@ -119,7 +121,9 @@
 
 - (void) performUpdate:(id)object{
 	//get the JSON
-	id response = [self objectWithUrl:[NSURL URLWithString:@"http://42934.se/foretag.json?bounds=57.60%2B11.80%2B57.87%2B12.13"]];
+	CLLocationCoordinate2D upperLeft = {57.60,11.80};
+	CLLocationCoordinate2D lowerRight = {57.87,12.13};
+	id response = [mpnApiHandler getPoiFromCoordinates:upperLeft toCoordinates:lowerRight];
 	
 	[poiList release];
 	poiList = [(NSArray *)response copyWithZone:NULL];
@@ -149,34 +153,7 @@
 	[activityIndicator stopAnimating];
 }
 
-- (NSString *)stringWithUrl:(NSURL *)url
-{
-	NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url
-												cachePolicy:NSURLRequestReturnCacheDataElseLoad
-											timeoutInterval:30];
-	// Fetch the JSON response
-	NSData *urlData;
-	NSURLResponse *response;
-	NSError *error;
-	
-	// Make synchronous request
-	urlData = [NSURLConnection sendSynchronousRequest:urlRequest
-									returningResponse:&response
-												error:&error];
-	
- 	// Construct a String around the Data from the response
-	return [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
-}
 
-- (id) objectWithUrl:(NSURL *)url
-{
-	SBJSON *jsonParser = [SBJSON new];
-	NSString *jsonString = [self stringWithUrl:url];
-	id object = [jsonParser objectWithString:jsonString error:NULL];
-	[jsonString release];
-	// Parse the JSON into an Object
-	return object;
-}
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -195,13 +172,14 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
+	[mpnApiHandler release];
 	[currentLocation release];
 	[opQueue release];
 	[poiList release];
 }
 
-
 - (void)dealloc {
+	[mpnApiHandler release];
 	[currentLocation release];
 	[opQueue release];
 	[poiList release];
