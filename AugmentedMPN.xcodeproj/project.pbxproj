@@ -15,6 +15,7 @@
 		288765590DF743DE002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765580DF743DE002DB57D /* CoreGraphics.framework */; };
 		289233A60DB2D0840083E9F9 /* FlipsideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A30DB2D0840083E9F9 /* FlipsideView.m */; };
 		289233A70DB2D0840083E9F9 /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A50DB2D0840083E9F9 /* MainView.m */; };
+		F4296EF911196EC10016CDA2 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F4296EF811196EC10016CDA2 /* Icon.png */; };
 		F43B4CC41110331E00C312F4 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4CC21110331E00C312F4 /* MapViewController.m */; };
 		F43B4CC81110334800C312F4 /* MapView.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4CC71110334800C312F4 /* MapView.m */; };
 		F43B4D00111033CA00C312F4 /* AugmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4CFE111033CA00C312F4 /* AugmentedViewController.m */; };
@@ -35,6 +36,7 @@
 		F4417467110F365A00CBFE29 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F4417461110F365A00CBFE29 /* SBJsonWriter.m */; };
 		F44F3A8A11185C8900AA2B22 /* AddressAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F44F3A8911185C8900AA2B22 /* AddressAnnotation.m */; };
 		F44F3A9E11185CF800AA2B22 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */; };
+		F44F3B4D11187ACE00AA2B22 /* PhotoLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3B4C11187ACE00AA2B22 /* PhotoLibrary.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +53,7 @@
 		289233A50DB2D0840083E9F9 /* MainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainView.m; path = Classes/MainView.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* AugmentedMPN-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AugmentedMPN-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		F4296EF811196EC10016CDA2 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		F43B4CC11110331E00C312F4 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		F43B4CC21110331E00C312F4 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		F43B4CC61110334800C312F4 /* MapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapView.h; sourceTree = "<group>"; };
@@ -86,6 +89,7 @@
 		F44F3A8811185C8900AA2B22 /* AddressAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressAnnotation.h; sourceTree = "<group>"; };
 		F44F3A8911185C8900AA2B22 /* AddressAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressAnnotation.m; sourceTree = "<group>"; };
 		F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		F44F3B4C11187ACE00AA2B22 /* PhotoLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotoLibrary.framework; path = System/Library/PrivateFrameworks/PhotoLibrary.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,7 @@
 				F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */,
 				F43B4E871110725E00C312F4 /* QuartzCore.framework in Frameworks */,
 				F44F3A9E11185CF800AA2B22 /* CoreLocation.framework in Frameworks */,
+				F44F3B4D11187ACE00AA2B22 /* PhotoLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,6 +153,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				F4296EF811196EC10016CDA2 /* Icon.png */,
+				F44F3B4F11187AE300AA2B22 /* PhotoLibrary */,
 				F43B4CBB111032AA00C312F4 /* AugmentedView */,
 				F43B4CBA111032A100C312F4 /* MapView */,
 				F4417454110F365A00CBFE29 /* JSON */,
@@ -187,6 +194,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F44F3B4C11187ACE00AA2B22 /* PhotoLibrary.framework */,
 				F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */,
 				F43B4E861110725E00C312F4 /* QuartzCore.framework */,
 				F43B4DE711104AF900C312F4 /* MapKit.framework */,
@@ -239,6 +247,13 @@
 				F4417461110F365A00CBFE29 /* SBJsonWriter.m */,
 			);
 			path = JSON;
+			sourceTree = "<group>";
+		};
+		F44F3B4F11187AE300AA2B22 /* PhotoLibrary */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = PhotoLibrary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,6 +310,7 @@
 				F441737F110F221D00CBFE29 /* MainView.xib in Resources */,
 				F43B4D01111033CA00C312F4 /* AugmentedView.xib in Resources */,
 				F43B4DDC111048D600C312F4 /* MapView.xib in Resources */,
+				F4296EF911196EC10016CDA2 /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +349,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -347,6 +367,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AugmentedMPN_Prefix.pch;
 				INFOPLIST_FILE = "AugmentedMPN-Info.plist";
