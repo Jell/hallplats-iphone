@@ -54,6 +54,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* AugmentedMPN-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AugmentedMPN-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		F4296EF811196EC10016CDA2 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		F42970261119A21C0016CDA2 /* ARViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewProtocol.h; sourceTree = "<group>"; };
 		F43B4CC11110331E00C312F4 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		F43B4CC21110331E00C312F4 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		F43B4CC61110334800C312F4 /* MapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapView.h; sourceTree = "<group>"; };
@@ -146,6 +147,7 @@
 				F441738B110F232600CBFE29 /* MainViewController.m */,
 				289233A40DB2D0840083E9F9 /* MainView.h */,
 				289233A50DB2D0840083E9F9 /* MainView.m */,
+				F42970261119A21C0016CDA2 /* ARViewProtocol.h */,
 			);
 			name = "Main View";
 			sourceTree = "<group>";
@@ -155,9 +157,9 @@
 			children = (
 				F4296EF811196EC10016CDA2 /* Icon.png */,
 				F44F3B4F11187AE300AA2B22 /* PhotoLibrary */,
+				F4417454110F365A00CBFE29 /* JSON */,
 				F43B4CBB111032AA00C312F4 /* AugmentedView */,
 				F43B4CBA111032A100C312F4 /* MapView */,
-				F4417454110F365A00CBFE29 /* JSON */,
 				289233A00DB2D0730083E9F9 /* Main View */,
 				281C6CD70DB2D82200F60ACC /* Flipside View */,
 				080E96DDFE201D6D7F000001 /* Application Delegate */,

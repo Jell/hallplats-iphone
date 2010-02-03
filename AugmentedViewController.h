@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import "ARViewProtocol.h"
 
-@interface AugmentedViewController : UIViewController <UIAccelerometerDelegate, CLLocationManagerDelegate>{
-
+@interface AugmentedViewController : UIViewController <ARViewDelegate>{
+	CLLocation *currentLocation;
 }
+
+@property (nonatomic, retain) CLLocation *currentLocation;
 
 @end

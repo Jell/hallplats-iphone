@@ -13,6 +13,7 @@
 @synthesize mLocationManager;
 @synthesize mAccelerometer;
 @synthesize viewDisplayedController;
+@synthesize currentLocation;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -26,7 +27,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	
+	currentLocation = nil;
 	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 	[viewDisplayed addSubview:viewDisplayedController.view];
 	augmentedIsOn = TRUE;
@@ -59,7 +60,7 @@
 
 
 - (IBAction)showInfo {    
-	
+	//Launch flipside Modal View
 	FlipsideViewController *controller = [[FlipsideViewController alloc] initWithNibName:@"FlipsideView" bundle:nil];
 	controller.delegate = self;
 
@@ -72,29 +73,13 @@
 
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
-	
+	// Check if we have to switch view
 	if(augmentedIsOn){
 		if(acceleration.z < -0.9 && (acceleration.y > -0.2 &&
 									 acceleration.y <  0.2 &&
 									 acceleration.x > -0.2 &&
 									 acceleration.x <  0.2)){
-			[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
-			[viewDisplayedController release];
-			viewDisplayedController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
-			/*if(self.interfaceOrientation == UIInterfaceOrientationPortrait ||
-				self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
-				[viewDisplayedController.view setFrame:CGRectMake(0, 0, 480, 460)];
-			}else{
-				[viewDisplayedController.view setFrame:CGRectMake(0, -70, 480, 460)];
-			}*/
-			[viewDisplayed addSubview:viewDisplayedController.view];
-			CATransition *applicationLoadViewIn = [CATransition animation];
-			[applicationLoadViewIn setDuration:0.5];
-			[applicationLoadViewIn setType:kCATransitionPush];
-			[applicationLoadViewIn setSubtype:kCATransitionFromTop];
-			[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-			[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];
-			augmentedIsOn = FALSE;
+			[self loadMapView];
 		}
 	}else{
 		if(acceleration.z > -0.7 &&
@@ -102,25 +87,11 @@
 									 acceleration.y >  0.8 ||
 									 acceleration.x < -0.8 ||
 									 acceleration.x >  0.8) ){
-			[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
-			[viewDisplayedController release];
-			viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
-			/*
-			if(self.interfaceOrientation == UIInterfaceOrientationPortrait ||
-			   self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
-			}else{
-				[viewDisplayedController.view setFrame:CGRectMake(0, -70, 480, 460)];
-			}*/
-			[viewDisplayed addSubview:viewDisplayedController.view];
-			CATransition *applicationLoadViewIn = [CATransition animation];
-			[applicationLoadViewIn setDuration:0.5];
-			[applicationLoadViewIn setType:kCATransitionPush];
-			[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
-			[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-			[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];			
-			augmentedIsOn = TRUE;
+			[self loadAugmentedView];
 		}
 	}
+	
+	// Dispatch acceleration
 	[viewDisplayedController accelerometer:accelerometer didAccelerate:acceleration];
 }
 
@@ -129,10 +100,15 @@
 	didUpdateToLocation: (CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
 {
+	[currentLocation release];
+	currentLocation = [newLocation copy];
+	
+	//Dispatch new Location
 	[viewDisplayedController locationManager:manager didUpdateToLocation:newLocation fromLocation:oldLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
+	//Dispatch new Heading
 	[viewDisplayedController locationManager:manager didUpdateHeading:newHeading];
 }
 
@@ -141,6 +117,47 @@
 {
 }
 
+- (void)loadMapView{
+	[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
+	[viewDisplayedController release];
+	viewDisplayedController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
+	
+	/*if(self.interfaceOrientation == UIInterfaceOrientationPortrait ||
+	 self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
+	 [viewDisplayedController.view setFrame:CGRectMake(0, 0, 480, 460)];
+	 }else{
+	 [viewDisplayedController.view setFrame:CGRectMake(0, -70, 480, 460)];
+	 }*/
+	[viewDisplayed addSubview:viewDisplayedController.view];
+	CATransition *applicationLoadViewIn = [CATransition animation];
+	[applicationLoadViewIn setDuration:0.5];
+	[applicationLoadViewIn setType:kCATransitionPush];
+	[applicationLoadViewIn setSubtype:kCATransitionFromTop];
+	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+	[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];
+	[viewDisplayedController setCurrentLocation:currentLocation];
+	augmentedIsOn = FALSE;
+}
+
+- (void)loadAugmentedView{
+	[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
+	[viewDisplayedController release];
+	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
+	/*
+	 if(self.interfaceOrientation == UIInterfaceOrientationPortrait ||
+	 self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
+	 }else{
+	 [viewDisplayedController.view setFrame:CGRectMake(0, -70, 480, 460)];
+	 }*/
+	[viewDisplayed addSubview:viewDisplayedController.view];
+	CATransition *applicationLoadViewIn = [CATransition animation];
+	[applicationLoadViewIn setDuration:0.5];
+	[applicationLoadViewIn setType:kCATransitionPush];
+	[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
+	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+	[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];			
+	augmentedIsOn = TRUE;
+}
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.

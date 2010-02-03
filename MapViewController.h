@@ -13,14 +13,17 @@
 #import "JSON.h"
 #import "AddressAnnotation.h"
 #include "Math.h"
+#import "ARViewProtocol.h"
 
-@interface MapViewController : UIViewController <CLLocationManagerDelegate, UIAccelerometerDelegate, MKMapViewDelegate>{
-	IBOutlet MKMapView *mapView;
+@interface MapViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
+	IBOutlet MKMapView *mMapView;
 	IBOutlet UIActivityIndicatorView* activityIndicator;
+	CLLocation *currentLocation;
 	NSOperationQueue *opQueue;
 	NSArray *poiList;
 }
 
+@property (nonatomic, retain) CLLocation *currentLocation;
 @property (nonatomic, retain) NSArray *poiList;
 
 - (IBAction)updateInfo;

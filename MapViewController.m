@@ -12,7 +12,7 @@
 @implementation MapViewController
 
 @synthesize poiList;
-
+@synthesize currentLocation;
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -37,50 +37,72 @@
 	location.longitude = 11.9683;
 	//starting span (=zoom)
 	MKCoordinateSpan span;
-	span.latitudeDelta = 0.01;
-	span.longitudeDelta = 0.01;
+	span.latitudeDelta = 0.1;
+	span.longitudeDelta = 0.1;
 	MKCoordinateRegion region;
 	region.center = location;
 	region.span = span;
 	//Set MapView
-	mapView.region = [mapView regionThatFits:region];
-	mapView.mapType=MKMapTypeStandard;
-	mapView.zoomEnabled=TRUE;
-	mapView.scrollEnabled =TRUE;
-	
+	mMapView.region = [mMapView regionThatFits:region];
+	mMapView.mapType=MKMapTypeStandard;
+	mMapView.zoomEnabled=TRUE;
+	mMapView.scrollEnabled =FALSE;
+	mMapView.showsUserLocation = FALSE;
+	mMapView.delegate = self;
 	//start updating POI list
 	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
 	[opQueue addOperation:request];
 	[request release];
 }
 
+-(void)setCurrentLocation:(CLLocation *)location{
+	[currentLocation release];
+	currentLocation = [location copy];
+	if(currentLocation){
+		[mMapView setCenterCoordinate:self.currentLocation.coordinate animated:NO];
+	}
+	if(!mMapView.showsUserLocation) mMapView.showsUserLocation = TRUE;
+}
+
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
+	if(!animated){
+		if(self.currentLocation){
+			if(mapView.region.center.latitude !=currentLocation.coordinate.latitude &&
+			   mapView.region.center.longitude !=currentLocation.coordinate.longitude)
+				[mapView setCenterCoordinate:self.currentLocation.coordinate animated:YES] ;
+		}
+	}
+}
+
 - (void)locationManager: (CLLocationManager *)manager
 	didUpdateToLocation: (CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
 {
-	if(!mapView.showsUserLocation) mapView.showsUserLocation = TRUE;
-	[mapView setCenterCoordinate:newLocation.coordinate animated:TRUE];
+	if(!mMapView.showsUserLocation) mMapView.showsUserLocation = TRUE;
+	[currentLocation release];
+	currentLocation = [newLocation copy];
+	[mMapView setCenterCoordinate:newLocation.coordinate animated:TRUE];
 	//[manager stopUpdatingLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
-	int annotationNumber = mapView.annotations.count;
+	int annotationNumber = mMapView.annotations.count;
 	for(int i = 0; i < annotationNumber; i++){
-		[mapView viewForAnnotation: (AddressAnnotation *)[mapView.annotations objectAtIndex:i]].layer.transform = CATransform3DMakeRotation(3.14 * newHeading.trueHeading / 180., 0., 0., 1.);
-		[mapView viewForAnnotation: (AddressAnnotation *)[mapView.annotations objectAtIndex:i]].layer.zPosition = 
-		cos(3.14 * newHeading.trueHeading / 180.)*[mapView viewForAnnotation: (AddressAnnotation *)[mapView.annotations objectAtIndex:i]].layer.position.y -
-		sin(3.14 * newHeading.trueHeading / 180.)*[mapView viewForAnnotation: (AddressAnnotation *)[mapView.annotations objectAtIndex:i]].layer.position.x;
+		[mMapView viewForAnnotation: (AddressAnnotation *)[mMapView.annotations objectAtIndex:i]].layer.transform = CATransform3DMakeRotation(3.14 * newHeading.trueHeading / 180., 0., 0., 1.);
+		[mMapView viewForAnnotation: (AddressAnnotation *)[mMapView.annotations objectAtIndex:i]].layer.zPosition = 
+		cos(3.14 * newHeading.trueHeading / 180.)*[mMapView viewForAnnotation: (AddressAnnotation *)[mMapView.annotations objectAtIndex:i]].layer.position.y -
+		sin(3.14 * newHeading.trueHeading / 180.)*[mMapView viewForAnnotation: (AddressAnnotation *)[mMapView.annotations objectAtIndex:i]].layer.position.x;
 	}
-	mapView.layer.transform = CATransform3DMakeRotation(-3.14 * newHeading.trueHeading / 180., 0., 0., 1.);
+	mMapView.layer.transform = CATransform3DMakeRotation(-3.14 * newHeading.trueHeading / 180., 0., 0., 1.);
 	
-	CATransform3D startRotation = mapView.layer.transform;
+	CATransform3D startRotation = mMapView.layer.transform;
 	CATransform3D endRotation = CATransform3DMakeRotation(-3.14 * newHeading.trueHeading / 180., 0., 0., 1.);
 	
 	CABasicAnimation *theAnimation = [CABasicAnimation animationWithKeyPath: @"transform"];
 	theAnimation.fromValue = [NSValue valueWithCATransform3D: startRotation];
 	theAnimation.toValue = [NSValue valueWithCATransform3D: endRotation];
 	
-	[mapView.layer addAnimation: theAnimation forKey: @"animateRotation"];
+	[mMapView.layer addAnimation: theAnimation forKey: @"animateRotation"];
 	
 }
 
@@ -108,9 +130,9 @@
 	CLLocationCoordinate2D location;
 	location.latitude = 0.0;
 	location.longitude = 0.0;
-	[mapView removeAnnotations:mapView.annotations];
-	mapView.showsUserLocation = FALSE;
-	mapView.showsUserLocation = TRUE;
+	[mMapView removeAnnotations:mMapView.annotations];
+	mMapView.showsUserLocation = FALSE;
+	mMapView.showsUserLocation = TRUE;
 	int i;
 	for(i=0;i<poiList.count;i++){
 		NSDictionary *bundle = (NSDictionary *)[poiList objectAtIndex:i];	
@@ -120,7 +142,9 @@
 		AddressAnnotation *annotation = [[[AddressAnnotation alloc] initWithCoordinate:location] autorelease];
 		[annotation setTitle:(NSString *)[site valueForKey:@"title"]
 					subtitle:(NSString *)[site valueForKey:@"city"]];
-		[mapView addAnnotation:annotation];
+		
+		[mMapView addAnnotation:annotation];
+		
 	}
 	
 	[activityIndicator stopAnimating];
@@ -172,12 +196,14 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
+	[currentLocation release];
 	[opQueue release];
 	[poiList release];
 }
 
 
 - (void)dealloc {
+	[currentLocation release];
 	[opQueue release];
 	[poiList release];
     [super dealloc];
