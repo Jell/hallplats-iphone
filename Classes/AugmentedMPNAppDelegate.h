@@ -11,10 +11,12 @@
 @interface AugmentedMPNAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
     MainViewController *mainViewController;
+	UIImagePickerController *camera;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) MainViewController *mainViewController;
+@property (nonatomic, retain) UIImagePickerController *camera;
 
 @end
 
