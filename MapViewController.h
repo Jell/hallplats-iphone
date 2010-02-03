@@ -14,15 +14,13 @@
 #import "AddressAnnotation.h"
 #include "Math.h"
 
-@interface MapViewController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate>{
+@interface MapViewController : UIViewController <CLLocationManagerDelegate, UIAccelerometerDelegate, MKMapViewDelegate>{
 	IBOutlet MKMapView *mapView;
 	IBOutlet UIActivityIndicatorView* activityIndicator;
-	CLLocationManager *locationManager;
 	NSOperationQueue *opQueue;
 	NSArray *poiList;
 }
 
-@property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) NSArray *poiList;
 
 - (IBAction)updateInfo;

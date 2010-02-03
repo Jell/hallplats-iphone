@@ -10,7 +10,8 @@
 #import "MainView.h"
 
 @implementation MainViewController
-@synthesize accelerometer;
+@synthesize mLocationManager;
+@synthesize mAccelerometer;
 @synthesize viewDisplayedController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -24,14 +25,22 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	accelerometer = [UIAccelerometer sharedAccelerometer];
-	[accelerometer setUpdateInterval:1.0f / 60.0f];
-	[accelerometer setDelegate:self];
+
 	
 	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 	[viewDisplayed addSubview:viewDisplayedController.view];
 	augmentedIsOn = TRUE;
 	
+	//Enable Location Manager
+	self.mLocationManager = [[[CLLocationManager alloc] init] autorelease];
+	self.mLocationManager.delegate = self; // send loc updates to myself
+	[mLocationManager startUpdatingLocation];
+	[mLocationManager startUpdatingHeading];
+	
+	//Enable Accelerometer
+	mAccelerometer = [UIAccelerometer sharedAccelerometer];
+	[mAccelerometer setUpdateInterval:1.0f / 60.0f];
+	[mAccelerometer setDelegate:self];
 }
 
 
@@ -112,7 +121,26 @@
 			augmentedIsOn = TRUE;
 		}
 	}
+	[viewDisplayedController accelerometer:accelerometer didAccelerate:acceleration];
 }
+
+
+- (void)locationManager: (CLLocationManager *)manager
+	didUpdateToLocation: (CLLocation *)newLocation
+		   fromLocation:(CLLocation *)oldLocation
+{
+	[viewDisplayedController locationManager:manager didUpdateToLocation:newLocation fromLocation:oldLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
+	[viewDisplayedController locationManager:manager didUpdateHeading:newHeading];
+}
+
+- (void)locationManager: (CLLocationManager *)manager
+	   didFailWithError: (NSError *)error
+{
+}
+
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
@@ -122,7 +150,8 @@
 }
 
 - (void)viewDidUnload {
-	[accelerometer release];
+	[mLocationManager release];
+	[mAccelerometer release];
 	[viewDisplayedController release];
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
@@ -130,7 +159,8 @@
 
 
 - (void)dealloc {
-	[accelerometer release];
+	[mLocationManager release];
+	[mAccelerometer release];
 	[viewDisplayedController release];
     [super dealloc];
 }

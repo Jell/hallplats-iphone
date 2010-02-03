@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface AugmentedViewController : UIViewController {
+@interface AugmentedViewController : UIViewController <UIAccelerometerDelegate, CLLocationManagerDelegate>{
 
 }
 

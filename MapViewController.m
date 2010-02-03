@@ -11,7 +11,6 @@
 
 @implementation MapViewController
 
-@synthesize locationManager;
 @synthesize poiList;
 
 /*
@@ -53,12 +52,6 @@
 	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
 	[opQueue addOperation:request];
 	[request release];
-	
-	//Enable Location Manager
-	self.locationManager = [[[CLLocationManager alloc] init] autorelease];
-	self.locationManager.delegate = self; // send loc updates to myself
-	[locationManager startUpdatingLocation];
-	[locationManager startUpdatingHeading];
 }
 
 - (void)locationManager: (CLLocationManager *)manager
@@ -68,7 +61,6 @@
 	if(!mapView.showsUserLocation) mapView.showsUserLocation = TRUE;
 	[mapView setCenterCoordinate:newLocation.coordinate animated:TRUE];
 	//[manager stopUpdatingLocation];
-	[activityIndicator stopAnimating];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
@@ -92,8 +84,7 @@
 	
 }
 
-- (void)locationManager: (CLLocationManager *)manager
-	   didFailWithError: (NSError *)error
+-(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
 }
 
@@ -183,14 +174,12 @@
 	// e.g. self.myOutlet = nil;
 	[opQueue release];
 	[poiList release];
-	[locationManager release];
 }
 
 
 - (void)dealloc {
 	[opQueue release];
 	[poiList release];
-	[locationManager release];
     [super dealloc];
 }
 
