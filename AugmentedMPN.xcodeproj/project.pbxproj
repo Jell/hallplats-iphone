@@ -16,6 +16,7 @@
 		289233A60DB2D0840083E9F9 /* FlipsideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A30DB2D0840083E9F9 /* FlipsideView.m */; };
 		289233A70DB2D0840083E9F9 /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A50DB2D0840083E9F9 /* MainView.m */; };
 		F4296EF911196EC10016CDA2 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F4296EF811196EC10016CDA2 /* Icon.png */; };
+		F42971041119BFFB0016CDA2 /* direction.png in Resources */ = {isa = PBXBuildFile; fileRef = F42971031119BFFB0016CDA2 /* direction.png */; };
 		F43B4CC41110331E00C312F4 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4CC21110331E00C312F4 /* MapViewController.m */; };
 		F43B4CC81110334800C312F4 /* MapView.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4CC71110334800C312F4 /* MapView.m */; };
 		F43B4D00111033CA00C312F4 /* AugmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F43B4CFE111033CA00C312F4 /* AugmentedViewController.m */; };
@@ -55,6 +56,7 @@
 		8D1107310486CEB800E47090 /* AugmentedMPN-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AugmentedMPN-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		F4296EF811196EC10016CDA2 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		F42970261119A21C0016CDA2 /* ARViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewProtocol.h; sourceTree = "<group>"; };
+		F42971031119BFFB0016CDA2 /* direction.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = direction.png; sourceTree = "<group>"; };
 		F43B4CC11110331E00C312F4 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		F43B4CC21110331E00C312F4 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		F43B4CC61110334800C312F4 /* MapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapView.h; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F42971031119BFFB0016CDA2 /* direction.png */,
 				F43B4DDB111048D600C312F4 /* MapView.xib */,
 				F43B4CFF111033CA00C312F4 /* AugmentedView.xib */,
 				F441737C110F221D00CBFE29 /* FlipsideView.xib */,
@@ -313,6 +316,7 @@
 				F43B4D01111033CA00C312F4 /* AugmentedView.xib in Resources */,
 				F43B4DDC111048D600C312F4 /* MapView.xib in Resources */,
 				F4296EF911196EC10016CDA2 /* Icon.png in Resources */,
+				F42971041119BFFB0016CDA2 /* direction.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

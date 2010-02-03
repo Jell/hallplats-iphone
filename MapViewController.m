@@ -143,8 +143,7 @@
 		[annotation setTitle:(NSString *)[site valueForKey:@"title"]
 					subtitle:(NSString *)[site valueForKey:@"city"]];
 		
-		[mMapView addAnnotation:annotation];
-		
+		[mMapView addAnnotation:annotation];		
 	}
 	
 	[activityIndicator stopAnimating];
