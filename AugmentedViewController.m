@@ -41,7 +41,14 @@
 {
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{	
+- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
+	float teta =  -3.14 * newHeading.trueHeading / 180.0;
+	
+	if(cos(teta)>0){
+		arrowView.layer.transform = CATransform3DMakeTranslation(160.0 * sin(teta) / sin(37.5 * 3.14 / 180), 0, 0);
+	}else{
+		arrowView.layer.transform = CATransform3DMakeTranslation(200, 0, 0);
+	}
 }
 
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
@@ -54,6 +61,17 @@
 	
 	// Release any cached data, images, etc that aren't in use.
 }
+
+-(void)setAnnotationList:(NSArray *)newList{
+	[annotationList release];
+	annotationList = [newList copy];
+}
+
+-(void)setCurrentLocation:(CLLocation *)location{
+	[currentLocation release];
+	currentLocation = [location copy];
+}
+
 
 - (void)viewDidUnload {
 	[currentLocation release];

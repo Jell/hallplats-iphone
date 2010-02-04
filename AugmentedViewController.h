@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import <QuartzCore/QuartzCore.h>
 #import "ARViewProtocol.h"
 
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
+	IBOutlet UIView *arrowView;
 	CLLocation *currentLocation;
 	NSArray *annotationList;
 }
