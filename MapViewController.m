@@ -11,7 +11,7 @@
 
 @implementation MapViewController
 
-@synthesize poiList;
+@synthesize annotationList;
 @synthesize currentLocation;
 @synthesize mpnApiHandler;
 /*
@@ -30,6 +30,7 @@
     [super viewDidLoad];
 	mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
+	[opQueue setMaxConcurrentOperationCount:1];
 	[activityIndicator startAnimating];
 	
 	//Initialise map
@@ -90,10 +91,10 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
 	int annotationNumber = mMapView.annotations.count;
 	for(int i = 0; i < annotationNumber; i++){
-		[mMapView viewForAnnotation: (AddressAnnotation *)[mMapView.annotations objectAtIndex:i]].layer.transform = CATransform3DMakeRotation(3.14 * newHeading.trueHeading / 180., 0., 0., 1.);
-		[mMapView viewForAnnotation: (AddressAnnotation *)[mMapView.annotations objectAtIndex:i]].layer.zPosition = 
-		cos(3.14 * newHeading.trueHeading / 180.)*[mMapView viewForAnnotation: (AddressAnnotation *)[mMapView.annotations objectAtIndex:i]].layer.position.y -
-		sin(3.14 * newHeading.trueHeading / 180.)*[mMapView viewForAnnotation: (AddressAnnotation *)[mMapView.annotations objectAtIndex:i]].layer.position.x;
+		[mMapView viewForAnnotation: (MPNAnnotation *)[mMapView.annotations objectAtIndex:i]].layer.transform = CATransform3DMakeRotation(3.14 * newHeading.trueHeading / 180., 0., 0., 1.);
+		[mMapView viewForAnnotation: (MPNAnnotation *)[mMapView.annotations objectAtIndex:i]].layer.zPosition = 
+		cos(3.14 * newHeading.trueHeading / 180.)*[mMapView viewForAnnotation: (MPNAnnotation *)[mMapView.annotations objectAtIndex:i]].layer.position.y -
+		sin(3.14 * newHeading.trueHeading / 180.)*[mMapView viewForAnnotation: (MPNAnnotation *)[mMapView.annotations objectAtIndex:i]].layer.position.x;
 	}
 	mMapView.layer.transform = CATransform3DMakeRotation(-3.14 * newHeading.trueHeading / 180., 0., 0., 1.);
 	
@@ -112,7 +113,8 @@
 {
 }
 
-- (IBAction)updateInfo {  
+- (IBAction)updateInfo {
+	updateButton.enabled = FALSE;
 	[activityIndicator startAnimating];
 	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
 	[opQueue addOperation:request];
@@ -123,34 +125,20 @@
 	//get the JSON
 	CLLocationCoordinate2D upperLeft = {57.60,11.80};
 	CLLocationCoordinate2D lowerRight = {57.87,12.13};
-	id response = [mpnApiHandler getPoiFromCoordinates:upperLeft toCoordinates:lowerRight];
-	
-	[poiList release];
-	poiList = [(NSArray *)response copyWithZone:NULL];
-	[(MapViewController *)object performSelectorOnMainThread:@selector(updatePerformed:) withObject:NULL waitUntilDone:YES];
+	id response = [mpnApiHandler getAnnotationsFromCoordinates:upperLeft toCoordinates:lowerRight];
+	[(MapViewController *)object performSelectorOnMainThread:@selector(updatePerformed:) withObject:response waitUntilDone:YES];
 }
 
-- (void) updatePerformed:(NSString *)text {
-	CLLocationCoordinate2D location;
-	location.latitude = 0.0;
-	location.longitude = 0.0;
+- (void) updatePerformed:(id)response {
+	[annotationList release];
+	annotationList = [(NSArray *)response copyWithZone:NULL];
 	[mMapView removeAnnotations:mMapView.annotations];
 	mMapView.showsUserLocation = FALSE;
 	mMapView.showsUserLocation = TRUE;
-	int i;
-	for(i=0;i<poiList.count;i++){
-		NSDictionary *bundle = (NSDictionary *)[poiList objectAtIndex:i];	
-		NSDictionary *site = (NSDictionary *)[bundle valueForKey:@"site"];
-		location.latitude = [(NSString *)[site valueForKey:@"latitude"] floatValue];
-		location.longitude = [(NSString *)[site valueForKey:@"longitude"] floatValue];
-		AddressAnnotation *annotation = [[[AddressAnnotation alloc] initWithCoordinate:location] autorelease];
-		[annotation setTitle:(NSString *)[site valueForKey:@"title"]
-					subtitle:(NSString *)[site valueForKey:@"city"]];
-		
-		[mMapView addAnnotation:annotation];		
-	}
-	
+	[mMapView addAnnotations:annotationList];
+
 	[activityIndicator stopAnimating];
+	updateButton.enabled = TRUE;
 }
 
 
@@ -172,17 +160,19 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
+	[opQueue cancelAllOperations];
 	[mpnApiHandler release];
 	[currentLocation release];
 	[opQueue release];
-	[poiList release];
+	[annotationList release];
 }
 
 - (void)dealloc {
+	[opQueue cancelAllOperations];
 	[mpnApiHandler release];
 	[currentLocation release];
 	[opQueue release];
-	[poiList release];
+	[annotationList release];
     [super dealloc];
 }
 

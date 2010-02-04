@@ -15,6 +15,7 @@
 		288765590DF743DE002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765580DF743DE002DB57D /* CoreGraphics.framework */; };
 		289233A60DB2D0840083E9F9 /* FlipsideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A30DB2D0840083E9F9 /* FlipsideView.m */; };
 		289233A70DB2D0840083E9F9 /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A50DB2D0840083E9F9 /* MainView.m */; };
+		F425E72A111ABF8600D2FC2A /* MPNAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F425E729111ABF8600D2FC2A /* MPNAnnotation.m */; };
 		F4296EF911196EC10016CDA2 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F4296EF811196EC10016CDA2 /* Icon.png */; };
 		F42971041119BFFB0016CDA2 /* direction.png in Resources */ = {isa = PBXBuildFile; fileRef = F42971031119BFFB0016CDA2 /* direction.png */; };
 		F42971351119CCC60016CDA2 /* MPNApiHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F42971341119CCC60016CDA2 /* MPNApiHandler.m */; };
@@ -36,7 +37,6 @@
 		F4417465110F365A00CBFE29 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = F441745D110F365A00CBFE29 /* SBJsonBase.m */; };
 		F4417466110F365A00CBFE29 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F441745F110F365A00CBFE29 /* SBJsonParser.m */; };
 		F4417467110F365A00CBFE29 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F4417461110F365A00CBFE29 /* SBJsonWriter.m */; };
-		F44F3A8A11185C8900AA2B22 /* AddressAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F44F3A8911185C8900AA2B22 /* AddressAnnotation.m */; };
 		F44F3A9E11185CF800AA2B22 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */; };
 		F44F3B4D11187ACE00AA2B22 /* PhotoLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3B4C11187ACE00AA2B22 /* PhotoLibrary.framework */; };
 /* End PBXBuildFile section */
@@ -55,6 +55,8 @@
 		289233A50DB2D0840083E9F9 /* MainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainView.m; path = Classes/MainView.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* AugmentedMPN-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AugmentedMPN-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		F425E728111ABF8600D2FC2A /* MPNAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPNAnnotation.h; sourceTree = "<group>"; };
+		F425E729111ABF8600D2FC2A /* MPNAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPNAnnotation.m; sourceTree = "<group>"; };
 		F4296EF811196EC10016CDA2 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		F42970261119A21C0016CDA2 /* ARViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewProtocol.h; sourceTree = "<group>"; };
 		F42971031119BFFB0016CDA2 /* direction.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = direction.png; sourceTree = "<group>"; };
@@ -92,8 +94,6 @@
 		F441745F110F365A00CBFE29 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		F4417460110F365A00CBFE29 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		F4417461110F365A00CBFE29 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
-		F44F3A8811185C8900AA2B22 /* AddressAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressAnnotation.h; sourceTree = "<group>"; };
-		F44F3A8911185C8900AA2B22 /* AddressAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressAnnotation.m; sourceTree = "<group>"; };
 		F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F44F3B4C11187ACE00AA2B22 /* PhotoLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotoLibrary.framework; path = System/Library/PrivateFrameworks/PhotoLibrary.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -219,6 +219,8 @@
 			children = (
 				F42971331119CCC60016CDA2 /* MPNApiHandler.h */,
 				F42971341119CCC60016CDA2 /* MPNApiHandler.m */,
+				F425E728111ABF8600D2FC2A /* MPNAnnotation.h */,
+				F425E729111ABF8600D2FC2A /* MPNAnnotation.m */,
 			);
 			name = MPN;
 			sourceTree = "<group>";
@@ -226,8 +228,6 @@
 		F43B4CBA111032A100C312F4 /* MapView */ = {
 			isa = PBXGroup;
 			children = (
-				F44F3A8811185C8900AA2B22 /* AddressAnnotation.h */,
-				F44F3A8911185C8900AA2B22 /* AddressAnnotation.m */,
 				F43B4CC11110331E00C312F4 /* MapViewController.h */,
 				F43B4CC21110331E00C312F4 /* MapViewController.m */,
 				F43B4CC61110334800C312F4 /* MapView.h */,
@@ -356,8 +356,8 @@
 				F43B4CC81110334800C312F4 /* MapView.m in Sources */,
 				F43B4D00111033CA00C312F4 /* AugmentedViewController.m in Sources */,
 				F43B4D04111033D800C312F4 /* AugmentedView.m in Sources */,
-				F44F3A8A11185C8900AA2B22 /* AddressAnnotation.m in Sources */,
 				F42971351119CCC60016CDA2 /* MPNApiHandler.m in Sources */,
+				F425E72A111ABF8600D2FC2A /* MPNAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

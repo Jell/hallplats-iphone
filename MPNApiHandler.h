@@ -7,12 +7,14 @@
 //
 
 #import "JSON.h"
+#import "MPNAnnotation.h"
 #import <CoreLocation/CoreLocation.h>
 
 @interface MPNApiHandler : NSObject {
 
 }
 
+-(NSArray *)getAnnotationsFromCoordinates:(CLLocationCoordinate2D) upperLeft toCoordinates:(CLLocationCoordinate2D) lowerRight;
 -(NSArray *)getPoiFromCoordinates:(CLLocationCoordinate2D) upperLeft toCoordinates:(CLLocationCoordinate2D) lowerRight;
 - (id) objectWithUrl:(NSURL *)url;
 - (NSString *)stringWithUrl:(NSURL *)url;

@@ -10,7 +10,6 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
-#import "AddressAnnotation.h"
 #include "Math.h"
 #import "ARViewProtocol.h"
 #import "MPNApiHandler.h"
@@ -18,18 +17,20 @@
 @interface MapViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
 	IBOutlet MKMapView *mMapView;
 	IBOutlet UIActivityIndicatorView* activityIndicator;
+	IBOutlet UIButton *updateButton;
 	CLLocation *currentLocation;
 	NSOperationQueue *opQueue;
-	NSArray *poiList;
+	NSArray *annotationList;
 	MPNApiHandler *mpnApiHandler;
+	
 }
 
 @property (nonatomic, retain) MPNApiHandler *mpnApiHandler;
 @property (nonatomic, retain) CLLocation *currentLocation;
-@property (nonatomic, retain) NSArray *poiList;
+@property (nonatomic, retain) NSArray *annotationList;
 
 - (IBAction)updateInfo;
 - (void) performUpdate:(id)object;
-- (void) updatePerformed:(NSString *)text;
+- (void) updatePerformed:(id)response;
 
 @end

@@ -1,16 +1,14 @@
 //
-//  AddressAnnotation.m
-//  Map View
+//  MPNAnnotation.m
+//  AugmentedMPN
 //
-//  Created by Jean-Louis on 2010-01-20.
+//  Created by Jean-Louis on 2010-02-04.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "AddressAnnotation.h"
+#import "MPNAnnotation.h"
 
-
-@implementation AddressAnnotation
-
+@implementation MPNAnnotation
 @synthesize coordinate;
 
 - (NSString *)subtitle{
