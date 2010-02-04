@@ -11,6 +11,8 @@
 
 @implementation AugmentedViewController
 @synthesize currentLocation;
+@synthesize annotationList;
+
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -55,6 +57,7 @@
 
 - (void)viewDidUnload {
 	[currentLocation release];
+	[annotationList release];
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
@@ -62,6 +65,7 @@
 
 - (void)dealloc {
 	[currentLocation release];
+	[annotationList release];
     [super dealloc];
 }
 

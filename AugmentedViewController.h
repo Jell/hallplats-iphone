@@ -12,8 +12,10 @@
 
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
 	CLLocation *currentLocation;
+	NSArray *annotationList;
 }
 
 @property (nonatomic, retain) CLLocation *currentLocation;
+@property (nonatomic, retain) NSArray *annotationList;
 
 @end

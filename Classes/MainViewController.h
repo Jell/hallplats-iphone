@@ -14,20 +14,32 @@
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate, CLLocationManagerDelegate> {
 	IBOutlet UIView *viewDisplayed;
-	CLLocation *currentLocation;
 	UIViewController<ARViewDelegate> *viewDisplayedController;
+	IBOutlet UIActivityIndicatorView* activityIndicator;
+	IBOutlet UIButton *updateButton;
+	
 	CLLocationManager *mLocationManager;
 	UIAccelerometer *mAccelerometer;
+	MPNApiHandler *mpnApiHandler;
+	
 	bool augmentedIsOn;
+	NSOperationQueue *opQueue;
+	CLLocation *currentLocation;
+	NSArray *annotationList;
 }
 
 @property (nonatomic, retain) CLLocation *currentLocation;
 @property (nonatomic, retain) CLLocationManager *mLocationManager;
+@property (nonatomic, retain) NSArray *annotationList;
+@property (nonatomic, retain) MPNApiHandler *mpnApiHandler;
 @property (nonatomic, retain) UIAccelerometer *mAccelerometer;
 @property (nonatomic, retain) UIViewController *viewDisplayedController;
 
 - (IBAction)showInfo;
 - (void)loadMapView;
 - (void)loadAugmentedView;
+- (IBAction)updateInfo;
+- (void) performUpdate:(id)object;
+- (void) updatePerformed:(id)response;
 
 @end
