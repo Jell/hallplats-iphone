@@ -8,9 +8,7 @@
 
 #import "AugmentedView.h"
 
-
 @implementation AugmentedView
-
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {

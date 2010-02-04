@@ -39,12 +39,27 @@
 					<object class="IBMKMapView" id="140844522">
 						<reference key="NSNextResponder" ref="883825266"/>
 						<int key="NSvFlags">319</int>
-						<string key="NSFrame">{{-130, -60}, {580, 580}}</string>
+						<string key="NSFrame">{{-130, -47}, {580, 555}}</string>
 						<reference key="NSSuperview" ref="883825266"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+					</object>
+					<object class="IBUIImageView" id="17290998">
+						<reference key="NSNextResponder" ref="883825266"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{133, 176}, {54, 108}}</string>
+						<reference key="NSSuperview" ref="883825266"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+						<float key="IBUIAlpha">5.000000e-01</float>
+						<int key="IBUIContentMode">6</int>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">direction.png</string>
+						</object>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
@@ -58,7 +73,6 @@
 				</object>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -74,11 +88,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">mapView</string>
+						<string key="label">mMapView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="140844522"/>
 					</object>
-					<int key="connectionID">51</int>
+					<int key="connectionID">56</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -109,6 +123,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="140844522"/>
+							<reference ref="17290998"/>
 						</object>
 						<reference key="parent" ref="489901811"/>
 						<string key="objectName">Map View</string>
@@ -118,6 +133,11 @@
 						<reference key="object" ref="140844522"/>
 						<reference key="parent" ref="883825266"/>
 						<string key="objectName">Map Display</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">57</int>
+						<reference key="object" ref="17290998"/>
+						<reference key="parent" ref="883825266"/>
 					</object>
 				</object>
 			</object>
@@ -131,13 +151,15 @@
 					<string>34.IBEditorWindowLastContentRect</string>
 					<string>34.IBPluginDependency</string>
 					<string>38.IBPluginDependency</string>
+					<string>57.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>MapViewController</string>
 					<string>UIResponder</string>
 					<string>MapView</string>
-					<string>{{1117, 192}, {320, 480}}</string>
+					<string>{{503, 204}, {320, 460}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
@@ -162,7 +184,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">51</int>
+			<int key="maxID">58</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -179,7 +201,7 @@
 					<string key="className">MapViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">mapView</string>
+						<string key="NS.key.0">mMapView</string>
 						<string key="NS.object.0">MKMapView</string>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

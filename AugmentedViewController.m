@@ -10,6 +10,8 @@
 #import "AugmentedView.h"
 
 @implementation AugmentedViewController
+@synthesize currentLocation;
+@synthesize annotationList;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -21,18 +23,29 @@
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
 }
-*/
-
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
-    return YES;
+    return NO;
+}
+
+- (void)locationManager: (CLLocationManager *)manager
+	didUpdateToLocation: (CLLocation *)newLocation
+		   fromLocation:(CLLocation *)oldLocation
+{
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{	
+}
+
+-(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
+{
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,12 +56,16 @@
 }
 
 - (void)viewDidUnload {
+	[currentLocation release];
+	[annotationList release];
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
 
 
 - (void)dealloc {
+	[currentLocation release];
+	[annotationList release];
     [super dealloc];
 }
 

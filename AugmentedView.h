@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-
 @interface AugmentedView : UIView {
 
 }
+
 
 @end

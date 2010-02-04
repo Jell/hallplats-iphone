@@ -14,6 +14,7 @@
 
 @synthesize window;
 @synthesize mainViewController;
+@synthesize camera;
 
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
@@ -22,9 +23,21 @@
 	self.mainViewController = aController;
 	[aController release];
 	
-    mainViewController.view.frame = [UIScreen mainScreen].applicationFrame;
-	[window addSubview:[mainViewController view]];
-    [window makeKeyAndVisible];
+	camera = [[[UIImagePickerController alloc] init] autorelease];
+	camera.sourceType = UIImagePickerControllerSourceTypeCamera;
+	camera.view.frame = [UIScreen mainScreen].applicationFrame;
+	camera.cameraOverlayView = [mainViewController view];
+	camera.showsCameraControls = NO;
+	camera.navigationBarHidden = YES;
+	camera.toolbarHidden = YES;
+	camera.wantsFullScreenLayout = YES;
+	
+	/* scale camera view to full screen */
+	camera.cameraViewTransform=CGAffineTransformScale(camera.cameraViewTransform, 1.09, 1.09); 
+	
+	[window addSubview:[camera view]];
+	
+	[window makeKeyAndVisible];
 }
 
 
