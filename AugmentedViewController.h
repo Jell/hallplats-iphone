@@ -12,7 +12,10 @@
 #import "ARViewProtocol.h"
 
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
-	IBOutlet UIView *arrowView;
+	IBOutlet UILabel *northLabel;
+	IBOutlet UILabel *southLabel;
+	IBOutlet UILabel *eastLabel;
+	IBOutlet UILabel *westLabel;
 	CLLocation *currentLocation;
 	NSArray *annotationList;
 }
