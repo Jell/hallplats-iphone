@@ -104,6 +104,8 @@
 	currentLocation = [location copy];
 }
 
+-(void)setOrientation:(UIInterfaceOrientation)orientation{
+}
 
 - (void)viewDidUnload {
 	[currentLocation release];

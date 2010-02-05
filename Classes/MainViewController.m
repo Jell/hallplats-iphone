@@ -203,6 +203,7 @@
 	[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];
 	[viewDisplayedController setCurrentLocation:currentLocation];
 	[viewDisplayedController setAnnotationList:annotationList];
+	[viewDisplayedController setOrientation:mInterfaceOrientation];
 	augmentedIsOn = FALSE;
 }
 

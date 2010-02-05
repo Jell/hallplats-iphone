@@ -30,6 +30,8 @@
     [super viewDidLoad];
 	//Initialise map
 	//start location
+	phase = 0.0;
+	
 	CLLocationCoordinate2D location;
 	location.latitude = 57.7119;
 	location.longitude = 11.9683;
@@ -86,7 +88,7 @@
 - (void)rotateMapWithTeta:(float)teta{
 	
 	mMapView.layer.transform = CATransform3DMakeRotation(teta, 0., 0., 1.);
-	CATransform3D annotationRotation = CATransform3DMakeRotation(-teta, 0., 0., 1.);
+	CATransform3D annotationRotation = CATransform3DMakeRotation(phase-teta, 0., 0., 1.);
 	//Set animation and rotation for the annotations
 	int annotationNumber = mMapView.annotations.count;
 	for(int i = 0; i < annotationNumber; i++){
@@ -103,6 +105,25 @@
 	[annotationList release];
 	annotationList = [newList copy];
 	[mMapView addAnnotations:annotationList];
+}
+
+-(void)setOrientation:(UIInterfaceOrientation)orientation{
+	switch (orientation) {
+		case UIInterfaceOrientationPortrait:
+			phase = 3.14;
+			break;
+		case UIInterfaceOrientationLandscapeLeft:
+			phase = -1.57;
+			break;
+		case UIInterfaceOrientationLandscapeRight:
+			phase = 1.57;
+			break;
+		default:
+			phase = 0.0;
+			break;
+	}
+	arrowView.layer.transform = CATransform3DMakeRotation(phase, 0.0, 0.0, 1.0);
+	
 }
 
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration

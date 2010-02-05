@@ -16,8 +16,10 @@
 
 @interface MapViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
 	IBOutlet MKMapView *mMapView;
+	IBOutlet UIImageView *arrowView;
 	CLLocation *currentLocation;
 	NSArray *annotationList;
+	float phase;
 }
 
 @property (nonatomic, retain) CLLocation *currentLocation;
