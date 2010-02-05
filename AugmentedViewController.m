@@ -45,28 +45,28 @@
 	
 	float teta = 3.14 + angleXY - 3.14 * newHeading.trueHeading / 180.0;
 	if(cos(teta)>0){
-		northLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(3.14-angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
+		northLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
 	}else{
 		northLabel.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
 	}
 	
 	teta =  3.14 + angleXY -3.14 * (newHeading.trueHeading + 180.0) / 180.0;
 	if(cos(teta)>0){
-		southLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(3.14-angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
+		southLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
 	}else{
 		southLabel.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
 	}
 	
 	teta = 3.14 + angleXY  -3.14 * (newHeading.trueHeading + 270.0) / 180.0;
 	if(cos(teta)>0){
-		eastLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(3.14-angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
+		eastLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
 	}else{
 		eastLabel.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
 	}
 	
 	teta = 3.14 + angleXY  -3.14 * (newHeading.trueHeading + 90.0) / 180.0;
 	if(cos(teta)>-0.5){
-		westLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(3.14-angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
+		westLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
 	}else{
 		westLabel.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
 	}

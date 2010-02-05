@@ -30,4 +30,9 @@
 	mSubTitle = subtitle;
 }
 
+- (void)dealloc {
+    [super dealloc];
+}
+
+
 @end
