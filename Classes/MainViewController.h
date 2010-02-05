@@ -38,6 +38,7 @@
 - (IBAction)showInfo;
 - (void)loadMapView;
 - (void)loadAugmentedView;
+- (void)loadViewController:(UIViewController<ARViewDelegate> *)viewController withTransition:(CATransition *)transition;
 - (IBAction)updateInfo;
 - (void) performUpdate:(id)object;
 - (void) updatePerformed:(id)response;

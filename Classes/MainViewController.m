@@ -68,10 +68,13 @@
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
     
 	[self dismissModalViewControllerAnimated:YES];
+	[mAccelerometer setDelegate:self];
 }
 
 
 - (IBAction)showInfo {    
+	//Stop Updating:
+	[mAccelerometer setDelegate:nil];
 	//Launch flipside Modal View
 	FlipsideViewController *controller = [[FlipsideViewController alloc] initWithNibName:@"FlipsideView" bundle:nil];
 	controller.delegate = self;
@@ -175,11 +178,8 @@
 }
 
 - (void)loadMapView{
-	[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
-	[viewDisplayedController release];
-	viewDisplayedController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
+	augmentedIsOn = FALSE;
 	
-	[viewDisplayed addSubview:viewDisplayedController.view];
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
 	[applicationLoadViewIn setType:kCATransitionPush];
@@ -200,19 +200,14 @@
 	}
 
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-	[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];
-	[viewDisplayedController setCurrentLocation:currentLocation];
-	[viewDisplayedController setAnnotationList:annotationList];
-	[viewDisplayedController setOrientation:mInterfaceOrientation];
-	augmentedIsOn = FALSE;
+	
+	[self loadViewController:[[MapViewController alloc] initWithNibName:@"MapView" bundle:nil]
+			  withTransition:applicationLoadViewIn];
 }
 
 - (void)loadAugmentedView{
-	[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
-	[viewDisplayedController release];
-	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
+	augmentedIsOn = TRUE;
 	
-	[viewDisplayed addSubview:viewDisplayedController.view];
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
 	[applicationLoadViewIn setType:kCATransitionPush];
@@ -231,12 +226,24 @@
 			[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
 			break;
 	}
-
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-	[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];
+	
+	[self loadViewController:[[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil]
+			  withTransition:applicationLoadViewIn];
+
+}
+
+- (void)loadViewController:(UIViewController<ARViewDelegate> *)viewController
+			withTransition:(CATransition *)transition
+{
+	[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
+	[viewDisplayedController release];
+	viewDisplayedController = viewController;
+	[[viewDisplayed layer] addAnimation:transition forKey:kCATransitionReveal];
+	[viewDisplayed addSubview:viewDisplayedController.view];
 	[viewDisplayedController setCurrentLocation:currentLocation];
 	[viewDisplayedController setAnnotationList:annotationList];
-	augmentedIsOn = TRUE;
+	[viewDisplayedController setOrientation:mInterfaceOrientation];
 }
 
 - (void)didReceiveMemoryWarning {

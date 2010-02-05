@@ -95,7 +95,7 @@
 		
 		CALayer *annotationLayer = [mMapView viewForAnnotation: (MPNAnnotation *)[mMapView.annotations objectAtIndex:i]].layer;
 		annotationLayer.transform = annotationRotation;
-		annotationLayer.zPosition = cos(-teta)*annotationLayer.position.y - sin(-teta)*annotationLayer.position.x;
+		annotationLayer.zPosition = cos(teta)*annotationLayer.position.y + sin(teta)*annotationLayer.position.x;
 		
 	}
 }
