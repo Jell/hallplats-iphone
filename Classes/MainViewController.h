@@ -21,7 +21,7 @@
 	CLLocationManager *mLocationManager;
 	UIAccelerometer *mAccelerometer;
 	MPNApiHandler *mpnApiHandler;
-	
+	UIInterfaceOrientation mInterfaceOrientation;
 	bool augmentedIsOn;
 	NSOperationQueue *opQueue;
 	CLLocation *currentLocation;

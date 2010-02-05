@@ -47,7 +47,7 @@
 	
 	//Enable Accelerometer
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
-	[mAccelerometer setUpdateInterval:1.0f / 60.0f];
+	[mAccelerometer setUpdateInterval:1.0f / 5.0f];
 	[mAccelerometer setDelegate:self];
 	
 	//start updating POI list
@@ -112,23 +112,41 @@
 
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
+	float xx = [acceleration x];
+	float yy = [acceleration y];
+	float zz = [acceleration z];
 	// Check if we have to switch view
 	if(augmentedIsOn){
-		if(acceleration.z < -0.9 && (acceleration.y > -0.2 &&
-									 acceleration.y <  0.2 &&
-									 acceleration.x > -0.2 &&
-									 acceleration.x <  0.2)){
+		if(zz < -0.9 && (yy > -0.2 && yy <  0.2 && xx > -0.2 && xx <  0.2))
+		{
 			[self loadMapView];
 		}
 	}else{
-		if(acceleration.z > -0.7 &&
-		   acceleration.z <  0.0 && (acceleration.y < -0.8 ||
-									 acceleration.y >  0.8 ||
-									 acceleration.x < -0.8 ||
-									 acceleration.x >  0.8) ){
+		if( (zz > -0.7 &&  zz <  0.0) &&
+			(yy < -0.8 || yy >  0.8 || xx < -0.8 || xx >  0.8)  )
+		{
 			[self loadAugmentedView];
 		}
 	}
+
+	float angle = atan2(xx, yy);
+	if(angle < 0.785 && angle >-0.785){
+		mInterfaceOrientation = UIInterfaceOrientationPortrait;	
+	}
+	
+	if(angle < 2.355 && angle > 0.785){
+		mInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;	
+	}
+	
+	if(angle < -0.785 && angle >-2.355){
+		mInterfaceOrientation = UIInterfaceOrientationLandscapeRight;	
+	}
+	
+	if(angle > 2.355 || angle <-2.355){
+		mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;	
+	}
+	
+
 	
 	// Dispatch acceleration
 	[viewDisplayedController accelerometer:accelerometer didAccelerate:acceleration];
@@ -165,7 +183,22 @@
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
 	[applicationLoadViewIn setType:kCATransitionPush];
-	[applicationLoadViewIn setSubtype:kCATransitionFromTop];
+	
+	switch (mInterfaceOrientation) {
+		case UIInterfaceOrientationPortrait:
+			[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
+			break;
+		case UIInterfaceOrientationLandscapeLeft:
+			[applicationLoadViewIn setSubtype:kCATransitionFromRight];
+			break;
+		case UIInterfaceOrientationLandscapeRight:
+			[applicationLoadViewIn setSubtype:kCATransitionFromLeft];
+			break;
+		default:
+			[applicationLoadViewIn setSubtype:kCATransitionFromTop];
+			break;
+	}
+
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];
 	[viewDisplayedController setCurrentLocation:currentLocation];
@@ -182,7 +215,22 @@
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
 	[applicationLoadViewIn setType:kCATransitionPush];
-	[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
+	
+	switch (mInterfaceOrientation) {
+		case UIInterfaceOrientationPortrait:
+			[applicationLoadViewIn setSubtype:kCATransitionFromTop];
+			break;
+		case UIInterfaceOrientationLandscapeLeft:
+			[applicationLoadViewIn setSubtype:kCATransitionFromLeft];
+			break;
+		case UIInterfaceOrientationLandscapeRight:
+			[applicationLoadViewIn setSubtype:kCATransitionFromRight];
+			break;
+		default:
+			[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
+			break;
+	}
+
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	[[viewDisplayed layer] addAnimation:applicationLoadViewIn forKey:kCATransitionReveal];
 	[viewDisplayedController setCurrentLocation:currentLocation];

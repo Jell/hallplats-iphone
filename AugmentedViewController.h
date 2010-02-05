@@ -17,6 +17,7 @@
 	IBOutlet UILabel *eastLabel;
 	IBOutlet UILabel *westLabel;
 	CLLocation *currentLocation;
+	float angleXY;
 	NSArray *annotationList;
 }
 
