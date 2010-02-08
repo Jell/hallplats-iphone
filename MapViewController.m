@@ -54,17 +54,17 @@
 -(void)setCurrentLocation:(CLLocation *)location{
 	currentLocation = location;
 	if(currentLocation){
-		[mMapView setCenterCoordinate:self.currentLocation.coordinate animated:NO];
+		[mMapView setCenterCoordinate:currentLocation.coordinate animated:NO];
 	}
 	if(!mMapView.showsUserLocation) mMapView.showsUserLocation = TRUE;
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
 	if(!animated){
-		if(self.currentLocation){
+		if(currentLocation){
 			if(mapView.region.center.latitude !=currentLocation.coordinate.latitude &&
 			   mapView.region.center.longitude !=currentLocation.coordinate.longitude)
-				[mapView setCenterCoordinate:self.currentLocation.coordinate animated:YES];
+				[mapView setCenterCoordinate:currentLocation.coordinate animated:YES];
 		}
 	}
 }
@@ -74,10 +74,10 @@
 		   fromLocation:(CLLocation *)oldLocation
 {
 	if(!mMapView.showsUserLocation) mMapView.showsUserLocation = TRUE;
-	[currentLocation release];
-	currentLocation = [newLocation copy];
+	
+	currentLocation = newLocation;
+	
 	[mMapView setCenterCoordinate:newLocation.coordinate animated:TRUE];
-	//[manager stopUpdatingLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
@@ -101,8 +101,7 @@
 
 -(void)setAnnotationList:(NSArray *)newList{
 	[mMapView removeAnnotations:annotationList];
-	[annotationList release];
-	annotationList = [newList copy];
+	annotationList = newList;
 	[mMapView addAnnotations:annotationList];
 }
 
@@ -143,7 +142,6 @@
 	[mMapView release];
 	[arrowView removeFromSuperview];
 	[arrowView release];
-	[annotationList release];
 }
 
 - (void)dealloc {
@@ -151,7 +149,6 @@
 	[mMapView release];
 	[arrowView removeFromSuperview];
 	[arrowView release];
-	[annotationList release];
     [super dealloc];
 }
 

@@ -28,7 +28,6 @@
 }
 
 - (void)dealloc {
-	[annotation release];
     [super dealloc];
 }
 

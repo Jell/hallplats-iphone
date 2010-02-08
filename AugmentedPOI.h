@@ -16,7 +16,7 @@
 }
 
 @property float teta;
-@property(retain) MPNAnnotation *annotation;
+@property(assign) MPNAnnotation *annotation;
 
 -(id)initWithAnnotation:(MPNAnnotation *) anAnnotation fromOrigin:(CLLocationCoordinate2D)origin;
 -(void)updateAngleFrom:(CLLocationCoordinate2D)origin;

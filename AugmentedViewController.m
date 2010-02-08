@@ -14,17 +14,6 @@
 @synthesize ar_poiList;
 @synthesize ar_poiViews;
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
-
-
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -96,7 +85,11 @@
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
 	
-	CLLocationCoordinate2D origin = currentLocation.coordinate;
+	CLLocationCoordinate2D origin = {0,0};
+	if(currentLocation){
+		origin = currentLocation.coordinate;
+	}
+	
 	CGPoint center = {160, 210};
 	for(MPNAnnotation *anAnnotation in newList){
 		AugmentedPOI *aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
@@ -114,8 +107,6 @@
 		[aPoi release];
 		[ar_poiViews addObject:aLabel];
 		[aLabel release];
-		
-		
 	}
 }
 

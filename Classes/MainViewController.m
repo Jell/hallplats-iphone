@@ -40,8 +40,8 @@
 	augmentedIsOn = TRUE;
 	
 	//Enable Location Manager
-	self.mLocationManager = [[[CLLocationManager alloc] init] autorelease];
-	self.mLocationManager.delegate = self; // send loc updates to myself
+	mLocationManager = [[CLLocationManager alloc] init];
+	mLocationManager.delegate = self; // send loc updates to myself
 	[mLocationManager startUpdatingLocation];
 	[mLocationManager startUpdatingHeading];
 	
@@ -55,7 +55,6 @@
 	[opQueue addOperation:request];
 	[request release];
 }
-
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
     
