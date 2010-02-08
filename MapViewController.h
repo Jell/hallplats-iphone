@@ -23,7 +23,7 @@
 }
 
 @property (assign) CLLocation *currentLocation;
-@property (nonatomic, retain) NSArray *annotationList;
+@property (retain) NSArray *annotationList;
 
 - (void)rotateMapWithTeta:(float)teta;
 

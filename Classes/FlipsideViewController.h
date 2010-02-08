@@ -13,7 +13,7 @@
 	id <FlipsideViewControllerDelegate> delegate;
 }
 
-@property (nonatomic, assign) id <FlipsideViewControllerDelegate> delegate;
+@property (assign) id <FlipsideViewControllerDelegate> delegate;
 - (IBAction)done;
 
 @end

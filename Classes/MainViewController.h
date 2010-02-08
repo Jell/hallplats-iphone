@@ -28,12 +28,12 @@
 	NSArray *annotationList;
 }
 
-@property (nonatomic, retain) CLLocation *currentLocation;
-@property (nonatomic, retain) CLLocationManager *mLocationManager;
-@property (nonatomic, retain) NSArray *annotationList;
-@property (nonatomic, retain) MPNApiHandler *mpnApiHandler;
-@property (nonatomic, retain) UIAccelerometer *mAccelerometer;
-@property (nonatomic, retain) UIViewController *viewDisplayedController;
+@property (retain) CLLocation *currentLocation;
+@property (retain) CLLocationManager *mLocationManager;
+@property (retain) NSArray *annotationList;
+@property (retain) MPNApiHandler *mpnApiHandler;
+@property (retain) UIAccelerometer *mAccelerometer;
+@property (retain) UIViewController *viewDisplayedController;
 
 - (IBAction)showInfo;
 - (void)loadMapView;

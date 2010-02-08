@@ -19,8 +19,8 @@
 	float angleXY;
 }
 
-@property (nonatomic, retain) NSMutableArray *ar_poiList;
-@property (nonatomic, retain) NSMutableArray *ar_poiViews;
+@property (retain) NSMutableArray *ar_poiList;
+@property (retain) NSMutableArray *ar_poiViews;
 @property (assign)  CLLocation *currentLocation;
 
 -(void)translateView:(UIView *)aView withTeta:(float)teta;

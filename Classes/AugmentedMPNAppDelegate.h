@@ -14,9 +14,9 @@
 	UIImagePickerController *camera;
 }
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) MainViewController *mainViewController;
-@property (nonatomic, retain) UIImagePickerController *camera;
+@property (retain) IBOutlet UIWindow *window;
+@property (retain) MainViewController *mainViewController;
+@property (retain) UIImagePickerController *camera;
 
 @end
 

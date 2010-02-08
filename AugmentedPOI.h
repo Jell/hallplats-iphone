@@ -15,8 +15,8 @@
 	MPNAnnotation *annotation;
 }
 
-@property(nonatomic) float teta;
-@property(nonatomic, retain) MPNAnnotation *annotation;
+@property float teta;
+@property(retain) MPNAnnotation *annotation;
 
 -(id)initWithAnnotation:(MPNAnnotation *) anAnnotation fromOrigin:(CLLocationCoordinate2D)origin;
 -(void)updateAngleFrom:(CLLocationCoordinate2D)origin;
