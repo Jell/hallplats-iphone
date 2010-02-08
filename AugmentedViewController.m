@@ -11,7 +11,8 @@
 
 @implementation AugmentedViewController
 @synthesize currentLocation;
-@synthesize annotationList;
+@synthesize ar_poiList;
+@synthesize ar_poiViews;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -27,48 +28,37 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-}
-
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return NO;
-}
+	currentLocation = nil;
+	ar_poiList = [[NSMutableArray alloc] init];
+	ar_poiViews = [[NSMutableArray alloc] init];
+} 
 
 - (void)locationManager: (CLLocationManager *)manager
 	didUpdateToLocation: (CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
 {
+	currentLocation = newLocation;
+	for (AugmentedPOI *aPoi in ar_poiList) {
+		[aPoi updateAngleFrom:newLocation.coordinate];
+	}
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
-	
-	float teta = 3.14 + angleXY - 3.14 * newHeading.trueHeading / 180.0;
-	if(cos(teta)>0){
-		northLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
-	}else{
-		northLabel.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
+	float jitter = angleXY - 3.14 * newHeading.trueHeading / 180.0;
+	float teta;
+	int i = 0;
+	for (AugmentedPOI *aPoi in ar_poiList) {
+		teta = jitter - [aPoi teta];
+		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta];
+		i++;
 	}
-	
-	teta =  3.14 + angleXY -3.14 * (newHeading.trueHeading + 180.0) / 180.0;
-	if(cos(teta)>0){
-		southLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
+}
+
+-(void)translateView:(UIView *)aView withTeta:(float)teta{
+	if(sin(teta)<0){
+		aView.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), 0, 0);
 	}else{
-		southLabel.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
-	}
-	
-	teta = 3.14 + angleXY  -3.14 * (newHeading.trueHeading + 270.0) / 180.0;
-	if(cos(teta)>0){
-		eastLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
-	}else{
-		eastLabel.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
-	}
-	
-	teta = 3.14 + angleXY  -3.14 * (newHeading.trueHeading + 90.0) / 180.0;
-	if(cos(teta)>-0.5){
-		westLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
-	}else{
-		westLabel.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
+		aView.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
 	}
 }
 
@@ -95,29 +85,61 @@
 }
 
 -(void)setAnnotationList:(NSArray *)newList{
-	[annotationList release];
-	annotationList = [newList copy];
+	
+	for(UIView *aView in ar_poiViews){
+		[aView removeFromSuperview];
+	}
+	
+	[ar_poiViews release];
+	[ar_poiList release];
+	
+	ar_poiList = [[NSMutableArray alloc] init];
+	ar_poiViews = [[NSMutableArray alloc] init];
+	
+	CLLocationCoordinate2D origin = currentLocation.coordinate;
+	CGPoint center = {160, 210};
+	for(MPNAnnotation *anAnnotation in newList){
+		AugmentedPOI *aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
+		
+		UILabel *aLabel = [[UILabel alloc ] initWithFrame:CGRectMake(0.0, 210.0, 60.0, 20.0)];
+		aLabel.center = center;
+		aLabel.textAlignment =  UITextAlignmentCenter;
+		aLabel.textColor = [UIColor whiteColor];
+		aLabel.backgroundColor = [UIColor blackColor];
+		aLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
+		[self.view addSubview:aLabel];
+		aLabel.text = [anAnnotation title];
+		
+		[ar_poiList addObject:aPoi];
+		[aPoi release];
+		[ar_poiViews addObject:aLabel];
+		[aLabel release];
+		
+		
+	}
 }
 
 -(void)setCurrentLocation:(CLLocation *)location{
-	[currentLocation release];
-	currentLocation = [location copy];
+	currentLocation = location;
+	for (AugmentedPOI *aPoi in ar_poiList) {
+		[aPoi updateAngleFrom:location.coordinate];
+	}
 }
 
 -(void)setOrientation:(UIInterfaceOrientation)orientation{
 }
 
 - (void)viewDidUnload {
-	[currentLocation release];
-	[annotationList release];
+	[ar_poiList release];
+	[ar_poiViews release];
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
 
 
 - (void)dealloc {
-	[currentLocation release];
-	[annotationList release];
+	[ar_poiList release];
+	[ar_poiViews release];
     [super dealloc];
 }
 

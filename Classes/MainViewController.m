@@ -57,14 +57,6 @@
 }
 
 
-
- // Override to allow orientations other than the default portrait orientation.
- - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
- // Return YES for supported orientations
-	 return NO;
- }
-
-
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
     
 	[self dismissModalViewControllerAnimated:YES];
@@ -164,7 +156,7 @@
 	currentLocation = [newLocation copy];
 	
 	//Dispatch new Location
-	[viewDisplayedController locationManager:manager didUpdateToLocation:newLocation fromLocation:oldLocation];
+	[viewDisplayedController locationManager:manager didUpdateToLocation:currentLocation fromLocation:oldLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
