@@ -11,8 +11,8 @@
 
 @implementation AugmentedViewController
 @synthesize currentLocation;
-@synthesize annotationList;
 @synthesize ar_poiList;
+@synthesize ar_poiViews;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -33,6 +33,8 @@
 	location.longitude = 11.9683;
 	*/
 	ar_poiList = [[NSMutableArray alloc] init];
+	ar_poiViews = [[NSMutableArray alloc] init];
+	
 	CLLocationCoordinate2D origin = {57.7119, 11.9683};
 	CLLocationCoordinate2D location = {57.7119, 15.0};
 	MPNAnnotation *anAnnotation = [[MPNAnnotation alloc] initWithCoordinate:location];
@@ -41,6 +43,7 @@
 	[anAnnotation release];
 	[ar_poiList addObject:aPoi];
 	[aPoi release];
+	[ar_poiViews addObject:northLabel];
 	
 	location.latitude = 57.7119;
 	location.longitude = 5.0;
@@ -50,6 +53,7 @@
 	[anAnnotation release];
 	[ar_poiList addObject:aPoi];
 	[aPoi release];
+	[ar_poiViews addObject:southLabel];
 	
 	location.latitude = 70.0;
 	location.longitude = 11.9683;
@@ -59,6 +63,7 @@
 	[anAnnotation release];
 	[ar_poiList addObject:aPoi];
 	[aPoi release];
+	[ar_poiViews addObject:eastLabel];
 	
 	location.latitude = 40.0;
 	location.longitude = 11.9683;
@@ -68,6 +73,7 @@
 	[anAnnotation release];
 	[ar_poiList addObject:aPoi];
 	[aPoi release];
+	[ar_poiViews addObject:westLabel];
 	
 } 
 
@@ -81,23 +87,19 @@
 	didUpdateToLocation: (CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
 {
+	for (AugmentedPOI *aPoi in ar_poiList) {
+		[aPoi updateAngleFrom:newLocation.coordinate];
+	}
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
 	float jitter = 3.14 + angleXY - 3.14 * newHeading.trueHeading / 180.0;
 	float teta;
-	if(ar_poiList){
-		teta = [(AugmentedPOI *)[ar_poiList objectAtIndex:0] teta] + jitter;
-		[self translateView:northLabel withTeta:teta];
-		
-		teta = [(AugmentedPOI *)[ar_poiList objectAtIndex:1] teta] + jitter;
-		[self translateView:southLabel withTeta:teta];
-		
-		teta = [(AugmentedPOI *)[ar_poiList objectAtIndex:2] teta] + jitter;
-		[self translateView:eastLabel withTeta:teta];
-				
-		teta = [(AugmentedPOI *)[ar_poiList objectAtIndex:3] teta] + jitter;
-		[self translateView:westLabel withTeta:teta];
+	int i = 0;
+	for (AugmentedPOI *aPoi in ar_poiList) {
+		teta = [aPoi teta] + jitter;
+		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta];
+		i++;
 	}
 }
 
@@ -132,8 +134,6 @@
 }
 
 -(void)setAnnotationList:(NSArray *)newList{
-	[annotationList release];
-	annotationList = [newList copy];
 }
 
 -(void)setCurrentLocation:(CLLocation *)location{
@@ -146,8 +146,8 @@
 
 - (void)viewDidUnload {
 	[ar_poiList release];
+	[ar_poiViews release];
 	[currentLocation release];
-	[annotationList release];
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
@@ -155,8 +155,8 @@
 
 - (void)dealloc {
 	[ar_poiList release];
+	[ar_poiViews release];
 	[currentLocation release];
-	[annotationList release];
     [super dealloc];
 }
 

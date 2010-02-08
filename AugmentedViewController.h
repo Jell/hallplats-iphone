@@ -18,15 +18,14 @@
 	IBOutlet UILabel *eastLabel;
 	IBOutlet UILabel *westLabel;
 	NSMutableArray *ar_poiList;
-	AugmentedPOI *northPOI;
+	NSMutableArray *ar_poiViews;
 	CLLocation *currentLocation;
 	float angleXY;
-	NSArray *annotationList;
 }
 
 @property (nonatomic, retain) NSMutableArray *ar_poiList;
+@property (nonatomic, retain) NSMutableArray *ar_poiViews;
 @property (nonatomic, retain) CLLocation *currentLocation;
-@property (nonatomic, retain) NSArray *annotationList;
 
 -(void)translateView:(UIView *)aView withTeta:(float)teta;
 
