@@ -129,13 +129,6 @@
 {
 }
 
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return NO;
-}
-
-
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -146,10 +139,18 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
+	[mMapView removeFromSuperview];
+	[mMapView release];
+	[arrowView removeFromSuperview];
+	[arrowView release];
 	[annotationList release];
 }
 
 - (void)dealloc {
+	[mMapView removeFromSuperview];
+	[mMapView release];
+	[arrowView removeFromSuperview];
+	[arrowView release];
 	[annotationList release];
     [super dealloc];
 }

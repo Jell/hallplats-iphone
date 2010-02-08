@@ -33,12 +33,6 @@
 	ar_poiViews = [[NSMutableArray alloc] init];
 } 
 
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return NO;
-}
-
 - (void)locationManager: (CLLocationManager *)manager
 	didUpdateToLocation: (CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
@@ -103,7 +97,7 @@
 	ar_poiViews = [[NSMutableArray alloc] init];
 	
 	CLLocationCoordinate2D origin = currentLocation.coordinate;
-	CGPoint center = {130, 210};
+	CGPoint center = {160, 210};
 	for(MPNAnnotation *anAnnotation in newList){
 		AugmentedPOI *aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
 		
