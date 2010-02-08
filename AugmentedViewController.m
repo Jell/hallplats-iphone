@@ -12,6 +12,7 @@
 @implementation AugmentedViewController
 @synthesize currentLocation;
 @synthesize annotationList;
+@synthesize ar_poiList;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -27,7 +28,48 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-}
+	/*
+	location.latitude = 57.7119;
+	location.longitude = 11.9683;
+	*/
+	ar_poiList = [[NSMutableArray alloc] init];
+	CLLocationCoordinate2D origin = {57.7119, 11.9683};
+	CLLocationCoordinate2D location = {57.7119, 15.0};
+	MPNAnnotation *anAnnotation = [[MPNAnnotation alloc] initWithCoordinate:location];
+	[anAnnotation setTitle:@"North" subtitle:@"Direction"];
+	AugmentedPOI *aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
+	[anAnnotation release];
+	[ar_poiList addObject:aPoi];
+	[aPoi release];
+	
+	location.latitude = 57.7119;
+	location.longitude = 5.0;
+	anAnnotation = [[MPNAnnotation alloc] initWithCoordinate:location];
+	[anAnnotation setTitle:@"South" subtitle:@"Direction"];
+	aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
+	[anAnnotation release];
+	[ar_poiList addObject:aPoi];
+	[aPoi release];
+	
+	location.latitude = 70.0;
+	location.longitude = 11.9683;
+	anAnnotation = [[MPNAnnotation alloc] initWithCoordinate:location];
+	[anAnnotation setTitle:@"East" subtitle:@"Direction"];
+	aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
+	[anAnnotation release];
+	[ar_poiList addObject:aPoi];
+	[aPoi release];
+	
+	location.latitude = 40.0;
+	location.longitude = 11.9683;
+	anAnnotation = [[MPNAnnotation alloc] initWithCoordinate:location];
+	[anAnnotation setTitle:@"West" subtitle:@"Direction"];
+	aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
+	[anAnnotation release];
+	[ar_poiList addObject:aPoi];
+	[aPoi release];
+	
+} 
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -42,33 +84,28 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
-	
-	float teta = 3.14 + angleXY - 3.14 * newHeading.trueHeading / 180.0;
-	if(cos(teta)>0){
-		northLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
-	}else{
-		northLabel.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
+	float jitter = 3.14 + angleXY - 3.14 * newHeading.trueHeading / 180.0;
+	float teta;
+	if(ar_poiList){
+		teta = [(AugmentedPOI *)[ar_poiList objectAtIndex:0] teta] + jitter;
+		[self translateView:northLabel withTeta:teta];
+		
+		teta = [(AugmentedPOI *)[ar_poiList objectAtIndex:1] teta] + jitter;
+		[self translateView:southLabel withTeta:teta];
+		
+		teta = [(AugmentedPOI *)[ar_poiList objectAtIndex:2] teta] + jitter;
+		[self translateView:eastLabel withTeta:teta];
+				
+		teta = [(AugmentedPOI *)[ar_poiList objectAtIndex:3] teta] + jitter;
+		[self translateView:westLabel withTeta:teta];
 	}
-	
-	teta =  3.14 + angleXY -3.14 * (newHeading.trueHeading + 180.0) / 180.0;
+}
+
+-(void)translateView:(UIView *)aView withTeta:(float)teta{
 	if(cos(teta)>0){
-		southLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
+		aView.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
 	}else{
-		southLabel.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
-	}
-	
-	teta = 3.14 + angleXY  -3.14 * (newHeading.trueHeading + 270.0) / 180.0;
-	if(cos(teta)>0){
-		eastLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
-	}else{
-		eastLabel.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
-	}
-	
-	teta = 3.14 + angleXY  -3.14 * (newHeading.trueHeading + 90.0) / 180.0;
-	if(cos(teta)>-0.5){
-		westLabel.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
-	}else{
-		westLabel.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
+		aView.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
 	}
 }
 
@@ -108,6 +145,7 @@
 }
 
 - (void)viewDidUnload {
+	[ar_poiList release];
 	[currentLocation release];
 	[annotationList release];
 	// Release any retained subviews of the main view.
@@ -116,6 +154,7 @@
 
 
 - (void)dealloc {
+	[ar_poiList release];
 	[currentLocation release];
 	[annotationList release];
     [super dealloc];
