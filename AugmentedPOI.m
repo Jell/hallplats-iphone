@@ -16,15 +16,15 @@
 -(id)initWithAnnotation:(MPNAnnotation *) anAnnotation fromOrigin:(CLLocationCoordinate2D)origin
 {
 	self.annotation = anAnnotation;
-	self.teta = atan2(anAnnotation.coordinate.latitude - origin.latitude ,
-					  anAnnotation.coordinate.longitude - origin.longitude);
+	self.teta = atan2(origin.latitude - anAnnotation.coordinate.latitude,
+					  origin.longitude - anAnnotation.coordinate.longitude);
 	return self;
 }
 
 -(void)updateAngleFrom:(CLLocationCoordinate2D)origin
 {
-	self.teta = atan2(self.annotation.coordinate.latitude - origin.latitude ,
-					  self.annotation.coordinate.longitude - origin.longitude);
+	self.teta = atan2(origin.latitude - annotation.coordinate.latitude,
+					  origin.longitude - annotation.coordinate.longitude);
 }
 
 - (void)dealloc {

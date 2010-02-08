@@ -13,10 +13,6 @@
 #import "AugmentedPOI.h"
 
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
-	IBOutlet UILabel *northLabel;
-	IBOutlet UILabel *southLabel;
-	IBOutlet UILabel *eastLabel;
-	IBOutlet UILabel *westLabel;
 	NSMutableArray *ar_poiList;
 	NSMutableArray *ar_poiViews;
 	CLLocation *currentLocation;

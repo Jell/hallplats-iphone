@@ -28,53 +28,8 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	/*
-	location.latitude = 57.7119;
-	location.longitude = 11.9683;
-	*/
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
-	
-	CLLocationCoordinate2D origin = {57.7119, 11.9683};
-	CLLocationCoordinate2D location = {57.7119, 15.0};
-	MPNAnnotation *anAnnotation = [[MPNAnnotation alloc] initWithCoordinate:location];
-	[anAnnotation setTitle:@"North" subtitle:@"Direction"];
-	AugmentedPOI *aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
-	[anAnnotation release];
-	[ar_poiList addObject:aPoi];
-	[aPoi release];
-	[ar_poiViews addObject:northLabel];
-	
-	location.latitude = 57.7119;
-	location.longitude = 5.0;
-	anAnnotation = [[MPNAnnotation alloc] initWithCoordinate:location];
-	[anAnnotation setTitle:@"South" subtitle:@"Direction"];
-	aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
-	[anAnnotation release];
-	[ar_poiList addObject:aPoi];
-	[aPoi release];
-	[ar_poiViews addObject:southLabel];
-	
-	location.latitude = 70.0;
-	location.longitude = 11.9683;
-	anAnnotation = [[MPNAnnotation alloc] initWithCoordinate:location];
-	[anAnnotation setTitle:@"East" subtitle:@"Direction"];
-	aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
-	[anAnnotation release];
-	[ar_poiList addObject:aPoi];
-	[aPoi release];
-	[ar_poiViews addObject:eastLabel];
-	
-	location.latitude = 40.0;
-	location.longitude = 11.9683;
-	anAnnotation = [[MPNAnnotation alloc] initWithCoordinate:location];
-	[anAnnotation setTitle:@"West" subtitle:@"Direction"];
-	aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
-	[anAnnotation release];
-	[ar_poiList addObject:aPoi];
-	[aPoi release];
-	[ar_poiViews addObject:westLabel];
-	
 } 
 
 // Override to allow orientations other than the default portrait orientation.
@@ -93,11 +48,11 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
-	float jitter = 3.14 + angleXY - 3.14 * newHeading.trueHeading / 180.0;
+	float jitter = 1.57 + angleXY - 3.14 * newHeading.trueHeading / 180.0;
 	float teta;
 	int i = 0;
 	for (AugmentedPOI *aPoi in ar_poiList) {
-		teta = [aPoi teta] + jitter;
+		teta = jitter - [aPoi teta];
 		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta];
 		i++;
 	}
@@ -134,11 +89,46 @@
 }
 
 -(void)setAnnotationList:(NSArray *)newList{
+	
+	for(UIView *aView in ar_poiViews){
+		[aView removeFromSuperview];
+	}
+	
+	[ar_poiViews release];
+	[ar_poiList release];
+	
+	ar_poiList = [[NSMutableArray alloc] init];
+	ar_poiViews = [[NSMutableArray alloc] init];
+	
+	CLLocationCoordinate2D origin = currentLocation.coordinate;
+	CGPoint center = {130, 210};
+	for(MPNAnnotation *anAnnotation in newList){
+		AugmentedPOI *aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
+		
+		UILabel *aLabel = [[UILabel alloc ] initWithFrame:CGRectMake(0.0, 210.0, 60.0, 20.0)];
+		aLabel.center = center;
+		aLabel.textAlignment =  UITextAlignmentCenter;
+		aLabel.textColor = [UIColor whiteColor];
+		aLabel.backgroundColor = [UIColor blackColor];
+		aLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
+		[self.view addSubview:aLabel];
+		aLabel.text = [anAnnotation title];
+		
+		[ar_poiList addObject:aPoi];
+		[aPoi release];
+		[ar_poiViews addObject:aLabel];
+		[aLabel release];
+		
+		
+	}
 }
 
 -(void)setCurrentLocation:(CLLocation *)location{
 	[currentLocation release];
 	currentLocation = [location copy];
+	for (AugmentedPOI *aPoi in ar_poiList) {
+		[aPoi updateAngleFrom:location.coordinate];
+	}
 }
 
 -(void)setOrientation:(UIInterfaceOrientation)orientation{
