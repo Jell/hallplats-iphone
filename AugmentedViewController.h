@@ -8,14 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import <QuartzCore/QuartzCore.h>
 #import "ARViewProtocol.h"
+#import "AugmentedPOI.h"
 
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
+	NSMutableArray *ar_poiList;
+	NSMutableArray *ar_poiViews;
 	CLLocation *currentLocation;
-	NSArray *annotationList;
+	float angleXY;
 }
 
-@property (nonatomic, retain) CLLocation *currentLocation;
-@property (nonatomic, retain) NSArray *annotationList;
+@property (nonatomic, retain) NSMutableArray *ar_poiList;
+@property (nonatomic, retain) NSMutableArray *ar_poiViews;
+@property (assign)  CLLocation *currentLocation;
+
+-(void)translateView:(UIView *)aView withTeta:(float)teta;
 
 @end

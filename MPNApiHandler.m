@@ -16,6 +16,10 @@
 	NSMutableArray *result = [NSMutableArray arrayWithCapacity:poiList.count];
 	[result retain];
 	CLLocationCoordinate2D location = {0.0, 0.0};
+	
+	location.latitude = 57.7119;
+	location.longitude = 11.9683;
+	
 	for(int i=0;i<poiList.count;i++){
 		// get the bundle of one poi
 		NSDictionary *bundle = (NSDictionary *)[poiList objectAtIndex:i];
@@ -26,6 +30,12 @@
 		// get coordinqtes
 		location.latitude = [(NSString *)[site valueForKey:@"latitude"] floatValue];
 		location.longitude = [(NSString *)[site valueForKey:@"longitude"] floatValue];
+		
+		/*
+		 float radius = (float) 6.28 / (float) poiList.count;
+		location.latitude = 57.7119 + 0.025 * cos(radius * i);
+		location.longitude = 11.9683 + 0.05 * sin(radius * i);
+		*/
 		
 		//create an annotation object
 		MPNAnnotation *annotation = [[MPNAnnotation alloc] initWithCoordinate:location];

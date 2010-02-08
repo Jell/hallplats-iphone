@@ -30,6 +30,8 @@
     [super viewDidLoad];
 	//Initialise map
 	//start location
+	phase = 0.0;
+	
 	CLLocationCoordinate2D location;
 	location.latitude = 57.7119;
 	location.longitude = 11.9683;
@@ -50,8 +52,7 @@
 }
 
 -(void)setCurrentLocation:(CLLocation *)location{
-	[currentLocation release];
-	currentLocation = [location copy];
+	currentLocation = location;
 	if(currentLocation){
 		[mMapView setCenterCoordinate:self.currentLocation.coordinate animated:NO];
 	}
@@ -84,43 +85,16 @@
 }
 
 - (void)rotateMapWithTeta:(float)teta{
-
-	CATransform3D startRotation;
-	CATransform3D endRotation;
 	
-	// Set Animation and rotation for the map
-	startRotation = mMapView.layer.transform;
 	mMapView.layer.transform = CATransform3DMakeRotation(teta, 0., 0., 1.);
-	endRotation = mMapView.layer.transform;
-	
-	CABasicAnimation *mapAnimation = [CABasicAnimation animationWithKeyPath: @"transform"];
-	mapAnimation.fromValue = [NSValue valueWithCATransform3D: startRotation];
-	mapAnimation.toValue = [NSValue valueWithCATransform3D: endRotation];
-	
-	//Apply animation with unique ID;
-	[mMapView.layer addAnimation: mapAnimation forKey: [NSString stringWithFormat:@"mapRotAnime%f", teta]];
-
+	CATransform3D annotationRotation = CATransform3DMakeRotation(phase-teta, 0., 0., 1.);
 	//Set animation and rotation for the annotations
 	int annotationNumber = mMapView.annotations.count;
-	if(annotationNumber > 0){
-		// Rotation for the annotations
-		CATransform3D annotationRotation = CATransform3DMakeRotation(-teta, 0., 0., 1.);
-		//Animation for each annotation view
-		CABasicAnimation *annotationAnimation = [CABasicAnimation animationWithKeyPath: @"transform"];
-		startRotation = [mMapView viewForAnnotation: (MPNAnnotation *)[mMapView.annotations objectAtIndex:0]].layer.transform;
-		endRotation = annotationRotation;
-		annotationAnimation.fromValue = [NSValue valueWithCATransform3D: startRotation];
-		annotationAnimation.toValue = [NSValue valueWithCATransform3D: endRotation];
+	for(int i = 0; i < annotationNumber; i++){
 		
-		for(int i = 0; i < annotationNumber; i++){
-			
-			CALayer *annotationLayer = [mMapView viewForAnnotation: (MPNAnnotation *)[mMapView.annotations objectAtIndex:i]].layer;
-			annotationLayer.transform = annotationRotation;
-			annotationLayer.zPosition = cos(-teta)*annotationLayer.position.y - sin(-teta)*annotationLayer.position.x;
-			
-			//Apply with unique identifier
-			[annotationLayer addAnimation: annotationAnimation forKey: [NSString stringWithFormat:@"annRotAnime%f", teta]];
-		}
+		CALayer *annotationLayer = [mMapView viewForAnnotation: (MPNAnnotation *)[mMapView.annotations objectAtIndex:i]].layer;
+		annotationLayer.transform = annotationRotation;
+		annotationLayer.zPosition = cos(phase-teta)*annotationLayer.position.y - sin(phase-teta)*annotationLayer.position.x;
 		
 	}
 }
@@ -132,16 +106,28 @@
 	[mMapView addAnnotations:annotationList];
 }
 
+-(void)setOrientation:(UIInterfaceOrientation)orientation{
+	switch (orientation) {
+		case UIInterfaceOrientationPortrait:
+			phase = 3.14;
+			break;
+		case UIInterfaceOrientationLandscapeLeft:
+			phase = -1.57;
+			break;
+		case UIInterfaceOrientationLandscapeRight:
+			phase = 1.57;
+			break;
+		default:
+			phase = 0.0;
+			break;
+	}
+	arrowView.layer.transform = CATransform3DMakeRotation(phase, 0.0, 0.0, 1.0);
+	
+}
+
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
 }
-
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return NO;
-}
-
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
@@ -153,12 +139,18 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
-	[currentLocation release];
+	[mMapView removeFromSuperview];
+	[mMapView release];
+	[arrowView removeFromSuperview];
+	[arrowView release];
 	[annotationList release];
 }
 
 - (void)dealloc {
-	[currentLocation release];
+	[mMapView removeFromSuperview];
+	[mMapView release];
+	[arrowView removeFromSuperview];
+	[arrowView release];
 	[annotationList release];
     [super dealloc];
 }

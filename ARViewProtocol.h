@@ -9,5 +9,6 @@
 @protocol ARViewDelegate <UIAccelerometerDelegate, CLLocationManagerDelegate>
 -(void)setCurrentLocation:(CLLocation *)location;
 -(void)setAnnotationList:(NSArray *)newList;
+-(void)setOrientation:(UIInterfaceOrientation)orientation;
 @end
 
