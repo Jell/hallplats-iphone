@@ -52,8 +52,7 @@
 }
 
 -(void)setCurrentLocation:(CLLocation *)location{
-	[currentLocation release];
-	currentLocation = [location copy];
+	currentLocation = location;
 	if(currentLocation){
 		[mMapView setCenterCoordinate:self.currentLocation.coordinate animated:NO];
 	}
@@ -95,7 +94,7 @@
 		
 		CALayer *annotationLayer = [mMapView viewForAnnotation: (MPNAnnotation *)[mMapView.annotations objectAtIndex:i]].layer;
 		annotationLayer.transform = annotationRotation;
-		annotationLayer.zPosition = cos(teta)*annotationLayer.position.y + sin(teta)*annotationLayer.position.x;
+		annotationLayer.zPosition = cos(phase-teta)*annotationLayer.position.y - sin(phase-teta)*annotationLayer.position.x;
 		
 	}
 }
@@ -147,12 +146,10 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
-	[currentLocation release];
 	[annotationList release];
 }
 
 - (void)dealloc {
-	[currentLocation release];
 	[annotationList release];
     [super dealloc];
 }

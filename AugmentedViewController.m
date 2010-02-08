@@ -28,6 +28,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	currentLocation = nil;
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
 } 
@@ -42,13 +43,14 @@
 	didUpdateToLocation: (CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
 {
+	currentLocation = newLocation;
 	for (AugmentedPOI *aPoi in ar_poiList) {
 		[aPoi updateAngleFrom:newLocation.coordinate];
 	}
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
-	float jitter = 1.57 + angleXY - 3.14 * newHeading.trueHeading / 180.0;
+	float jitter = angleXY - 3.14 * newHeading.trueHeading / 180.0;
 	float teta;
 	int i = 0;
 	for (AugmentedPOI *aPoi in ar_poiList) {
@@ -59,8 +61,8 @@
 }
 
 -(void)translateView:(UIView *)aView withTeta:(float)teta{
-	if(cos(teta)>0){
-		aView.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * sin(teta) / sin(17. * 3.14 / 180), 0, 0);
+	if(sin(teta)<0){
+		aView.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), 0, 0);
 	}else{
 		aView.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
 	}
@@ -124,8 +126,7 @@
 }
 
 -(void)setCurrentLocation:(CLLocation *)location{
-	[currentLocation release];
-	currentLocation = [location copy];
+	currentLocation = location;
 	for (AugmentedPOI *aPoi in ar_poiList) {
 		[aPoi updateAngleFrom:location.coordinate];
 	}
@@ -137,7 +138,6 @@
 - (void)viewDidUnload {
 	[ar_poiList release];
 	[ar_poiViews release];
-	[currentLocation release];
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
@@ -146,7 +146,6 @@
 - (void)dealloc {
 	[ar_poiList release];
 	[ar_poiViews release];
-	[currentLocation release];
     [super dealloc];
 }
 

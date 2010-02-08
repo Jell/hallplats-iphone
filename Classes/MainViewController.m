@@ -164,7 +164,7 @@
 	currentLocation = [newLocation copy];
 	
 	//Dispatch new Location
-	[viewDisplayedController locationManager:manager didUpdateToLocation:newLocation fromLocation:oldLocation];
+	[viewDisplayedController locationManager:manager didUpdateToLocation:currentLocation fromLocation:oldLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{

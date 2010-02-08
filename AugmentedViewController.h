@@ -21,7 +21,7 @@
 
 @property (nonatomic, retain) NSMutableArray *ar_poiList;
 @property (nonatomic, retain) NSMutableArray *ar_poiViews;
-@property (nonatomic, retain) CLLocation *currentLocation;
+@property (assign)  CLLocation *currentLocation;
 
 -(void)translateView:(UIView *)aView withTeta:(float)teta;
 
