@@ -41,7 +41,22 @@
 		F4417467110F365A00CBFE29 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F4417461110F365A00CBFE29 /* SBJsonWriter.m */; };
 		F44F3A9E11185CF800AA2B22 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */; };
 		F44F3B4D11187ACE00AA2B22 /* PhotoLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3B4C11187ACE00AA2B22 /* PhotoLibrary.framework */; };
+		F4FAB9F0112168D50065CF90 /* CoordinatesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FAB9EF112168D50065CF90 /* CoordinatesTests.m */; };
+		F4FAB9FD1121698D0065CF90 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FAB9FC1121698D0065CF90 /* SenTestingKit.framework */; };
+		F4FABA7311216C130065CF90 /* AugmentedPOI.m in Sources */ = {isa = PBXBuildFile; fileRef = F428B708111C6373004D10CF /* AugmentedPOI.m */; };
+		F4FABA9811216D650065CF90 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */; };
+		F4FABA9B11216D960065CF90 /* MPNAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F425E729111ABF8600D2FC2A /* MPNAnnotation.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F4A6A62911219E0700D7EA67 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F434D91E1121546E00DF67CE /* CoordinatesTests */;
+			remoteInfo = CoordinatesTests;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -67,6 +82,8 @@
 		F42971031119BFFB0016CDA2 /* direction.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = direction.png; sourceTree = "<group>"; };
 		F42971331119CCC60016CDA2 /* MPNApiHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPNApiHandler.h; sourceTree = "<group>"; };
 		F42971341119CCC60016CDA2 /* MPNApiHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPNApiHandler.m; sourceTree = "<group>"; };
+		F434D91F1121546E00DF67CE /* CoordinatesTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoordinatesTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F434D9201121546E00DF67CE /* CoordinatesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoordinatesTests-Info.plist"; sourceTree = "<group>"; };
 		F43B4CC11110331E00C312F4 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		F43B4CC21110331E00C312F4 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		F43B4CC61110334800C312F4 /* MapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapView.h; sourceTree = "<group>"; };
@@ -101,6 +118,8 @@
 		F4417461110F365A00CBFE29 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F44F3B4C11187ACE00AA2B22 /* PhotoLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotoLibrary.framework; path = System/Library/PrivateFrameworks/PhotoLibrary.framework; sourceTree = SDKROOT; };
+		F4FAB9EF112168D50065CF90 /* CoordinatesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoordinatesTests.m; sourceTree = "<group>"; };
+		F4FAB9FC1121698D0065CF90 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Developer/Library/Frameworks/SenTestingKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +134,15 @@
 				F43B4E871110725E00C312F4 /* QuartzCore.framework in Frameworks */,
 				F44F3A9E11185CF800AA2B22 /* CoreLocation.framework in Frameworks */,
 				F44F3B4D11187ACE00AA2B22 /* PhotoLibrary.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F434D91C1121546E00DF67CE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4FABA9811216D650065CF90 /* CoreLocation.framework in Frameworks */,
+				F4FAB9FD1121698D0065CF90 /* SenTestingKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* AugmentedMPN.app */,
+				F434D91F1121546E00DF67CE /* CoordinatesTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -165,8 +194,9 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				F425E990111B208A00D2FC2A /* Images */,
+				F434D8FD1121534800DF67CE /* Tests */,
 				F4296EF811196EC10016CDA2 /* Icon.png */,
+				F425E990111B208A00D2FC2A /* Images */,
 				F44F3B4F11187AE300AA2B22 /* PhotoLibrary */,
 				F4417454110F365A00CBFE29 /* JSON */,
 				F42971321119CC8F0016CDA2 /* MPN */,
@@ -179,6 +209,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				F434D9201121546E00DF67CE /* CoordinatesTests-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -208,6 +239,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F4FAB9FC1121698D0065CF90 /* SenTestingKit.framework */,
 				F44F3B4C11187ACE00AA2B22 /* PhotoLibrary.framework */,
 				F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */,
 				F43B4E861110725E00C312F4 /* QuartzCore.framework */,
@@ -237,6 +269,14 @@
 				F425E729111ABF8600D2FC2A /* MPNAnnotation.m */,
 			);
 			name = MPN;
+			sourceTree = "<group>";
+		};
+		F434D8FD1121534800DF67CE /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F4FAB9EF112168D50065CF90 /* CoordinatesTests.m */,
+			);
+			name = Tests;
 			sourceTree = "<group>";
 		};
 		F43B4CBA111032A100C312F4 /* MapView */ = {
@@ -304,11 +344,30 @@
 			buildRules = (
 			);
 			dependencies = (
+				F4A6A62A11219E0700D7EA67 /* PBXTargetDependency */,
 			);
 			name = AugmentedMPN;
 			productName = AugmentedMPN;
 			productReference = 1D6058910D05DD3D006BFB54 /* AugmentedMPN.app */;
 			productType = "com.apple.product-type.application";
+		};
+		F434D91E1121546E00DF67CE /* CoordinatesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F434D9241121546F00DF67CE /* Build configuration list for PBXNativeTarget "CoordinatesTests" */;
+			buildPhases = (
+				F434D91A1121546E00DF67CE /* Resources */,
+				F434D91B1121546E00DF67CE /* Sources */,
+				F434D91C1121546E00DF67CE /* Frameworks */,
+				F434D91D1121546E00DF67CE /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CoordinatesTests;
+			productName = CoordinatesTests;
+			productReference = F434D91F1121546E00DF67CE /* CoordinatesTests.octest */;
+			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
@@ -330,6 +389,7 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* AugmentedMPN */,
+				F434D91E1121546E00DF67CE /* CoordinatesTests */,
 			);
 		};
 /* End PBXProject section */
@@ -350,7 +410,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F434D91A1121546E00DF67CE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F434D91D1121546E00DF67CE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
@@ -379,7 +462,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F434D91B1121546E00DF67CE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4FAB9F0112168D50065CF90 /* CoordinatesTests.m in Sources */,
+				F4FABA7311216C130065CF90 /* AugmentedPOI.m in Sources */,
+				F4FABA9B11216D960065CF90 /* MPNAnnotation.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F4A6A62A11219E0700D7EA67 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F434D91E1121546E00DF67CE /* CoordinatesTests */;
+			targetProxy = F4A6A62911219E0700D7EA67 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
@@ -397,6 +498,7 @@
 				GCC_PREFIX_HEADER = AugmentedMPN_Prefix.pch;
 				INFOPLIST_FILE = "AugmentedMPN-Info.plist";
 				PRODUCT_NAME = AugmentedMPN;
+				SDKROOT = iphoneos3.1.2;
 			};
 			name = Debug;
 		};
@@ -442,6 +544,66 @@
 			};
 			name = Release;
 		};
+		F434D9221121546F00DF67CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nils Svangard (67KFB42LQ5)";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\"$(SDKROOT)$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = "CoordinatesTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					SenTestingKit,
+					"-framework",
+					UIKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CoordinatesTests;
+				SDKROOT = iphonesimulator3.1.3;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		F434D9231121546F00DF67CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\"$(SDKROOT)$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				INFOPLIST_FILE = "CoordinatesTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					SenTestingKit,
+					"-framework",
+					UIKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CoordinatesTests;
+				WRAPPER_EXTENSION = octest;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -459,6 +621,15 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F434D9241121546F00DF67CE /* Build configuration list for PBXNativeTarget "CoordinatesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F434D9221121546F00DF67CE /* Debug */,
+				F434D9231121546F00DF67CE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
