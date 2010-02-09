@@ -92,6 +92,7 @@
 	SBJSON *jsonParser = [SBJSON new];
 	NSString *jsonString = [self stringWithUrl:url];
 	id object = [jsonParser objectWithString:jsonString error:NULL];
+	[jsonParser release];
 	[jsonString release];
 	// Parse the JSON into an Object
 	return object;
