@@ -12,11 +12,14 @@
 #import "ARViewProtocol.h"
 #import "AugmentedPOI.h"
 
+#define HEADING_BUFFER_SIZE 5
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
 	NSMutableArray *ar_poiList;
 	NSMutableArray *ar_poiViews;
 	CLLocation *currentLocation;
 	float angleXY;
+	int headingBufferIndex;
+	float headingBuffer[HEADING_BUFFER_SIZE];
 }
 
 @property (retain) NSMutableArray *ar_poiList;

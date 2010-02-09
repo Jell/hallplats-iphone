@@ -20,6 +20,11 @@
 	currentLocation = nil;
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
+	
+	headingBufferIndex = 0;
+	for(int i = 0; i < HEADING_BUFFER_SIZE; i++){
+		headingBuffer[i] = 0;
+	}
 } 
 
 - (void)locationManager: (CLLocationManager *)manager
@@ -33,7 +38,20 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
-	float jitter = angleXY - 3.14 * newHeading.trueHeading / 180.0;
+	
+	headingBuffer[headingBufferIndex] = 3.14 * newHeading.trueHeading / 180.0;	
+	float headinAngle = 0.0;
+	
+	for(int i = 0; i<HEADING_BUFFER_SIZE; i++){
+		headinAngle += headingBuffer[i];
+	}
+	
+	headinAngle /=  (float) HEADING_BUFFER_SIZE;
+	
+	headingBufferIndex++;
+	headingBufferIndex %= HEADING_BUFFER_SIZE;
+	
+	float jitter = angleXY - headinAngle;
 	float teta;
 	int i = 0;
 	for (AugmentedPOI *aPoi in ar_poiList) {
@@ -51,14 +69,11 @@
 	}
 }
 
--(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
+-(void)accelerationChangedX:(float)x y:(float)y z:(float)z
 {
 	// Get the current device angle
-	float xx = -[acceleration x];
-	float yy = [acceleration y];
-	float zz = [acceleration z];
-	float phi = atan2(sqrt(yy*yy+xx*xx), zz);
-	angleXY = atan2(xx, yy);
+	float phi = atan2(sqrt(y*y+x*x), z);
+	angleXY = atan2(-x, y);
 
 	self.view.layer.transform = CATransform3DMakeRotation(3.14-angleXY, 0.0, 0.0, 1.0);
 	
@@ -122,7 +137,12 @@
 
 - (void)viewDidUnload {
 	[ar_poiList release];
+	for(UIView *aView in ar_poiViews){
+		[aView removeFromSuperview];
+	}
 	[ar_poiViews release];
+	
+	free(headingBuffer);
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
@@ -130,7 +150,12 @@
 
 - (void)dealloc {
 	[ar_poiList release];
+	for(UIView *aView in ar_poiViews){
+		[aView removeFromSuperview];
+	}
 	[ar_poiViews release];
+	
+	free(headingBuffer);
     [super dealloc];
 }
 

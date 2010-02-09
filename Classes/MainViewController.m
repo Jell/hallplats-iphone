@@ -31,7 +31,6 @@
 	
 	mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
-	[opQueue setMaxConcurrentOperationCount:1];
 	[activityIndicator startAnimating];
 	
 	currentLocation = nil;
@@ -46,8 +45,17 @@
 	[mLocationManager startUpdatingHeading];
 	
 	//Enable Accelerometer
+	xxAverage = 0;
+	yyAverage = 0;
+	zzAverage = 0;
+	accelerationBufferIndex = 0;
+	for (int i = 0; i < ACCELERATION_BUFFER_SIZE; i++) {
+		xxArray[i] = 0;
+		yyArray[i] = 0;
+		zzArray[i] = 0;
+	}
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
-	[mAccelerometer setUpdateInterval:1.0f / 5.0f];
+	[mAccelerometer setUpdateInterval:1.0f / 60.0f];
 	[mAccelerometer setDelegate:self];
 	
 	//start updating POI list
@@ -106,9 +114,26 @@
 
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
-	float xx = [acceleration x];
-	float yy = [acceleration y];
-	float zz = [acceleration z];
+	
+	xxAverage -= (xxArray[accelerationBufferIndex] / (float) ACCELERATION_BUFFER_SIZE);
+	yyAverage -= (yyArray[accelerationBufferIndex] / (float) ACCELERATION_BUFFER_SIZE);
+	zzAverage -= (zzArray[accelerationBufferIndex] / (float) ACCELERATION_BUFFER_SIZE);
+	
+	xxArray[accelerationBufferIndex] = [acceleration x];
+	yyArray[accelerationBufferIndex] = [acceleration y];
+	zzArray[accelerationBufferIndex] = [acceleration z];
+	
+	xxAverage += (xxArray[accelerationBufferIndex] / (float) ACCELERATION_BUFFER_SIZE);
+	yyAverage += (yyArray[accelerationBufferIndex] / (float) ACCELERATION_BUFFER_SIZE);
+	zzAverage += (zzArray[accelerationBufferIndex] / (float) ACCELERATION_BUFFER_SIZE);
+		
+	accelerationBufferIndex++;
+	accelerationBufferIndex %= ACCELERATION_BUFFER_SIZE;
+	
+	float xx = xxAverage;
+	float yy = yyAverage;
+	float zz = zzAverage;
+
 	// Check if we have to switch view
 	if(augmentedIsOn){
 		if(zz < -0.9 && (yy > -0.2 && yy <  0.2 && xx > -0.2 && xx <  0.2))
@@ -140,10 +165,10 @@
 		mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;	
 	}
 	
-
-	
-	// Dispatch acceleration
-	[viewDisplayedController accelerometer:accelerometer didAccelerate:acceleration];
+	if(accelerationBufferIndex == 0){
+		// Dispatch acceleration
+		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
+	}
 }
 
 
@@ -251,6 +276,10 @@
 	[mAccelerometer release];
 	[opQueue release];
 	[viewDisplayedController release];
+	
+	free(xxArray);
+	free(yyArray);
+	free(zzArray);
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
@@ -263,6 +292,11 @@
 	[mAccelerometer release];
 	[opQueue release];
 	[viewDisplayedController release];
+	
+	free(xxArray);
+	free(yyArray);
+	free(zzArray);
+	
     [super dealloc];
 }
 

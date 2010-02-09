@@ -124,7 +124,7 @@
 	
 }
 
--(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
+-(void)accelerationChangedX:(float)x y:(float)y z:(float)z
 {
 }
 

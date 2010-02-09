@@ -12,6 +12,8 @@
 #import "ARViewProtocol.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define ACCELERATION_BUFFER_SIZE 10
+
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate, CLLocationManagerDelegate> {
 	IBOutlet UIView *viewDisplayed;
 	UIViewController<ARViewDelegate> *viewDisplayedController;
@@ -26,6 +28,13 @@
 	NSOperationQueue *opQueue;
 	CLLocation *currentLocation;
 	NSArray *annotationList;
+	float xxArray[ACCELERATION_BUFFER_SIZE];
+	float yyArray[ACCELERATION_BUFFER_SIZE];
+	float zzArray[ACCELERATION_BUFFER_SIZE];
+	float xxAverage;
+	float yyAverage;
+	float zzAverage;
+	int accelerationBufferIndex;
 }
 
 @property (retain) CLLocation *currentLocation;
