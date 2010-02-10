@@ -7,6 +7,7 @@
  *
  */
 @protocol ARViewDelegate <CLLocationManagerDelegate>
+@property int selectedPoi;
 -(void)accelerationChangedX:(float)x y:(float)y z:(float)z;
 -(void)setCurrentLocation:(CLLocation *)location;
 -(void)setAnnotationList:(NSArray *)newList;

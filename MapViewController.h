@@ -17,6 +17,7 @@
 @interface MapViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
 	IBOutlet MKMapView *mMapView;
 	IBOutlet UIImageView *arrowView;
+	int selectedPoi;
 	CLLocation *currentLocation;
 	NSArray *annotationList;
 	float phase;

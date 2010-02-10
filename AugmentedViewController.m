@@ -13,11 +13,13 @@
 @synthesize currentLocation;
 @synthesize ar_poiList;
 @synthesize ar_poiViews;
+@synthesize selectedPoi;
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
 	currentLocation = nil;
+	selectedPoi = -1;
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
 	
@@ -150,11 +152,30 @@
 }
 
 -(void) poiSelected:(id) poiViewId{
-	int selectedPoi = [ar_poiViews indexOfObject:poiViewId];
+	
+	if(selectedPoi >= 0){
+		UIButton *previousSelectedButton = [ar_poiViews objectAtIndex:selectedPoi];
+		[previousSelectedButton setEnabled:TRUE];
+		[poiOverlay sendSubviewToBack:previousSelectedButton];
+	}
+	selectedPoi = [ar_poiViews indexOfObject:poiViewId];
+	[(UIButton *)poiViewId setEnabled:FALSE];
+	[poiOverlay bringSubviewToFront:poiViewId];
 	MPNAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
 	
 	[titleLabel setText:[selectedAnnotation title]];
 
+}
+
+-(void) setSelectedPoi:(int)value{
+	selectedPoi = value;
+	if(selectedPoi >=0){
+		UIButton *selectedView = [ar_poiViews objectAtIndex:selectedPoi];
+		[selectedView setEnabled:FALSE];
+		[poiOverlay bringSubviewToFront:selectedView];
+		MPNAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];		
+		[titleLabel setText:[selectedAnnotation title]];
+	}
 }
 
 -(void)setCurrentLocation:(CLLocation *)location{

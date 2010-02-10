@@ -252,6 +252,7 @@
 - (void)loadViewController:(UIViewController<ARViewDelegate> *)viewController
 			withTransition:(CATransition *)transition
 {
+	int selectedPoi = [viewDisplayedController selectedPoi];
 	[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
 	[viewDisplayedController release];
 	viewDisplayedController = viewController;
@@ -260,6 +261,7 @@
 	[viewDisplayedController setCurrentLocation:currentLocation];
 	[viewDisplayedController setAnnotationList:annotationList];
 	[viewDisplayedController setOrientation:mInterfaceOrientation];
+	[viewDisplayedController setSelectedPoi:selectedPoi];
 }
 
 - (void)didReceiveMemoryWarning {

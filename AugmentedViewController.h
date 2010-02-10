@@ -16,6 +16,7 @@
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
 	IBOutlet UILabel *titleLabel;
 	IBOutlet UIView *poiOverlay;
+	int selectedPoi;
 	NSMutableArray *ar_poiList;
 	NSMutableArray *ar_poiViews;
 	CLLocation *currentLocation;
