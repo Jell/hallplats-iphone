@@ -20,6 +20,24 @@
     [super viewDidLoad];
 	currentLocation = nil;
 	selectedPoi = -1;
+	
+	infoLabelDisplay = [[UIView alloc] initWithFrame:CGRectMake(-75.0, -30.0, 180.0, 40.0)];
+	
+	infoLabel = [[UILabel alloc ] initWithFrame:CGRectMake(0.0, 0.0, 180.0, 20.0)];
+	infoLabel.textAlignment =  UITextAlignmentCenter;
+	infoLabel.textColor = [UIColor whiteColor];
+	infoLabel.backgroundColor = [UIColor blackColor];
+	infoLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
+	infoLabel.text = @"";
+	
+	[infoLabelDisplay addSubview:infoLabel];
+	
+	UIImageView *anImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrowdown.png"]];
+	CGPoint center = {90.0, 28.0};
+	anImage.center = center;
+	[infoLabelDisplay addSubview:anImage];
+	[anImage release];
+	
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
 	
@@ -156,15 +174,11 @@
 	if(selectedPoi >= 0){
 		UIButton *previousSelectedButton = [ar_poiViews objectAtIndex:selectedPoi];
 		[previousSelectedButton setEnabled:TRUE];
+		[infoLabelDisplay removeFromSuperview];
 		[poiOverlay sendSubviewToBack:previousSelectedButton];
 	}
-	selectedPoi = [ar_poiViews indexOfObject:poiViewId];
-	[(UIButton *)poiViewId setEnabled:FALSE];
-	[poiOverlay bringSubviewToFront:poiViewId];
-	MPNAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
 	
-	[titleLabel setText:[selectedAnnotation title]];
-
+	[self setSelectedPoi:[ar_poiViews indexOfObject:poiViewId]];
 }
 
 -(void) setSelectedPoi:(int)value{
@@ -173,8 +187,11 @@
 		UIButton *selectedView = [ar_poiViews objectAtIndex:selectedPoi];
 		[selectedView setEnabled:FALSE];
 		[poiOverlay bringSubviewToFront:selectedView];
-		MPNAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];		
-		[titleLabel setText:[selectedAnnotation title]];
+		MPNAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
+		[selectedView addSubview:infoLabelDisplay];
+		infoLabel.text = [selectedAnnotation title];
+		
+		//[titleLabel setText:[selectedAnnotation title]];
 	}
 }
 
@@ -189,6 +206,8 @@
 }
 
 - (void)viewDidUnload {
+	[infoLabel release];
+	[infoLabelDisplay release];
 	[ar_poiList release];
 	for(UIView *aView in ar_poiViews){
 		[aView removeFromSuperview];
@@ -202,6 +221,8 @@
 
 
 - (void)dealloc {
+	[infoLabel release];
+	[infoLabelDisplay release];
 	[ar_poiList release];
 	for(UIView *aView in ar_poiViews){
 		[aView removeFromSuperview];

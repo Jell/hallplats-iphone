@@ -43,6 +43,7 @@
 		F469F0351122B33A0059D990 /* augmentedpoi.png in Resources */ = {isa = PBXBuildFile; fileRef = F469F0341122B33A0059D990 /* augmentedpoi.png */; };
 		F469F04A1122B5580059D990 /* augmentedpoi.png in Resources */ = {isa = PBXBuildFile; fileRef = F469F0341122B33A0059D990 /* augmentedpoi.png */; };
 		F469F0621122B77E0059D990 /* augmentedpoiselect.png in Resources */ = {isa = PBXBuildFile; fileRef = F469F0611122B77E0059D990 /* augmentedpoiselect.png */; };
+		F469F1A7112307740059D990 /* arrowdown.png in Resources */ = {isa = PBXBuildFile; fileRef = F469F1A6112307740059D990 /* arrowdown.png */; };
 		F4FAB9F0112168D50065CF90 /* CoordinatesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FAB9EF112168D50065CF90 /* CoordinatesTests.m */; };
 		F4FAB9FD1121698D0065CF90 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FAB9FC1121698D0065CF90 /* SenTestingKit.framework */; };
 		F4FABA7311216C130065CF90 /* AugmentedPOI.m in Sources */ = {isa = PBXBuildFile; fileRef = F428B708111C6373004D10CF /* AugmentedPOI.m */; };
@@ -121,6 +122,7 @@
 		F44F3B4C11187ACE00AA2B22 /* PhotoLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotoLibrary.framework; path = System/Library/PrivateFrameworks/PhotoLibrary.framework; sourceTree = SDKROOT; };
 		F469F0341122B33A0059D990 /* augmentedpoi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = augmentedpoi.png; sourceTree = "<group>"; };
 		F469F0611122B77E0059D990 /* augmentedpoiselect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = augmentedpoiselect.png; sourceTree = "<group>"; };
+		F469F1A6112307740059D990 /* arrowdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowdown.png; sourceTree = "<group>"; };
 		F4FAB9EF112168D50065CF90 /* CoordinatesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoordinatesTests.m; sourceTree = "<group>"; };
 		F4FAB9FC1121698D0065CF90 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Developer/Library/Frameworks/SenTestingKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -257,6 +259,7 @@
 		F425E990111B208A00D2FC2A /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F469F1A6112307740059D990 /* arrowdown.png */,
 				F469F0611122B77E0059D990 /* augmentedpoiselect.png */,
 				F469F0341122B33A0059D990 /* augmentedpoi.png */,
 				F42971031119BFFB0016CDA2 /* direction.png */,
@@ -412,6 +415,7 @@
 				F42971041119BFFB0016CDA2 /* direction.png in Resources */,
 				F469F04A1122B5580059D990 /* augmentedpoi.png in Resources */,
 				F469F0621122B77E0059D990 /* augmentedpoiselect.png in Resources */,
+				F469F1A7112307740059D990 /* arrowdown.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

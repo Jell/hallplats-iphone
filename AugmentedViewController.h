@@ -14,8 +14,9 @@
 
 #define HEADING_BUFFER_SIZE 5
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
-	IBOutlet UILabel *titleLabel;
 	IBOutlet UIView *poiOverlay;
+	UIView *infoLabelDisplay;
+	UILabel *infoLabel;
 	int selectedPoi;
 	NSMutableArray *ar_poiList;
 	NSMutableArray *ar_poiViews;
