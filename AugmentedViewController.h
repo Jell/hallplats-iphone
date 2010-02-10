@@ -14,6 +14,8 @@
 
 #define HEADING_BUFFER_SIZE 5
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
+	IBOutlet UILabel *titleLabel;
+	IBOutlet UIView *poiOverlay;
 	NSMutableArray *ar_poiList;
 	NSMutableArray *ar_poiViews;
 	CLLocation *currentLocation;
@@ -27,5 +29,6 @@
 @property (assign)  CLLocation *currentLocation;
 
 -(void)translateView:(UIView *)aView withTeta:(float)teta;
+-(void) poiSelected:(id) poiViewId;
 
 @end

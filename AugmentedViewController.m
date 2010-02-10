@@ -65,7 +65,7 @@
 	if(sin(teta)<0){
 		aView.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), 0, 0);
 	}else{
-		aView.layer.transform = CATransform3DMakeTranslation(300, 0, 0);
+		aView.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
 	}
 }
 
@@ -75,9 +75,9 @@
 	float phi = atan2(sqrt(y*y+x*x), z);
 	angleXY = atan2(-x, y);
 
-	self.view.layer.transform = CATransform3DMakeRotation(3.14-angleXY, 0.0, 0.0, 1.0);
+	poiOverlay.layer.transform = CATransform3DMakeRotation(3.14-angleXY, 0.0, 0.0, 1.0);
 	
-	self.view.layer.transform = CATransform3DTranslate(self.view.layer.transform,0.0, 240.0 * sin(phi + (3.14 / 2.0))/ sin(28 * 3.14 / 180), 0.0);
+	poiOverlay.layer.transform = CATransform3DTranslate(poiOverlay.layer.transform,0.0, 240.0 * sin(phi + (3.14 / 2.0))/ sin(28 * 3.14 / 180), 0.0);
 	//self.view.layer.transform = CATransform3DRotate(self.view.layer.transform, 3.14-angleXY, 0.0, 0.0, 1.0);
 }
 
@@ -105,10 +105,10 @@
 		origin = currentLocation.coordinate;
 	}
 	
-	CGPoint center = {160, 210};
+	CGPoint center = {260, 260};
 	for(MPNAnnotation *anAnnotation in newList){
 		AugmentedPOI *aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
-		
+		/*
 		UILabel *aLabel = [[UILabel alloc ] initWithFrame:CGRectMake(0.0, 210.0, 60.0, 20.0)];
 		aLabel.center = center;
 		aLabel.textAlignment =  UITextAlignmentCenter;
@@ -117,12 +117,44 @@
 		aLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
 		[self.view addSubview:aLabel];
 		aLabel.text = [anAnnotation title];
-		
+		*/
+
+		/*
+		UIImageView *anImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
+		anImage.center = center;
+		[self.view addSubview:anImage];
 		[ar_poiList addObject:aPoi];
 		[aPoi release];
-		[ar_poiViews addObject:aLabel];
-		[aLabel release];
+		[ar_poiViews addObject:anImage];
+		[anImage release];
+		*/
+		
+		UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+		aButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
+		[aButton setTitle:@"" forState:UIControlStateNormal];
+		aButton.backgroundColor = [UIColor clearColor];
+		UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
+		[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
+		UIImage *buttonImagePressed = [UIImage imageNamed:@"augmentedpoiselect.png"];
+		[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
+		[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDown];
+		
+		aButton.center = center;
+		[poiOverlay addSubview:aButton];
+		[ar_poiList addObject:aPoi];
+		[aPoi release];
+		[ar_poiViews addObject:aButton];
+		[aButton release];
+		
 	}
+}
+
+-(void) poiSelected:(id) poiViewId{
+	int selectedPoi = [ar_poiViews indexOfObject:poiViewId];
+	MPNAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
+	
+	[titleLabel setText:[selectedAnnotation title]];
+
 }
 
 -(void)setCurrentLocation:(CLLocation *)location{
