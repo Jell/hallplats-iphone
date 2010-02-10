@@ -55,7 +55,7 @@
 		zzArray[i] = 0;
 	}
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
-	[mAccelerometer setUpdateInterval:1.0f / 60.0f];
+	[mAccelerometer setUpdateInterval:1.0f / (5.0f * (float) ACCELERATION_BUFFER_SIZE)];
 	[mAccelerometer setDelegate:self];
 	
 	//start updating POI list
@@ -165,8 +165,8 @@
 		mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;	
 	}
 	
-	if(accelerationBufferIndex == 0){
 		// Dispatch acceleration
+	if(accelerationBufferIndex == 0){
 		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
 	}
 }

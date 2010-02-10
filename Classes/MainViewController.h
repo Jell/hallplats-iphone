@@ -12,7 +12,7 @@
 #import "ARViewProtocol.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define ACCELERATION_BUFFER_SIZE 10
+#define ACCELERATION_BUFFER_SIZE 5
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate, CLLocationManagerDelegate> {
 	IBOutlet UIView *viewDisplayed;

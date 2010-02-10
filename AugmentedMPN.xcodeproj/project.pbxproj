@@ -53,7 +53,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = F434D91E1121546E00DF67CE /* CoordinatesTests */;
+			remoteGlobalIDString = F434D91E1121546E00DF67CE;
 			remoteInfo = CoordinatesTests;
 		};
 /* End PBXContainerItemProxy section */
