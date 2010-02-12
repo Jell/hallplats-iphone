@@ -12,13 +12,17 @@
 
 @interface AugmentedPOI : NSObject {
 	float teta;
+	float distance;
 	MPNAnnotation *annotation;
 }
 
 @property float teta;
+@property float distance;
 @property(assign) MPNAnnotation *annotation;
 
 -(id)initWithAnnotation:(MPNAnnotation *) anAnnotation fromOrigin:(CLLocationCoordinate2D)origin;
+-(void)updateFrom:(CLLocationCoordinate2D)origin;
 -(void)updateAngleFrom:(CLLocationCoordinate2D)origin;
+-(void)updateDistanceFrom:(CLLocationCoordinate2D)origin;
 
 @end
