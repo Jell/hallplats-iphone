@@ -23,20 +23,34 @@
 	
 	infoLabelDisplay = [[UIView alloc] initWithFrame:CGRectMake(-75.0, -30.0, 180.0, 40.0)];
 	
-	infoLabel = [[UILabel alloc ] initWithFrame:CGRectMake(0.0, 0.0, 180.0, 20.0)];
+	infoLabel = [[UILabel alloc ] initWithFrame:CGRectMake(0.0, 0.0, 180.0, 24.0)];
 	infoLabel.textAlignment =  UITextAlignmentCenter;
 	infoLabel.textColor = [UIColor whiteColor];
-	infoLabel.backgroundColor = [UIColor blackColor];
+	infoLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"fancy_title_main.png"]];
 	infoLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
 	infoLabel.text = @"";
 	
 	[infoLabelDisplay addSubview:infoLabel];
 	
 	UIImageView *anImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrowdown.png"]];
-	CGPoint center = {90.0, 28.0};
+	CGPoint center = {90.0, 30.0};
 	anImage.center = center;
 	[infoLabelDisplay addSubview:anImage];
 	[anImage release];
+	
+	UIImageView *leftCornerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fancy_title_left.png"]];
+	CGPoint left = {-7.0, 14.0};
+	leftCornerImage.center = left;
+	leftCornerImage.clipsToBounds = NO;
+	[infoLabelDisplay addSubview:leftCornerImage];
+	[leftCornerImage release];
+	
+	UIImageView *rightCornerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fancy_title_right.png"]];
+	CGPoint right = {187.0, 14.0};
+	rightCornerImage.center = right;
+	rightCornerImage.clipsToBounds = NO;
+	[infoLabelDisplay addSubview:rightCornerImage];
+	[rightCornerImage release];
 	
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
@@ -53,7 +67,7 @@
 {
 	currentLocation = newLocation;
 	for (AugmentedPOI *aPoi in ar_poiList) {
-		[aPoi updateAngleFrom:newLocation.coordinate];
+		[aPoi updateFrom:newLocation.coordinate];
 	}
 }
 
@@ -72,18 +86,18 @@
 	headingBufferIndex %= HEADING_BUFFER_SIZE;
 	
 	float jitter = angleXY - headinAngle;
-	float teta;
 	int i = 0;
 	for (AugmentedPOI *aPoi in ar_poiList) {
-		teta = jitter - [aPoi teta];
-		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta];
+		float teta = jitter - [aPoi teta];
+		float dist = 70.0 - 70.0*[aPoi distance] / maxDistance;
+		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist];
 		i++;
 	}
 }
 
--(void)translateView:(UIView *)aView withTeta:(float)teta{
+-(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance{
 	if(sin(teta)<0){
-		aView.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), 0, 0);
+		aView.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), distance, 0);
 	}else{
 		aView.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
 	}
@@ -124,7 +138,7 @@
 	if(currentLocation){
 		origin = currentLocation.coordinate;
 	}
-	
+	maxDistance = 0.0;
 	CGPoint center = {260, 260};
 	for(MPNAnnotation *anAnnotation in newList){
 		AugmentedPOI *aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
@@ -162,6 +176,7 @@
 		aButton.center = center;
 		[poiOverlay addSubview:aButton];
 		[ar_poiList addObject:aPoi];
+		if([aPoi distance] > maxDistance) maxDistance = [aPoi distance];
 		[aPoi release];
 		[ar_poiViews addObject:aButton];
 		[aButton release];
@@ -176,6 +191,7 @@
 		[previousSelectedButton setEnabled:TRUE];
 		[infoLabelDisplay removeFromSuperview];
 		[poiOverlay sendSubviewToBack:previousSelectedButton];
+		[poiOverlay sendSubviewToBack:gridView];
 	}
 	
 	[self setSelectedPoi:[ar_poiViews indexOfObject:poiViewId]];
@@ -198,7 +214,7 @@
 -(void)setCurrentLocation:(CLLocation *)location{
 	currentLocation = location;
 	for (AugmentedPOI *aPoi in ar_poiList) {
-		[aPoi updateAngleFrom:location.coordinate];
+		[aPoi updateFrom:location.coordinate];
 	}
 }
 

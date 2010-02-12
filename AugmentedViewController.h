@@ -15,6 +15,7 @@
 #define HEADING_BUFFER_SIZE 5
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
 	IBOutlet UIView *poiOverlay;
+	IBOutlet UIView *gridView;
 	UIView *infoLabelDisplay;
 	UILabel *infoLabel;
 	int selectedPoi;
@@ -22,6 +23,7 @@
 	NSMutableArray *ar_poiViews;
 	CLLocation *currentLocation;
 	float angleXY;
+	float maxDistance;
 	int headingBufferIndex;
 	float headingBuffer[HEADING_BUFFER_SIZE];
 }
@@ -30,7 +32,7 @@
 @property (retain) NSMutableArray *ar_poiViews;
 @property (assign)  CLLocation *currentLocation;
 
--(void)translateView:(UIView *)aView withTeta:(float)teta;
+-(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance;
 -(void) poiSelected:(id) poiViewId;
 
 @end
