@@ -21,36 +21,7 @@
 	currentLocation = nil;
 	selectedPoi = -1;
 	
-	infoLabelDisplay = [[UIView alloc] initWithFrame:CGRectMake(-75.0, -30.0, 180.0, 40.0)];
-	
-	infoLabel = [[UILabel alloc ] initWithFrame:CGRectMake(0.0, 0.0, 180.0, 24.0)];
-	infoLabel.textAlignment =  UITextAlignmentCenter;
-	infoLabel.textColor = [UIColor whiteColor];
-	infoLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"fancy_title_main.png"]];
-	infoLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
-	infoLabel.text = @"";
-	
-	[infoLabelDisplay addSubview:infoLabel];
-	
-	UIImageView *anImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrowdown.png"]];
-	CGPoint center = {90.0, 30.0};
-	anImage.center = center;
-	[infoLabelDisplay addSubview:anImage];
-	[anImage release];
-	
-	UIImageView *leftCornerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fancy_title_left.png"]];
-	CGPoint left = {-7.0, 14.0};
-	leftCornerImage.center = left;
-	leftCornerImage.clipsToBounds = NO;
-	[infoLabelDisplay addSubview:leftCornerImage];
-	[leftCornerImage release];
-	
-	UIImageView *rightCornerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fancy_title_right.png"]];
-	CGPoint right = {187.0, 14.0};
-	rightCornerImage.center = right;
-	rightCornerImage.clipsToBounds = NO;
-	[infoLabelDisplay addSubview:rightCornerImage];
-	[rightCornerImage release];
+	infoLabelDisplay = [[AugmentedPoiView alloc] initWithFrame:CGRectMake(-75.0, -30.0, 180.0, 40.0)];
 	
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
@@ -205,7 +176,7 @@
 		[poiOverlay bringSubviewToFront:selectedView];
 		MPNAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
 		[selectedView addSubview:infoLabelDisplay];
-		infoLabel.text = [selectedAnnotation title];
+		[infoLabelDisplay setText:[selectedAnnotation title]];
 		
 		//[titleLabel setText:[selectedAnnotation title]];
 	}
@@ -222,7 +193,6 @@
 }
 
 - (void)viewDidUnload {
-	[infoLabel release];
 	[infoLabelDisplay release];
 	[ar_poiList release];
 	for(UIView *aView in ar_poiViews){
@@ -237,7 +207,6 @@
 
 
 - (void)dealloc {
-	[infoLabel release];
 	[infoLabelDisplay release];
 	[ar_poiList release];
 	for(UIView *aView in ar_poiViews){

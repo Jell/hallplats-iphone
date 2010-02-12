@@ -20,6 +20,7 @@
 		F41B802E1125497D003B438C /* fancy_title_right.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B802C1125497D003B438C /* fancy_title_right.png */; };
 		F41B803C11255E79003B438C /* cross_ruler.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B803B11255E79003B438C /* cross_ruler.png */; };
 		F41B8052112566DA003B438C /* horizontal_grid.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B8051112566DA003B438C /* horizontal_grid.png */; };
+		F41B80C7112583CB003B438C /* AugmentedPoiView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B80C6112583CB003B438C /* AugmentedPoiView.m */; };
 		F425E72A111ABF8600D2FC2A /* MPNAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F425E729111ABF8600D2FC2A /* MPNAnnotation.m */; };
 		F428B709111C6373004D10CF /* AugmentedPOI.m in Sources */ = {isa = PBXBuildFile; fileRef = F428B708111C6373004D10CF /* AugmentedPOI.m */; };
 		F4296EF911196EC10016CDA2 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F4296EF811196EC10016CDA2 /* Icon.png */; };
@@ -85,6 +86,8 @@
 		F41B802C1125497D003B438C /* fancy_title_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fancy_title_right.png; sourceTree = "<group>"; };
 		F41B803B11255E79003B438C /* cross_ruler.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cross_ruler.png; sourceTree = "<group>"; };
 		F41B8051112566DA003B438C /* horizontal_grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = horizontal_grid.png; sourceTree = "<group>"; };
+		F41B80C5112583CB003B438C /* AugmentedPoiView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AugmentedPoiView.h; sourceTree = "<group>"; };
+		F41B80C6112583CB003B438C /* AugmentedPoiView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AugmentedPoiView.m; sourceTree = "<group>"; };
 		F425E728111ABF8600D2FC2A /* MPNAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPNAnnotation.h; sourceTree = "<group>"; };
 		F425E729111ABF8600D2FC2A /* MPNAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPNAnnotation.m; sourceTree = "<group>"; };
 		F428B707111C6373004D10CF /* AugmentedPOI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AugmentedPOI.h; sourceTree = "<group>"; };
@@ -321,6 +324,8 @@
 				F43B4D03111033D800C312F4 /* AugmentedView.m */,
 				F428B707111C6373004D10CF /* AugmentedPOI.h */,
 				F428B708111C6373004D10CF /* AugmentedPOI.m */,
+				F41B80C5112583CB003B438C /* AugmentedPoiView.h */,
+				F41B80C6112583CB003B438C /* AugmentedPoiView.m */,
 			);
 			name = AugmentedView;
 			sourceTree = "<group>";
@@ -489,6 +494,7 @@
 				F42971351119CCC60016CDA2 /* MPNApiHandler.m in Sources */,
 				F425E72A111ABF8600D2FC2A /* MPNAnnotation.m in Sources */,
 				F428B709111C6373004D10CF /* AugmentedPOI.m in Sources */,
+				F41B80C7112583CB003B438C /* AugmentedPoiView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

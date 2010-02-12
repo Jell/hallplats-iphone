@@ -11,13 +11,13 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ARViewProtocol.h"
 #import "AugmentedPOI.h"
+#import "AugmentedPoiView.h"
 
 #define HEADING_BUFFER_SIZE 5
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
 	IBOutlet UIView *poiOverlay;
 	IBOutlet UIView *gridView;
-	UIView *infoLabelDisplay;
-	UILabel *infoLabel;
+	AugmentedPoiView *infoLabelDisplay;
 	int selectedPoi;
 	NSMutableArray *ar_poiList;
 	NSMutableArray *ar_poiViews;
