@@ -17,13 +17,15 @@
 @interface MapViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
 	IBOutlet MKMapView *mMapView;
 	IBOutlet UIImageView *arrowView;
+	int selectedPoi;
 	CLLocation *currentLocation;
 	NSArray *annotationList;
 	float phase;
+	bool recentering;
 }
 
 @property (assign) CLLocation *currentLocation;
-@property (nonatomic, retain) NSArray *annotationList;
+@property (assign) NSArray *annotationList;
 
 - (void)rotateMapWithTeta:(float)teta;
 

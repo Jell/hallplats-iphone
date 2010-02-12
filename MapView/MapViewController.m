@@ -13,6 +13,7 @@
 
 @synthesize annotationList;
 @synthesize currentLocation;
+@synthesize selectedPoi;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -31,14 +32,15 @@
 	//Initialise map
 	//start location
 	phase = 0.0;
-	
+	selectedPoi = -1;
+	recentering = NO;
 	CLLocationCoordinate2D location;
 	location.latitude = 57.7119;
 	location.longitude = 11.9683;
 	//starting span (=zoom)
 	MKCoordinateSpan span;
-	span.latitudeDelta = 0.1;
-	span.longitudeDelta = 0.1;
+	span.latitudeDelta = 0.3;
+	span.longitudeDelta = 0.3;
 	MKCoordinateRegion region;
 	region.center = location;
 	region.span = span;
@@ -54,18 +56,52 @@
 -(void)setCurrentLocation:(CLLocation *)location{
 	currentLocation = location;
 	if(currentLocation){
-		[mMapView setCenterCoordinate:self.currentLocation.coordinate animated:NO];
+		[mMapView setCenterCoordinate:currentLocation.coordinate animated:NO];
+		recentering = NO;
 	}
 	if(!mMapView.showsUserLocation) mMapView.showsUserLocation = TRUE;
 }
 
+-(int)selectedPoi{
+	NSArray *selectedAnnotationsArray = [mMapView selectedAnnotations];
+	if(selectedAnnotationsArray){
+		if([selectedAnnotationsArray count] > 0){
+			id <MKAnnotation> selectedAnnotation = [selectedAnnotationsArray objectAtIndex:0];
+			if([annotationList containsObject:selectedAnnotation]){
+				return [annotationList indexOfObject:selectedAnnotation];
+			}
+		}
+	}
+	return -1;
+}
+
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
 	if(!animated){
-		if(self.currentLocation){
+		if(currentLocation){
 			if(mapView.region.center.latitude !=currentLocation.coordinate.latitude &&
-			   mapView.region.center.longitude !=currentLocation.coordinate.longitude)
-				[mapView setCenterCoordinate:self.currentLocation.coordinate animated:YES];
+			   mapView.region.center.longitude !=currentLocation.coordinate.longitude){
+				recentering = YES;
+				[mapView setCenterCoordinate:currentLocation.coordinate animated:YES];
+			}
 		}
+	}else{
+		if(!recentering){
+			if(currentLocation){
+				if(mapView.region.center.latitude !=currentLocation.coordinate.latitude &&
+				   mapView.region.center.longitude !=currentLocation.coordinate.longitude){
+					recentering = YES;
+					[mapView setCenterCoordinate:currentLocation.coordinate animated:YES];
+				}
+			}
+		}else{
+			recentering = NO;
+		}
+	}
+}
+
+- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView{
+	if(selectedPoi >=0){
+		[mMapView selectAnnotation:[annotationList objectAtIndex:selectedPoi] animated:NO];
 	}
 }
 
@@ -74,10 +110,10 @@
 		   fromLocation:(CLLocation *)oldLocation
 {
 	if(!mMapView.showsUserLocation) mMapView.showsUserLocation = TRUE;
-	[currentLocation release];
-	currentLocation = [newLocation copy];
+	
+	currentLocation = newLocation;
+	
 	[mMapView setCenterCoordinate:newLocation.coordinate animated:TRUE];
-	//[manager stopUpdatingLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
@@ -101,8 +137,7 @@
 
 -(void)setAnnotationList:(NSArray *)newList{
 	[mMapView removeAnnotations:annotationList];
-	[annotationList release];
-	annotationList = [newList copy];
+	annotationList = newList;
 	[mMapView addAnnotations:annotationList];
 }
 
@@ -125,7 +160,7 @@
 	
 }
 
--(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
+-(void)accelerationChangedX:(float)x y:(float)y z:(float)z
 {
 }
 
@@ -143,7 +178,6 @@
 	[mMapView release];
 	[arrowView removeFromSuperview];
 	[arrowView release];
-	[annotationList release];
 }
 
 - (void)dealloc {
@@ -151,7 +185,6 @@
 	[mMapView release];
 	[arrowView removeFromSuperview];
 	[arrowView release];
-	[annotationList release];
     [super dealloc];
 }
 

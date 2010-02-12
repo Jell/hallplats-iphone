@@ -12,6 +12,8 @@
 #import "ARViewProtocol.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define ACCELERATION_BUFFER_SIZE 5
+
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate, CLLocationManagerDelegate> {
 	IBOutlet UIView *viewDisplayed;
 	UIViewController<ARViewDelegate> *viewDisplayedController;
@@ -26,14 +28,21 @@
 	NSOperationQueue *opQueue;
 	CLLocation *currentLocation;
 	NSArray *annotationList;
+	float xxArray[ACCELERATION_BUFFER_SIZE];
+	float yyArray[ACCELERATION_BUFFER_SIZE];
+	float zzArray[ACCELERATION_BUFFER_SIZE];
+	float xxAverage;
+	float yyAverage;
+	float zzAverage;
+	int accelerationBufferIndex;
 }
 
-@property (nonatomic, retain) CLLocation *currentLocation;
-@property (nonatomic, retain) CLLocationManager *mLocationManager;
-@property (nonatomic, retain) NSArray *annotationList;
-@property (nonatomic, retain) MPNApiHandler *mpnApiHandler;
-@property (nonatomic, retain) UIAccelerometer *mAccelerometer;
-@property (nonatomic, retain) UIViewController *viewDisplayedController;
+@property (retain) CLLocation *currentLocation;
+@property (retain) CLLocationManager *mLocationManager;
+@property (retain) NSArray *annotationList;
+@property (retain) MPNApiHandler *mpnApiHandler;
+@property (retain) UIAccelerometer *mAccelerometer;
+@property (retain) UIViewController *viewDisplayedController;
 
 - (IBAction)showInfo;
 - (void)loadMapView;
