@@ -34,5 +34,6 @@
 
 -(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance;
 -(void) poiSelected:(id) poiViewId;
+-(void)addPoiView;
 
 @end

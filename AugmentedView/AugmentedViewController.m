@@ -110,51 +110,33 @@
 		origin = currentLocation.coordinate;
 	}
 	maxDistance = 0.0;
-	CGPoint center = {260, 260};
+
 	for(MPNAnnotation *anAnnotation in newList){
 		AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
-		/*
-		UILabel *aLabel = [[UILabel alloc ] initWithFrame:CGRectMake(0.0, 210.0, 60.0, 20.0)];
-		aLabel.center = center;
-		aLabel.textAlignment =  UITextAlignmentCenter;
-		aLabel.textColor = [UIColor whiteColor];
-		aLabel.backgroundColor = [UIColor blackColor];
-		aLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
-		[self.view addSubview:aLabel];
-		aLabel.text = [anAnnotation title];
-		*/
-
-		/*
-		UIImageView *anImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
-		anImage.center = center;
-		[self.view addSubview:anImage];
-		[ar_poiList addObject:aPoi];
-		[aPoi release];
-		[ar_poiViews addObject:anImage];
-		[anImage release];
-		*/
-		
-		UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-		aButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
-		[aButton setTitle:@"" forState:UIControlStateNormal];
-		aButton.backgroundColor = [UIColor clearColor];
-		UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
-		[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
-		UIImage *buttonImagePressed = [UIImage imageNamed:@"augmentedpoiselect.png"];
-		[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
-		[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDown];
-		
-		aButton.center = center;
-		[poiOverlay addSubview:aButton];
 		[ar_poiList addObject:aPoi];
 		if([aPoi distance] > maxDistance) maxDistance = [aPoi distance];
 		[aPoi release];
-		[ar_poiViews addObject:aButton];
-		[aButton release];
-		
+		[self addPoiView];
 	}
 }
 
+-(void)addPoiView{
+	CGPoint center = {260, 260};
+	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	aButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
+	aButton.backgroundColor = [UIColor clearColor];
+	UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
+	[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
+	UIImage *buttonImagePressed = [UIImage imageNamed:@"augmentedpoiselect.png"];
+	[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
+	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDown];
+	
+	aButton.center = center;
+	[poiOverlay addSubview:aButton];
+	[ar_poiViews addObject:aButton];
+	[aButton release];
+	
+}
 -(void) poiSelected:(id) poiViewId{
 	
 	if(selectedPoi >= 0){
