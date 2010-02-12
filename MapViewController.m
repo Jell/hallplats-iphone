@@ -33,6 +33,7 @@
 	//start location
 	phase = 0.0;
 	selectedPoi = -1;
+	recentering = NO;
 	CLLocationCoordinate2D location;
 	location.latitude = 57.7119;
 	location.longitude = 11.9683;
@@ -56,6 +57,7 @@
 	currentLocation = location;
 	if(currentLocation){
 		[mMapView setCenterCoordinate:currentLocation.coordinate animated:NO];
+		recentering = NO;
 	}
 	if(!mMapView.showsUserLocation) mMapView.showsUserLocation = TRUE;
 }
@@ -77,8 +79,22 @@
 	if(!animated){
 		if(currentLocation){
 			if(mapView.region.center.latitude !=currentLocation.coordinate.latitude &&
-			   mapView.region.center.longitude !=currentLocation.coordinate.longitude)
+			   mapView.region.center.longitude !=currentLocation.coordinate.longitude){
+				recentering = YES;
 				[mapView setCenterCoordinate:currentLocation.coordinate animated:YES];
+			}
+		}
+	}else{
+		if(!recentering){
+			if(currentLocation){
+				if(mapView.region.center.latitude !=currentLocation.coordinate.latitude &&
+				   mapView.region.center.longitude !=currentLocation.coordinate.longitude){
+					recentering = YES;
+					[mapView setCenterCoordinate:currentLocation.coordinate animated:YES];
+				}
+			}
+		}else{
+			recentering = NO;
 		}
 	}
 }

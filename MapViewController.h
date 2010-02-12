@@ -21,6 +21,7 @@
 	CLLocation *currentLocation;
 	NSArray *annotationList;
 	float phase;
+	bool recentering;
 }
 
 @property (assign) CLLocation *currentLocation;
