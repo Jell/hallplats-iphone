@@ -22,7 +22,7 @@
 		F41B8052112566DA003B438C /* horizontal_grid.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B8051112566DA003B438C /* horizontal_grid.png */; };
 		F41B80C7112583CB003B438C /* AugmentedPoiView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B80C6112583CB003B438C /* AugmentedPoiView.m */; };
 		F425E72A111ABF8600D2FC2A /* MPNAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F425E729111ABF8600D2FC2A /* MPNAnnotation.m */; };
-		F428B709111C6373004D10CF /* AugmentedPOI.m in Sources */ = {isa = PBXBuildFile; fileRef = F428B708111C6373004D10CF /* AugmentedPOI.m */; };
+		F428B709111C6373004D10CF /* AugmentedPoi.m in Sources */ = {isa = PBXBuildFile; fileRef = F428B708111C6373004D10CF /* AugmentedPoi.m */; };
 		F4296EF911196EC10016CDA2 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F4296EF811196EC10016CDA2 /* Icon.png */; };
 		F42971041119BFFB0016CDA2 /* direction.png in Resources */ = {isa = PBXBuildFile; fileRef = F42971031119BFFB0016CDA2 /* direction.png */; };
 		F42971351119CCC60016CDA2 /* MPNApiHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F42971341119CCC60016CDA2 /* MPNApiHandler.m */; };
@@ -52,7 +52,7 @@
 		F469F1A7112307740059D990 /* arrowdown.png in Resources */ = {isa = PBXBuildFile; fileRef = F469F1A6112307740059D990 /* arrowdown.png */; };
 		F4FAB9F0112168D50065CF90 /* CoordinatesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FAB9EF112168D50065CF90 /* CoordinatesTests.m */; };
 		F4FAB9FD1121698D0065CF90 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FAB9FC1121698D0065CF90 /* SenTestingKit.framework */; };
-		F4FABA7311216C130065CF90 /* AugmentedPOI.m in Sources */ = {isa = PBXBuildFile; fileRef = F428B708111C6373004D10CF /* AugmentedPOI.m */; };
+		F4FABA7311216C130065CF90 /* AugmentedPoi.m in Sources */ = {isa = PBXBuildFile; fileRef = F428B708111C6373004D10CF /* AugmentedPoi.m */; };
 		F4FABA9811216D650065CF90 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */; };
 		F4FABA9B11216D960065CF90 /* MPNAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F425E729111ABF8600D2FC2A /* MPNAnnotation.m */; };
 /* End PBXBuildFile section */
@@ -90,8 +90,8 @@
 		F41B80C6112583CB003B438C /* AugmentedPoiView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AugmentedPoiView.m; sourceTree = "<group>"; };
 		F425E728111ABF8600D2FC2A /* MPNAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPNAnnotation.h; sourceTree = "<group>"; };
 		F425E729111ABF8600D2FC2A /* MPNAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPNAnnotation.m; sourceTree = "<group>"; };
-		F428B707111C6373004D10CF /* AugmentedPOI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AugmentedPOI.h; sourceTree = "<group>"; };
-		F428B708111C6373004D10CF /* AugmentedPOI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AugmentedPOI.m; sourceTree = "<group>"; };
+		F428B707111C6373004D10CF /* AugmentedPoi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AugmentedPoi.h; sourceTree = "<group>"; };
+		F428B708111C6373004D10CF /* AugmentedPoi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AugmentedPoi.m; sourceTree = "<group>"; };
 		F4296EF811196EC10016CDA2 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		F42970261119A21C0016CDA2 /* ARViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewProtocol.h; sourceTree = "<group>"; };
 		F42971031119BFFB0016CDA2 /* direction.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = direction.png; sourceTree = "<group>"; };
@@ -212,8 +212,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				F434D8FD1121534800DF67CE /* Tests */,
 				F4296EF811196EC10016CDA2 /* Icon.png */,
+				F434D8FD1121534800DF67CE /* Tests */,
 				F425E990111B208A00D2FC2A /* Images */,
 				F44F3B4F11187AE300AA2B22 /* PhotoLibrary */,
 				F4417454110F365A00CBFE29 /* JSON */,
@@ -322,8 +322,8 @@
 				F43B4CFE111033CA00C312F4 /* AugmentedViewController.m */,
 				F43B4D02111033D800C312F4 /* AugmentedView.h */,
 				F43B4D03111033D800C312F4 /* AugmentedView.m */,
-				F428B707111C6373004D10CF /* AugmentedPOI.h */,
-				F428B708111C6373004D10CF /* AugmentedPOI.m */,
+				F428B707111C6373004D10CF /* AugmentedPoi.h */,
+				F428B708111C6373004D10CF /* AugmentedPoi.m */,
 				F41B80C5112583CB003B438C /* AugmentedPoiView.h */,
 				F41B80C6112583CB003B438C /* AugmentedPoiView.m */,
 			);
@@ -493,7 +493,7 @@
 				F43B4D04111033D800C312F4 /* AugmentedView.m in Sources */,
 				F42971351119CCC60016CDA2 /* MPNApiHandler.m in Sources */,
 				F425E72A111ABF8600D2FC2A /* MPNAnnotation.m in Sources */,
-				F428B709111C6373004D10CF /* AugmentedPOI.m in Sources */,
+				F428B709111C6373004D10CF /* AugmentedPoi.m in Sources */,
 				F41B80C7112583CB003B438C /* AugmentedPoiView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -503,7 +503,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4FAB9F0112168D50065CF90 /* CoordinatesTests.m in Sources */,
-				F4FABA7311216C130065CF90 /* AugmentedPOI.m in Sources */,
+				F4FABA7311216C130065CF90 /* AugmentedPoi.m in Sources */,
 				F4FABA9B11216D960065CF90 /* MPNAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

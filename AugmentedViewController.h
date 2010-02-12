@@ -10,7 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
 #import "ARViewProtocol.h"
-#import "AugmentedPOI.h"
+#import "AugmentedPoi.h"
 #import "AugmentedPoiView.h"
 
 #define HEADING_BUFFER_SIZE 5

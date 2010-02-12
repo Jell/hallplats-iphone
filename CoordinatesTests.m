@@ -8,7 +8,7 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 #import <UIKit/UIKit.h>
-#import "AugmentedPOI.h"
+#import "AugmentedPoi.h"
 #import "MPNAnnotation.h"
 #import <CoreLocation/CoreLocation.h>
 
@@ -16,8 +16,8 @@
 
 
 @interface CoordinatesTests : SenTestCase {
-	AugmentedPOI *poiEquator;
-	AugmentedPOI *poiNorthPole;
+	AugmentedPoi *poiEquator;
+	AugmentedPoi *poiNorthPole;
 }
 
 @end
@@ -28,11 +28,11 @@
 - (void) setUp {
 	CLLocationCoordinate2D location = {0.0,0.0};
 	CLLocationCoordinate2D origin = {10.0,0.0};
-	poiEquator = [[AugmentedPOI alloc] initWithAnnotation:[[MPNAnnotation alloc] initWithCoordinate:location] fromOrigin:origin]; 
+	poiEquator = [[AugmentedPoi alloc] initWithAnnotation:[[MPNAnnotation alloc] initWithCoordinate:location] fromOrigin:origin]; 
 	STAssertNotNil(poiEquator, @"Could not create test subject.");
 	
 	location.latitude = 89.0;
-	poiNorthPole = [[AugmentedPOI alloc] initWithAnnotation:[[MPNAnnotation alloc] initWithCoordinate:location] fromOrigin:origin];
+	poiNorthPole = [[AugmentedPoi alloc] initWithAnnotation:[[MPNAnnotation alloc] initWithCoordinate:location] fromOrigin:origin];
 }
 
 -(void) testAngleConsistancy{

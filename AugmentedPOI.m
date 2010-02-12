@@ -6,10 +6,10 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "AugmentedPOI.h"
+#import "AugmentedPoi.h"
 
 
-@implementation AugmentedPOI
+@implementation AugmentedPoi
 @synthesize teta;
 @synthesize annotation;
 @synthesize distance;

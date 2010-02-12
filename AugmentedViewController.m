@@ -37,7 +37,7 @@
 		   fromLocation:(CLLocation *)oldLocation
 {
 	currentLocation = newLocation;
-	for (AugmentedPOI *aPoi in ar_poiList) {
+	for (AugmentedPoi *aPoi in ar_poiList) {
 		[aPoi updateFrom:newLocation.coordinate];
 	}
 }
@@ -58,7 +58,7 @@
 	
 	float jitter = angleXY - headinAngle;
 	int i = 0;
-	for (AugmentedPOI *aPoi in ar_poiList) {
+	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta = jitter - [aPoi teta];
 		float dist = 70.0 - 70.0*[aPoi distance] / maxDistance;
 		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist];
@@ -112,7 +112,7 @@
 	maxDistance = 0.0;
 	CGPoint center = {260, 260};
 	for(MPNAnnotation *anAnnotation in newList){
-		AugmentedPOI *aPoi = [[AugmentedPOI alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
+		AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
 		/*
 		UILabel *aLabel = [[UILabel alloc ] initWithFrame:CGRectMake(0.0, 210.0, 60.0, 20.0)];
 		aLabel.center = center;
@@ -184,7 +184,7 @@
 
 -(void)setCurrentLocation:(CLLocation *)location{
 	currentLocation = location;
-	for (AugmentedPOI *aPoi in ar_poiList) {
+	for (AugmentedPoi *aPoi in ar_poiList) {
 		[aPoi updateFrom:location.coordinate];
 	}
 }

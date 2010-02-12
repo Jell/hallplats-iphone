@@ -8,9 +8,8 @@
 
 #import "MPNAnnotation.h"
 #import <CoreLocation/CoreLocation.h>
-#import "AugmentedPOI.h"
 
-@interface AugmentedPOI : NSObject {
+@interface AugmentedPoi : NSObject {
 	float teta;
 	float distance;
 	MPNAnnotation *annotation;
