@@ -16,22 +16,14 @@
     if (self = [super initWithFrame:frame]) {
 		self.backgroundColor = [UIColor clearColor];
 		
-		infoLabel = [[UILabel alloc ] initWithFrame:CGRectMake(0.0, 0.0, 180.0, 24.0)];
-		infoLabel.textAlignment =  UITextAlignmentCenter;
-		infoLabel.textColor = [UIColor whiteColor];
-		infoLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"fancy_title_main.png"]];
-		infoLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
-		infoLabel.text = @"";
-		infoLabel.clipsToBounds = NO;
-		
-		[self addSubview:infoLabel];
-		
-		UIImageView *anImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrowdown.png"]];
-		CGPoint center = {90.0, 30.0};
-		anImage.center = center;
-		anImage.clipsToBounds = NO;
-		[self addSubview:anImage];
-		[anImage release];
+		UIImage *nonStrechableCenterImage = [UIImage imageNamed:@"fancy_title_main.png"];
+		UIImageView *centerImage = [[UIImageView alloc] initWithImage:[nonStrechableCenterImage stretchableImageWithLeftCapWidth:180.0 topCapHeight:0]];
+		CGPoint center = {90.0, 14.0};
+		centerImage.frame = CGRectMake(0.0, 0.0, 180.0, 32.0);
+		centerImage.center = center;
+		centerImage.clipsToBounds = NO;
+		[self addSubview:centerImage];
+		[centerImage release]; 
 		
 		UIImageView *leftCornerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fancy_title_left.png"]];
 		CGPoint left = {-7.0, 14.0};
@@ -46,6 +38,23 @@
 		rightCornerImage.clipsToBounds = NO;
 		[self addSubview:rightCornerImage];
 		[rightCornerImage release];
+		
+		UIImageView *arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrowdown.png"]];
+		CGPoint bottom = {90.0, 30.0};
+		arrowImage.center = bottom;
+		arrowImage.clipsToBounds = NO;
+		[self addSubview:arrowImage];
+		[arrowImage release];
+		
+		infoLabel = [[UILabel alloc ] initWithFrame:CGRectMake(0.0, 0.0, 180.0, 24.0)];
+		infoLabel.textAlignment =  UITextAlignmentCenter;
+		infoLabel.textColor = [UIColor whiteColor];
+		infoLabel.backgroundColor = [UIColor clearColor];
+		infoLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
+		infoLabel.text = @"";
+		infoLabel.clipsToBounds = NO;
+		
+		[self addSubview:infoLabel];
 	}
     return self;
 }
