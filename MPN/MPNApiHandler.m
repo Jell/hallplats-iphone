@@ -50,6 +50,19 @@
 					subtitle:subtitle];
 		
 		[result addObject:annotation];
+		
+		annotation.poi_id = (int)[site valueForKey:@"id"];
+		
+		annotation.postal_code = (NSString *)[site valueForKey:@"postal_code"];
+		annotation.marker_icon = (NSString *)[site valueForKey:@"marker_icon"];
+		annotation.description_html = (NSString *)[site valueForKey:@"description_html"];
+		annotation.po_box = (NSString *)[site valueForKey:@"po_box"];
+		annotation.thumb_icon_url = (NSString *)[site valueForKey:@"thumb_icon_url"];
+		annotation.street = (NSString *)[site valueForKey:@"street"];
+		annotation.site_type = (NSString *)[site valueForKey:@"site_type"];
+		annotation.phone = (NSString *)[site valueForKey:@"phone"];
+		annotation.homepage = (NSString *)[site valueForKey:@"homepage"];
+		annotation.email = (NSString *)[site valueForKey:@"email"];
 	}
 	
 	// return converted C array into NSArray
@@ -62,7 +75,7 @@
 {
 	return [self objectWithUrl:[NSURL URLWithString:
 								[NSString stringWithFormat:
-									@"http://42934.se/foretag.json?bounds=%.2f%%2B%.2f%%2B%.2f%%2B%.2f",
+									@"http://43435.se/foretag.json?bounds=%.2f%%2B%.2f%%2B%.2f%%2B%.2f",
 									upperLeft.latitude,
 									upperLeft.longitude,
 									lowerRight.latitude,

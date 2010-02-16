@@ -77,6 +77,11 @@
 	//Launch flipside Modal View
 	FlipsideViewController *controller = [[FlipsideViewController alloc] initWithNibName:@"FlipsideView" bundle:nil];
 	controller.delegate = self;
+	int selected = [viewDisplayedController selectedPoi];
+	if(selected >=0){
+		MPNAnnotation *anAnnotation = [annotationList objectAtIndex:selected];
+		[controller setAnnotationDisplayed:anAnnotation];
+	}
 	controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 	[self presentModalViewController:controller animated:YES];
 	

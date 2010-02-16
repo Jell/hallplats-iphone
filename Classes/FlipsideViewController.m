@@ -12,18 +12,24 @@
 @implementation FlipsideViewController
 
 @synthesize delegate;
-
+@synthesize annotationDisplayed;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];   
+	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];  
+	NSString *text = [annotationDisplayed title];
+	titleLabel.text = [NSString stringWithFormat:@"%@", text];
 }
 
 
 - (IBAction)done {
 	[self.delegate flipsideViewControllerDidFinish:self];	
 }
- 
+
+-(void)setAnnotationDisplayed:(MPNAnnotation *)anAnnotation{
+	annotationDisplayed = anAnnotation;
+
+}
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.

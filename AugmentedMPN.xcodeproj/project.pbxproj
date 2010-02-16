@@ -288,9 +288,9 @@
 			isa = PBXGroup;
 			children = (
 				F41B8275112598AD003B438C /* MPNApiHandler.m */,
+				F41B8278112598AD003B438C /* MPNApiHandler.h */,
 				F41B8276112598AD003B438C /* MPNAnnotation.h */,
 				F41B8277112598AD003B438C /* MPNAnnotation.m */,
-				F41B8278112598AD003B438C /* MPNApiHandler.h */,
 			);
 			name = MPN;
 			sourceTree = "<group>";

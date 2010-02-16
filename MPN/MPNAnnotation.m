@@ -10,6 +10,8 @@
 
 @implementation MPNAnnotation
 @synthesize coordinate;
+@synthesize poi_id, postal_code, marker_icon, description_html, po_box,
+thumb_icon_url, street, site_type, phone, homepage, email;
 
 - (NSString *)subtitle{
 	return [NSString stringWithFormat:@"%@", mSubTitle];
