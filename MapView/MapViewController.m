@@ -105,6 +105,43 @@
 	}
 }
 
+- (MKAnnotationView *)mapView:(MKMapView *)mapView 
+            viewForAnnotation:(id <MKAnnotation>)annotation {
+	
+	MKPinAnnotationView *view = nil;
+	if(annotation != mapView.userLocation) {
+		view = (MKPinAnnotationView *)
+        [mapView dequeueReusableAnnotationViewWithIdentifier:[annotation title]];
+		if(nil == view) {
+			view = [[[MKPinAnnotationView alloc]
+					 initWithAnnotation:annotation reuseIdentifier:[annotation title]]
+					autorelease];
+		}
+		[view setPinColor:MKPinAnnotationColorPurple];
+		[view setCanShowCallout:YES];
+		[view setAnimatesDrop:YES];
+		
+		UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+		aButton.exclusiveTouch = NO;
+		aButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
+		aButton.backgroundColor = [UIColor clearColor];
+		UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
+		[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
+		UIImage *buttonImagePressed = [UIImage imageNamed:@"augmentedpoiselect.png"];
+		[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
+		
+		
+		[view setLeftCalloutAccessoryView:aButton];
+		[aButton release];
+	} else {
+		CLLocation *location = [[CLLocation alloc] 
+								initWithLatitude:annotation.coordinate.latitude
+								longitude:annotation.coordinate.longitude];
+		[self setCurrentLocation:location];
+	}
+	return view;
+}
+
 - (void)locationManager: (CLLocationManager *)manager
 	didUpdateToLocation: (CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
