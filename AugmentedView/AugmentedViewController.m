@@ -21,7 +21,9 @@
 	currentLocation = nil;
 	selectedPoi = -1;
 	
-	infoLabelDisplay = [[AugmentedPoiView alloc] initWithFrame:CGRectMake(-75.0, -30.0, 180.0, 40.0)];
+	infoLabelDisplay = [[AugmentedPoiViewController alloc] initWithNibName:@"AugmentedPoiView" bundle:nil];
+
+	[poiOverlay addSubview:infoLabelDisplay.view];
 	
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
@@ -58,10 +60,16 @@
 	
 	float jitter = angleXY - headinAngle;
 	int i = 0;
+	[self translateView:infoLabelDisplay.view withTeta:3.14 andDistance:0];
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta = jitter - [aPoi teta];
 		float dist = 70.0 - 70.0*[aPoi distance] / maxDistance;
 		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist];
+		
+		if(i == selectedPoi){
+			[self translateView:infoLabelDisplay.view withTeta:teta andDistance:0];
+			[infoLabelDisplay setArrowLength:dist];
+		}
 		i++;
 	}
 }
@@ -122,7 +130,9 @@
 
 -(void)addPoiView{
 	CGPoint center = {260, 260};
+	
 	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	aButton.exclusiveTouch = NO;
 	aButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
 	aButton.backgroundColor = [UIColor clearColor];
 	UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
@@ -142,7 +152,6 @@
 	if(selectedPoi >= 0){
 		UIButton *previousSelectedButton = [ar_poiViews objectAtIndex:selectedPoi];
 		[previousSelectedButton setEnabled:TRUE];
-		[infoLabelDisplay removeFromSuperview];
 		[poiOverlay sendSubviewToBack:previousSelectedButton];
 		[poiOverlay sendSubviewToBack:gridView];
 	}
@@ -156,11 +165,9 @@
 		UIButton *selectedView = [ar_poiViews objectAtIndex:selectedPoi];
 		[selectedView setEnabled:FALSE];
 		[poiOverlay bringSubviewToFront:selectedView];
+		[poiOverlay bringSubviewToFront:infoLabelDisplay.view];
 		MPNAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
-		[selectedView addSubview:infoLabelDisplay];
 		[infoLabelDisplay setText:[selectedAnnotation title]];
-		
-		//[titleLabel setText:[selectedAnnotation title]];
 	}
 }
 
