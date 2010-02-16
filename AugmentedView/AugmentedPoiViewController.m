@@ -37,21 +37,39 @@
 	
 	viewContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 250.0, 20.0)];
 	
-	for (int i=0; i<10; i++) {
-		UILabel *tramNumber = [[UILabel alloc ] initWithFrame:CGRectMake(0.0 + 25*i, 0.0, 20.0, 20.0)];
-		tramNumber.textAlignment =  UITextAlignmentCenter;
-		tramNumber.textColor = [UIColor blackColor];
-		tramNumber.backgroundColor = [UIColor yellowColor];
-		tramNumber.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
-		tramNumber.text = @"2";
-		tramNumber.clipsToBounds = YES;
-		[viewContainer addSubview:tramNumber];
-		[tramNumber release];
-	}
+	tramLinesNumber = 0;
+	
+	[self addTramLine:@"1" color:[UIColor whiteColor] atIndex:0];
+	[self addTramLine:@"2" color:[UIColor yellowColor] atIndex:1];
+	[self addTramLine:@"3" color:[UIColor blueColor] atIndex:2];
+	[self addTramLine:@"4" color:[UIColor greenColor] atIndex:3];
+	[self addTramLine:@"5" color:[UIColor redColor] atIndex:4];
+	[self addTramLine:@"6" color:[UIColor orangeColor] atIndex:5];
+	[self addTramLine:@"16" color:[UIColor blueColor] atIndex:6];
+	[self addTramLine:@"300" color:[UIColor blueColor] atIndex:7];
+	[self addTramLine:@"Grön" color:[UIColor greenColor] atIndex:8];
+	[self addTramLine:@"Orange" color:[UIColor orangeColor] atIndex:9];
+	
 	[tramScroll setContentSize:viewContainer.frame.size];
 	[tramScroll insertSubview:viewContainer atIndex:0];
 	[tramScroll flashScrollIndicators];
 
+}
+
+-(void)addTramLine:(NSString *)name color:(UIColor *)color atIndex:(int)index{
+	UILabel *tramNumber = [[UILabel alloc ] initWithFrame:CGRectMake(0.0 + 25*index, 0.0, 22.0, 20.0)];
+	tramNumber.textAlignment =  UITextAlignmentCenter;
+	tramNumber.lineBreakMode = UILineBreakModeClip;
+	if(color == [UIColor whiteColor] || color == [UIColor yellowColor]){
+		tramNumber.textColor = [UIColor blackColor];
+	}else{
+		tramNumber.textColor = [UIColor whiteColor];
+	}
+	tramNumber.backgroundColor = color;
+	tramNumber.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(10.0)];
+	tramNumber.text = name;
+	[viewContainer addSubview:tramNumber];
+	[tramNumber release];
 }
 
 -(void)viewDidAppear:(BOOL)animated{

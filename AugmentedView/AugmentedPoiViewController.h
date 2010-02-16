@@ -13,8 +13,10 @@
 	IBOutlet UILabel *infoLabel;
 	IBOutlet UIScrollView *tramScroll;
 	IBOutlet UIImageView *arrowImage;
+	int tramLinesNumber;
 	UIView *viewContainer;
 }
 -(void)setText:(NSString *) text;
 -(void)setArrowLength:(float) length;
+-(void)addTramLine:(NSString *)name color:(UIColor *)color atIndex:(int)index;
 @end
