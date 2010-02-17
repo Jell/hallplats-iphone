@@ -39,6 +39,7 @@
 		F41B8299112598F0003B438C /* CoordinatesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B824F11259884003B438C /* CoordinatesTests.m */; };
 		F41B829A112598F5003B438C /* MPNAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B8277112598AD003B438C /* MPNAnnotation.m */; };
 		F41B829B112598F8003B438C /* AugmentedPoi.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B827C112598BA003B438C /* AugmentedPoi.m */; };
+		F421F50F112BDD03003D46D8 /* VTApiHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F50E112BDD03003D46D8 /* VTApiHandler.m */; };
 		F4274BC3112AA66D0018F77C /* AugmentedPoiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4274BC1112AA66D0018F77C /* AugmentedPoiViewController.m */; };
 		F4274BC4112AA66D0018F77C /* AugmentedPoiView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4274BC2112AA66D0018F77C /* AugmentedPoiView.xib */; };
 		F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4DE711104AF900C312F4 /* MapKit.framework */; };
@@ -111,6 +112,8 @@
 		F41B8290112598DD003B438C /* MainView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainView.xib; path = Resources/MainView.xib; sourceTree = "<group>"; };
 		F41B8291112598DD003B438C /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
 		F41B8292112598DD003B438C /* MapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MapView.xib; path = Resources/MapView.xib; sourceTree = "<group>"; };
+		F421F50D112BDD03003D46D8 /* VTApiHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTApiHandler.h; path = Vasttrafik/VTApiHandler.h; sourceTree = "<group>"; };
+		F421F50E112BDD03003D46D8 /* VTApiHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTApiHandler.m; path = Vasttrafik/VTApiHandler.m; sourceTree = "<group>"; };
 		F4274BC0112AA66D0018F77C /* AugmentedPoiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AugmentedPoiViewController.h; path = AugmentedView/AugmentedPoiViewController.h; sourceTree = "<group>"; };
 		F4274BC1112AA66D0018F77C /* AugmentedPoiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AugmentedPoiViewController.m; path = AugmentedView/AugmentedPoiViewController.m; sourceTree = "<group>"; };
 		F4274BC2112AA66D0018F77C /* AugmentedPoiView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AugmentedPoiView.xib; path = AugmentedView/AugmentedPoiView.xib; sourceTree = "<group>"; };
@@ -218,6 +221,7 @@
 				F425E990111B208A00D2FC2A /* Images */,
 				F44F3B4F11187AE300AA2B22 /* PhotoLibrary */,
 				F4417454110F365A00CBFE29 /* JSON */,
+				F421F50C112BDCD3003D46D8 /* Västtrafik */,
 				F42971321119CC8F0016CDA2 /* MPN */,
 				F43B4CBB111032AA00C312F4 /* AugmentedView */,
 				F43B4CBA111032A100C312F4 /* MapView */,
@@ -269,6 +273,15 @@
 				288765580DF743DE002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F421F50C112BDCD3003D46D8 /* Västtrafik */ = {
+			isa = PBXGroup;
+			children = (
+				F421F50D112BDD03003D46D8 /* VTApiHandler.h */,
+				F421F50E112BDD03003D46D8 /* VTApiHandler.m */,
+			);
+			name = "Västtrafik";
 			sourceTree = "<group>";
 		};
 		F425E990111B208A00D2FC2A /* Images */ = {
@@ -497,6 +510,7 @@
 				F41B828B112598C7003B438C /* MapView.m in Sources */,
 				F41B828C112598C7003B438C /* MapViewController.m in Sources */,
 				F4274BC3112AA66D0018F77C /* AugmentedPoiViewController.m in Sources */,
+				F421F50F112BDD03003D46D8 /* VTApiHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
