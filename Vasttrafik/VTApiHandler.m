@@ -7,79 +7,113 @@
 //
 
 #import "VTApiHandler.h"
-
+#define VT_GETSTOPS_URL @"http://www.vasttrafik.se/External_Services/TravelPlanner.asmx/GetStopListBasedOnCoordinate?identifier=3e383cd8-30fa-47dc-8379-7d4295dc9db2&xCoord=6403382&yCoord=1272443"
+#define VT_GETNEXT_URL @"http://vasttrafik.se/External_Services/NextTrip.asmx/GetForecast?identifier=3e383cd8-30fa-47dc-8379-7d4295dc9db2&stopId=00007220"
 
 @implementation VTApiHandler
 
--(NSArray *)getAnnotationsFromCoordinates:(CLLocationCoordinate2D) upperLeft toCoordinates:(CLLocationCoordinate2D) lowerRight{
-	NSArray *poiList = [self getPoiFromCoordinates:upperLeft toCoordinates:lowerRight];
-	NSMutableArray *result = [NSMutableArray arrayWithCapacity:poiList.count];
-	[result retain];
-	CLLocationCoordinate2D location = {0.0, 0.0};
+-(void)runTest
+{
+	CLLocationCoordinate2D coordinates = {0,0};
 	
-	location.latitude = 57.7119;
-	location.longitude = 11.9683;
+	NSArray *annotationList = [self getAnnotationsFromCoordinates:coordinates];
+	int i = 0;
 	
-	for(int i=0;i<poiList.count;i++){
-		// get the bundle of one poi
-		NSDictionary *bundle = (NSDictionary *)[poiList objectAtIndex:i];
-		
-		// get info qbout the site
-		NSDictionary *site = (NSDictionary *)[bundle valueForKey:@"site"];
-		
-		// get coordinqtes
-		location.latitude = [(NSString *)[site valueForKey:@"latitude"] floatValue];
-		location.longitude = [(NSString *)[site valueForKey:@"longitude"] floatValue];
-		
-		/*
-		 float radius = (float) 6.28 / (float) poiList.count;
-		 location.latitude = 57.7119 + 0.025 * cos(radius * i);
-		 location.longitude = 11.9683 + 0.05 * sin(radius * i);
-		 */
-		
-		//create an annotation object
-		MPNAnnotation *annotation = [[MPNAnnotation alloc] initWithCoordinate:location];
-		[annotation retain];
-		
-		NSString *title = (NSString *)[site valueForKey:@"title"];
-		[title retain];
-		NSString *subtitle = (NSString *)[site valueForKey:@"city"];
-		[subtitle retain];
-		// set the title and city of the annotation
-		[annotation setTitle:title
-					subtitle:subtitle];
-		
-		[result addObject:annotation];
-		
-		annotation.poi_id = (int)[site valueForKey:@"id"];
-		
-		annotation.postal_code = (NSString *)[site valueForKey:@"postal_code"];
-		annotation.marker_icon = (NSString *)[site valueForKey:@"marker_icon"];
-		annotation.description_html = (NSString *)[site valueForKey:@"description_html"];
-		annotation.po_box = (NSString *)[site valueForKey:@"po_box"];
-		annotation.thumb_icon_url = (NSString *)[site valueForKey:@"thumb_icon_url"];
-		annotation.street = (NSString *)[site valueForKey:@"street"];
-		annotation.site_type = (NSString *)[site valueForKey:@"site_type"];
-		annotation.phone = (NSString *)[site valueForKey:@"phone"];
-		annotation.homepage = (NSString *)[site valueForKey:@"homepage"];
-		annotation.email = (NSString *)[site valueForKey:@"email"];
-	}
 	
-	// return converted C array into NSArray
-	return result;
+}
+
+-(NSArray *)getAnnotationsFromCoordinates:(CLLocationCoordinate2D) centerCoordinates
+{
+	NSString *toBeParsed = [self getXMLfromCoordinates:centerCoordinates];
+
+	NSMutableArray *annotationList = [[NSMutableArray alloc] init];
+	
+	NSMutableArray *itemList = (NSMutableArray *)[toBeParsed componentsSeparatedByString:@"&lt;/item&gt;"];
+	if(itemList){
+		[itemList removeLastObject];
+		for(NSString *astring in itemList){
+			
+			NSArray *list1 = [astring componentsSeparatedByString:@"&lt;item"];
+			NSString *cut1 = [list1 lastObject];
+			
+			NSArray *list2 = [cut1 componentsSeparatedByString:@"&gt;&lt;friendly_name&gt;&lt;![CDATA["];
+			NSString *attributes = [list2 objectAtIndex:0];
+			NSString *cut2 = [list2 lastObject];
+			
+			NSArray *list3 = [cut2 componentsSeparatedByString:@"]]&gt;&lt;/friendly_name&gt;&lt;stop_name&gt;&lt;![CDATA["];
+			NSString *friendly_name = [list3 objectAtIndex:0];
+			NSString *cut3 = [list3 lastObject];
+			
+			NSArray *list4 = [cut3 componentsSeparatedByString:@"]]&gt;&lt;/stop_name&gt;&lt;county&gt;&lt;![CDATA["];
+			NSString *stop_name = [list4 objectAtIndex:0];
+			NSString *cut4 = [list4 lastObject];
+			
+			NSArray *list5 = [cut4 componentsSeparatedByString:@"]]&gt;&lt;/county&gt;"];
+			NSString *county = [list5 objectAtIndex:0];
+			
+			NSLog(friendly_name);
+			NSLog(stop_name);
+			NSLog(county);
+			
+			NSArray *attributesList = [attributes componentsSeparatedByString:@"\""];
+			
+			if([attributesList count]>=16){
+				int order = [[attributesList objectAtIndex:1] intValue];
+				NSString *stop_id = [attributesList objectAtIndex:3];
+				NSString *stop_id_with_hash_key = [attributesList objectAtIndex:5];
+				int distance  = [[attributesList objectAtIndex:7] intValue];
+				NSString *shortcut = [attributesList objectAtIndex:9];
+				NSString *stop_type = [attributesList objectAtIndex:11];
+				int rt90_x = [[attributesList objectAtIndex:13] intValue];
+				int rt90_y = [[attributesList objectAtIndex:15] intValue];
+				
+				NSLog(@"\nOrder: %d\nStop Id: %@\nStop Id with Hash: %@\nDistance: %dm\nShortcut: %@\nStop Type: %@\nrt90_x: %d\nrt90_y: %d\n", order, stop_id, stop_id_with_hash_key, distance, 
+					  shortcut, stop_type, rt90_x, rt90_y);
+				
+				
+				CLLocationCoordinate2D location = {(float)rt90_x, (float)rt90_y};
+				VTAnnotation *anAnnotation = [[VTAnnotation alloc] initWithCoordinate:location];
+				
+				[anAnnotation setTitle:stop_name subtitle:[NSString stringWithFormat:@"%dm", distance]];
+				
+				anAnnotation.friendly_name = friendly_name;
+				anAnnotation.stop_name = stop_name;
+				anAnnotation.county = county;
+				anAnnotation.order = order;
+				anAnnotation.stop_id = stop_id;
+				anAnnotation.stop_id_with_hash_key = stop_id_with_hash_key;
+				anAnnotation.distance = distance;
+				anAnnotation.shortcut = shortcut;
+				anAnnotation.stop_type = stop_type;
+				
+				[annotationList addObject:anAnnotation];
+			}
+			
+			[list1 release];
+			[list2 release];
+			[list3 release];
+			[list4 release];
+			[list5 release];
+			[attributesList release];
+		}
+	}		
+	
+	return annotationList;
 }
 
 
-- (id)getPoiFromCoordinates:(CLLocationCoordinate2D) upperLeft
-			  toCoordinates:(CLLocationCoordinate2D) lowerRight
+-(NSString *)getXMLfromCoordinates:(CLLocationCoordinate2D) centerCoordinates
 {
-	return [self objectWithUrl:[NSURL URLWithString:
-								[NSString stringWithFormat:
-								 @"http://43435.se/foretag.json?bounds=%.2f%%2B%.2f%%2B%.2f%%2B%.2f",
-								 upperLeft.latitude,
-								 upperLeft.longitude,
-								 lowerRight.latitude,
-								 lowerRight.longitude]]];
+	return [self stringWithUrl:[NSURL URLWithString:VT_GETSTOPS_URL]];;
+}
+
+-(NSArray *)getForcastListForPoiId:(NSString *)poiId
+{
+	return nil;
+}
+
+-(NSString *)getXMLfromPoiId:(NSString *)poiId{
+	return [self stringWithUrl:[NSURL URLWithString:VT_GETNEXT_URL]];
 }
 
 - (NSString *)stringWithUrl:(NSURL *)url
@@ -100,15 +134,14 @@
 	return [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
 }
 
-- (id) objectWithUrl:(NSURL *)url
-{
-	SBJSON *jsonParser = [SBJSON new];
-	NSString *jsonString = [self stringWithUrl:url];
-	id object = [jsonParser objectWithString:jsonString error:NULL];
-	[jsonParser release];
-	[jsonString release];
-	// Parse the JSON into an Object
-	return object;
+
+- (CLLocationCoordinate2D) rt90_to_GPS:(CLLocationCoordinate2D)gpsCoordinates{
+	CLLocationCoordinate2D result = {0,0};
+	return result;
+}
+- (CLLocationCoordinate2D) gps_to_RT90:(CLLocationCoordinate2D)gpsCoordinates{
+	CLLocationCoordinate2D result = {0,0};
+	return result;
 }
 
 @end

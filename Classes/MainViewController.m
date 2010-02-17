@@ -8,6 +8,7 @@
 
 #import "MainViewController.h"
 #import "MainView.h"
+#import "VTApiHandler.h"
 
 @implementation MainViewController
 @synthesize mLocationManager;
@@ -33,6 +34,11 @@
 	opQueue = [[NSOperationQueue alloc] init];
 	[activityIndicator startAnimating];
 	
+	VTApiHandler *vthandler = [[VTApiHandler alloc] init];
+	
+	[vthandler runTest];
+	
+	[vthandler release];
 	currentLocation = nil;
 	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 	[viewDisplayed addSubview:viewDisplayedController.view];
