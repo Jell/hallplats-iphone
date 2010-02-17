@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "VTLineInfo.h"
+#import "VTForecast.h"
 
 @interface VTAnnotation : NSObject  <MKAnnotation>{
 	int poi_id;
@@ -28,6 +30,7 @@
 	NSString *shortcut;
 	NSString *stop_type;
 
+	NSArray *forecastList;
 }
 
 
@@ -43,6 +46,9 @@
 @property(retain) NSString *shortcut;
 @property(retain) NSString *stop_type;
 
+@property(retain) NSArray *forecastList;
+
 -(void)setTitle:(NSString *)title subtitle:(NSString *)subtitle;
+-(NSArray *)getLineList;
 
 @end

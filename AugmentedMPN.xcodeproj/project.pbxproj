@@ -41,6 +41,8 @@
 		F41B829B112598F8003B438C /* AugmentedPoi.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B827C112598BA003B438C /* AugmentedPoi.m */; };
 		F421F50F112BDD03003D46D8 /* VTApiHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F50E112BDD03003D46D8 /* VTApiHandler.m */; };
 		F421F61F112C0393003D46D8 /* VTAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F61E112C0393003D46D8 /* VTAnnotation.m */; };
+		F421F6DC112C2FDB003D46D8 /* VTForecast.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F6DB112C2FDB003D46D8 /* VTForecast.m */; };
+		F421F882112C464E003D46D8 /* VTLineInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F881112C464E003D46D8 /* VTLineInfo.m */; };
 		F4274BC3112AA66D0018F77C /* AugmentedPoiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4274BC1112AA66D0018F77C /* AugmentedPoiViewController.m */; };
 		F4274BC4112AA66D0018F77C /* AugmentedPoiView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4274BC2112AA66D0018F77C /* AugmentedPoiView.xib */; };
 		F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4DE711104AF900C312F4 /* MapKit.framework */; };
@@ -117,6 +119,10 @@
 		F421F50E112BDD03003D46D8 /* VTApiHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTApiHandler.m; path = Vasttrafik/VTApiHandler.m; sourceTree = "<group>"; };
 		F421F61D112C0393003D46D8 /* VTAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTAnnotation.h; path = Vasttrafik/VTAnnotation.h; sourceTree = "<group>"; };
 		F421F61E112C0393003D46D8 /* VTAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTAnnotation.m; path = Vasttrafik/VTAnnotation.m; sourceTree = "<group>"; };
+		F421F6DA112C2FDB003D46D8 /* VTForecast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTForecast.h; path = Vasttrafik/VTForecast.h; sourceTree = "<group>"; };
+		F421F6DB112C2FDB003D46D8 /* VTForecast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTForecast.m; path = Vasttrafik/VTForecast.m; sourceTree = "<group>"; };
+		F421F880112C464E003D46D8 /* VTLineInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTLineInfo.h; path = Vasttrafik/VTLineInfo.h; sourceTree = "<group>"; };
+		F421F881112C464E003D46D8 /* VTLineInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTLineInfo.m; path = Vasttrafik/VTLineInfo.m; sourceTree = "<group>"; };
 		F4274BC0112AA66D0018F77C /* AugmentedPoiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AugmentedPoiViewController.h; path = AugmentedView/AugmentedPoiViewController.h; sourceTree = "<group>"; };
 		F4274BC1112AA66D0018F77C /* AugmentedPoiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AugmentedPoiViewController.m; path = AugmentedView/AugmentedPoiViewController.m; sourceTree = "<group>"; };
 		F4274BC2112AA66D0018F77C /* AugmentedPoiView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AugmentedPoiView.xib; path = AugmentedView/AugmentedPoiView.xib; sourceTree = "<group>"; };
@@ -285,6 +291,10 @@
 				F421F50E112BDD03003D46D8 /* VTApiHandler.m */,
 				F421F61D112C0393003D46D8 /* VTAnnotation.h */,
 				F421F61E112C0393003D46D8 /* VTAnnotation.m */,
+				F421F6DA112C2FDB003D46D8 /* VTForecast.h */,
+				F421F6DB112C2FDB003D46D8 /* VTForecast.m */,
+				F421F880112C464E003D46D8 /* VTLineInfo.h */,
+				F421F881112C464E003D46D8 /* VTLineInfo.m */,
 			);
 			name = "Västtrafik";
 			sourceTree = "<group>";
@@ -308,8 +318,8 @@
 		F42971321119CC8F0016CDA2 /* MPN */ = {
 			isa = PBXGroup;
 			children = (
-				F41B8275112598AD003B438C /* MPNApiHandler.m */,
 				F41B8278112598AD003B438C /* MPNApiHandler.h */,
+				F41B8275112598AD003B438C /* MPNApiHandler.m */,
 				F41B8276112598AD003B438C /* MPNAnnotation.h */,
 				F41B8277112598AD003B438C /* MPNAnnotation.m */,
 			);
@@ -517,6 +527,8 @@
 				F4274BC3112AA66D0018F77C /* AugmentedPoiViewController.m in Sources */,
 				F421F50F112BDD03003D46D8 /* VTApiHandler.m in Sources */,
 				F421F61F112C0393003D46D8 /* VTAnnotation.m in Sources */,
+				F421F6DC112C2FDB003D46D8 /* VTForecast.m in Sources */,
+				F421F882112C464E003D46D8 /* VTLineInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

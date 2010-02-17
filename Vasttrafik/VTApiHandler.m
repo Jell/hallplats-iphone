@@ -8,7 +8,7 @@
 
 #import "VTApiHandler.h"
 #define VT_GETSTOPS_URL @"http://www.vasttrafik.se/External_Services/TravelPlanner.asmx/GetStopListBasedOnCoordinate?identifier=3e383cd8-30fa-47dc-8379-7d4295dc9db2&xCoord=6403382&yCoord=1272443"
-#define VT_GETNEXT_URL @"http://vasttrafik.se/External_Services/NextTrip.asmx/GetForecast?identifier=3e383cd8-30fa-47dc-8379-7d4295dc9db2&stopId=00007220"
+#define VT_GETNEXT_URL @"http://www.vasttrafik.se/External_Services/NextTrip.asmx/GetForecast?identifier=3e383cd8-30fa-47dc-8379-7d4295dc9db2&stopId=00007172"
 
 @implementation VTApiHandler
 
@@ -17,7 +17,9 @@
 	CLLocationCoordinate2D coordinates = {0,0};
 	
 	NSArray *annotationList = [self getAnnotationsFromCoordinates:coordinates];
-	int i = 0;
+
+ 	int i = 0;
+	[annotationList release];
 	
 	
 }
@@ -29,7 +31,8 @@
 	NSMutableArray *annotationList = [[NSMutableArray alloc] init];
 	
 	NSMutableArray *itemList = (NSMutableArray *)[toBeParsed componentsSeparatedByString:@"&lt;/item&gt;"];
-	if(itemList){
+	
+	if(itemList&&([itemList count] > 1)){
 		[itemList removeLastObject];
 		for(NSString *astring in itemList){
 			
@@ -86,19 +89,17 @@
 				anAnnotation.shortcut = shortcut;
 				anAnnotation.stop_type = stop_type;
 				
+				NSArray *forecastList = [self getForcastListForPoiId:@""];
+				anAnnotation.forecastList = forecastList;
+				
 				[annotationList addObject:anAnnotation];
 			}
-			
-			[list1 release];
-			[list2 release];
-			[list3 release];
-			[list4 release];
-			[list5 release];
-			[attributesList release];
 		}
 	}		
 	
-	return annotationList;
+	NSArray *result = [[NSArray alloc] initWithArray:annotationList];
+	[annotationList release];
+	return result;
 }
 
 
@@ -109,7 +110,66 @@
 
 -(NSArray *)getForcastListForPoiId:(NSString *)poiId
 {
-	return nil;
+	NSString *toBeParsed = [self getXMLfromPoiId:poiId];
+	NSLog(toBeParsed);
+	NSMutableArray *forecastList = [[NSMutableArray alloc] init];
+	
+	NSMutableArray *itemList = (NSMutableArray *)[toBeParsed componentsSeparatedByString:@"&lt;/item&gt;"];
+	if(itemList&&([itemList count] > 1)){
+		[itemList removeLastObject];
+		for(NSString *astring in itemList){
+			
+			NSArray *list1 = [astring componentsSeparatedByString:@"&lt;item"];
+			NSString *cut1 = [list1 lastObject];
+			
+			NSArray *list2 = [cut1 componentsSeparatedByString:@"&gt;&lt;destination&gt;&lt;![CDATA["];
+			NSString *attributes = [list2 objectAtIndex:0];
+			NSString *cut2 = [list2 lastObject];
+			
+			NSArray *list3 = [cut2 componentsSeparatedByString:@"]]&gt;&lt;/destination&gt;"];
+			NSString *destination = [list3 objectAtIndex:0];
+			
+			NSArray *attributesList = [attributes componentsSeparatedByString:@"\""];
+			
+			if([attributesList count] >= 24){
+				VTForecast *aForecast = [[[VTForecast alloc] init] retain];
+				
+				NSString *lineNumber = [attributesList objectAtIndex:7];
+				
+				/*
+				UIColor *foregroundColor = [attributesList objectAtIndex:9];
+				UIColor *backgroundColor = [attributesList objectAtIndex:11];
+				*/
+				
+				UIColor *foregroundColor = [UIColor whiteColor];
+				UIColor *backgroundColor = [UIColor blueColor];
+				
+				NSString *imageType = [attributesList objectAtIndex:3];
+				
+				NSString *nastaTime = [attributesList objectAtIndex:13];
+				NSString *darefterTime = [attributesList objectAtIndex:21];
+				
+				BOOL nastaHandicap = ![(NSString *)[attributesList objectAtIndex:15] isEqual:@""];
+				BOOL darefterHandicap = ![(NSString *)[attributesList objectAtIndex:23] isEqual:@""];
+				
+				aForecast.lineNumber = lineNumber;
+				aForecast.foregroundColor = foregroundColor;
+				aForecast.backgroundColor = backgroundColor;
+				aForecast.imageType = imageType;
+				aForecast.destination = destination;
+				aForecast.nastaTime = nastaTime;
+				aForecast.nastaHandicap = nastaHandicap;
+				aForecast.darefterTime = darefterTime;
+				aForecast.darefterHandicap = darefterHandicap;
+				
+				[forecastList addObject:aForecast];
+			}
+		}
+	}
+	
+	NSArray *result = [[NSArray alloc] initWithArray:forecastList];
+	[forecastList release];
+	return result;
 }
 
 -(NSString *)getXMLfromPoiId:(NSString *)poiId{

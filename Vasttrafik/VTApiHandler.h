@@ -9,6 +9,7 @@
 #import "MPNAnnotation.h"
 #import <CoreLocation/CoreLocation.h>
 #import "VTAnnotation.h"
+#import "VTForecast.h"
 
 @interface VTApiHandler : NSObject {
 
