@@ -13,8 +13,10 @@
 @synthesize mLocationManager;
 @synthesize mAccelerometer;
 @synthesize viewDisplayedController;
+@synthesize mMapViewController;
+@synthesize mAugmentedViewController;
 @synthesize currentLocation;
-@synthesize mpnApiHandler;
+@synthesize mVTApiHandler;
 @synthesize annotationList;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -29,18 +31,24 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	mpnApiHandler = [[MPNApiHandler alloc] init];
+	//mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
 	[activityIndicator startAnimating];
 	
+	mVTApiHandler = [[VTApiHandler alloc] init];
+	
+
 	currentLocation = nil;
-	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
+	mAugmentedViewController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
+	mMapViewController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
+	viewDisplayedController = mAugmentedViewController;
 	[viewDisplayed addSubview:viewDisplayedController.view];
 	augmentedIsOn = TRUE;
 	
 	//Enable Location Manager
 	mLocationManager = [[CLLocationManager alloc] init];
 	mLocationManager.delegate = self; // send loc updates to myself
+	firstLocationUpdate = YES;
 	[mLocationManager startUpdatingLocation];
 	[mLocationManager startUpdatingHeading];
 	
@@ -57,11 +65,6 @@
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
 	[mAccelerometer setUpdateInterval:1.0f / (5.0f * (float) ACCELERATION_BUFFER_SIZE)];
 	[mAccelerometer setDelegate:self];
-	
-	//start updating POI list
-	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
-	[opQueue addOperation:request];
-	[request release];
 }
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
@@ -77,6 +80,11 @@
 	//Launch flipside Modal View
 	FlipsideViewController *controller = [[FlipsideViewController alloc] initWithNibName:@"FlipsideView" bundle:nil];
 	controller.delegate = self;
+	int selected = [viewDisplayedController selectedPoi];
+	if(selected >=0){
+		MPNAnnotation *anAnnotation = [annotationList objectAtIndex:selected];
+		[controller setAnnotationDisplayed:anAnnotation];
+	}
 	controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 	[self presentModalViewController:controller animated:YES];
 	
@@ -94,18 +102,23 @@
 
 - (void) performUpdate:(id)object{
 	//get the JSON
-	CLLocationCoordinate2D upperLeft = {57.60,11.80};
-	CLLocationCoordinate2D lowerRight = {57.87,12.13};
-	id response = [mpnApiHandler getAnnotationsFromCoordinates:upperLeft toCoordinates:lowerRight];
+	CLLocationCoordinate2D center = {57.7119, 11.9683};
+	if(currentLocation){
+		center = currentLocation.coordinate;
+	}
+	
+	id response = [mVTApiHandler getAnnotationsFromCoordinates:center];
+		
 	[(MapViewController *)object performSelectorOnMainThread:@selector(updatePerformed:) withObject:response waitUntilDone:YES];
+		
 }
 
 - (void) updatePerformed:(id)response {
 	
+	[viewDisplayedController setAnnotationList:(NSArray *)response];
+	
 	[annotationList release];
 	annotationList = (NSArray *)response;
-
-	[viewDisplayedController setAnnotationList:annotationList];
 	
 	[activityIndicator stopAnimating];
 	updateButton.enabled = TRUE;
@@ -179,6 +192,14 @@
 	[currentLocation release];
 	currentLocation = [newLocation copy];
 	
+	if(firstLocationUpdate){
+		//start updating POI list
+		NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
+		[opQueue addOperation:request];
+		[request release];
+		firstLocationUpdate = NO;
+	}
+	
 	//Dispatch new Location
 	[viewDisplayedController locationManager:manager didUpdateToLocation:currentLocation fromLocation:oldLocation];
 }
@@ -217,7 +238,7 @@
 
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	
-	[self loadViewController:[[MapViewController alloc] initWithNibName:@"MapView" bundle:nil]
+	[self loadViewController:mMapViewController
 			  withTransition:applicationLoadViewIn];
 }
 
@@ -244,7 +265,7 @@
 	}
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	
-	[self loadViewController:[[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil]
+	[self loadViewController:mAugmentedViewController
 			  withTransition:applicationLoadViewIn];
 
 }
@@ -253,8 +274,7 @@
 			withTransition:(CATransition *)transition
 {
 	int selectedPoi = [viewDisplayedController selectedPoi];
-	[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
-	[viewDisplayedController release];
+	[viewDisplayedController.view removeFromSuperview];
 	viewDisplayedController = viewController;
 	[[viewDisplayed layer] addAnimation:transition forKey:kCATransitionReveal];
 	[viewDisplayed addSubview:viewDisplayedController.view];
@@ -273,11 +293,12 @@
 
 - (void)viewDidUnload {
 	[opQueue cancelAllOperations];
-	[mpnApiHandler release];
+	[mVTApiHandler release];
 	[mLocationManager release];
 	[mAccelerometer release];
 	[opQueue release];
-	[viewDisplayedController release];
+	[mAugmentedViewController release];
+	[mMapViewController release];
 	
 	free(xxArray);
 	free(yyArray);
@@ -289,11 +310,12 @@
 
 - (void)dealloc {
 	[opQueue cancelAllOperations];
-	[mpnApiHandler release];
+	[mVTApiHandler release];
 	[mLocationManager release];
 	[mAccelerometer release];
 	[opQueue release];
-	[viewDisplayedController release];
+	[mAugmentedViewController release];
+	[mMapViewController release];
 	
 	free(xxArray);
 	free(yyArray);

@@ -12,7 +12,7 @@
 #import <QuartzCore/QuartzCore.h>
 #include "Math.h"
 #import "ARViewProtocol.h"
-#import "MPNApiHandler.h"
+#import "VTAnnotation.h"
 
 @interface MapViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
 	IBOutlet MKMapView *mMapView;

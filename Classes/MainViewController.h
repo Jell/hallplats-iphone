@@ -11,20 +11,27 @@
 #import "AugmentedViewController.h"
 #import "ARViewProtocol.h"
 #import <QuartzCore/QuartzCore.h>
+#import "VTApiHandler.h"
 
 #define ACCELERATION_BUFFER_SIZE 5
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate, CLLocationManagerDelegate> {
 	IBOutlet UIView *viewDisplayed;
 	UIViewController<ARViewDelegate> *viewDisplayedController;
+	
+	MapViewController *mMapViewController;
+	AugmentedViewController *mAugmentedViewController;
+	
 	IBOutlet UIActivityIndicatorView* activityIndicator;
 	IBOutlet UIButton *updateButton;
 	
 	CLLocationManager *mLocationManager;
 	UIAccelerometer *mAccelerometer;
-	MPNApiHandler *mpnApiHandler;
+	VTApiHandler *mVTApiHandler;
+	
 	UIInterfaceOrientation mInterfaceOrientation;
 	bool augmentedIsOn;
+	bool firstLocationUpdate;
 	NSOperationQueue *opQueue;
 	CLLocation *currentLocation;
 	NSArray *annotationList;
@@ -40,9 +47,11 @@
 @property (retain) CLLocation *currentLocation;
 @property (retain) CLLocationManager *mLocationManager;
 @property (retain) NSArray *annotationList;
-@property (retain) MPNApiHandler *mpnApiHandler;
+@property (retain) VTApiHandler *mVTApiHandler;
 @property (retain) UIAccelerometer *mAccelerometer;
-@property (retain) UIViewController *viewDisplayedController;
+@property (assign) UIViewController *viewDisplayedController;
+@property (retain) MapViewController *mMapViewController;
+@property (retain) AugmentedViewController *mAugmentedViewController;
 
 - (IBAction)showInfo;
 - (void)loadMapView;

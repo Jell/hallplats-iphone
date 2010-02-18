@@ -21,7 +21,9 @@
 	currentLocation = nil;
 	selectedPoi = -1;
 	
-	infoLabelDisplay = [[AugmentedPoiView alloc] initWithFrame:CGRectMake(-75.0, -30.0, 180.0, 40.0)];
+	infoLabelDisplay = [[AugmentedPoiViewController alloc] initWithNibName:@"AugmentedPoiView" bundle:nil];
+
+	[poiOverlay addSubview:infoLabelDisplay.view];
 	
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
@@ -58,17 +60,30 @@
 	
 	float jitter = angleXY - headinAngle;
 	int i = 0;
+	[self translateView:infoLabelDisplay.view withTeta:3.14 andDistance:0];
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta = jitter - [aPoi teta];
 		float dist = 70.0 - 70.0*[aPoi distance] / maxDistance;
 		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist];
+		
+		if(i == selectedPoi){
+			[self translateView:infoLabelDisplay.view withTeta:teta andDistance:-1];
+			[infoLabelDisplay setArrowLength:dist];
+		}
 		i++;
 	}
 }
 
 -(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance{
 	if(sin(teta)<0){
-		aView.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), distance, 0);
+		if(distance>=0){
+			aView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), distance, distance),
+												   0.5+(distance/140.0),
+												   0.5+(distance/140.0),
+												   1.0);
+		}else{
+			aView.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), distance, distance);
+		}
 	}else{
 		aView.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
 	}
@@ -110,57 +125,40 @@
 		origin = currentLocation.coordinate;
 	}
 	maxDistance = 0.0;
-	CGPoint center = {260, 260};
-	for(MPNAnnotation *anAnnotation in newList){
-		AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
-		/*
-		UILabel *aLabel = [[UILabel alloc ] initWithFrame:CGRectMake(0.0, 210.0, 60.0, 20.0)];
-		aLabel.center = center;
-		aLabel.textAlignment =  UITextAlignmentCenter;
-		aLabel.textColor = [UIColor whiteColor];
-		aLabel.backgroundColor = [UIColor blackColor];
-		aLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
-		[self.view addSubview:aLabel];
-		aLabel.text = [anAnnotation title];
-		*/
 
-		/*
-		UIImageView *anImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
-		anImage.center = center;
-		[self.view addSubview:anImage];
-		[ar_poiList addObject:aPoi];
-		[aPoi release];
-		[ar_poiViews addObject:anImage];
-		[anImage release];
-		*/
-		
-		UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-		aButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
-		[aButton setTitle:@"" forState:UIControlStateNormal];
-		aButton.backgroundColor = [UIColor clearColor];
-		UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
-		[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
-		UIImage *buttonImagePressed = [UIImage imageNamed:@"augmentedpoiselect.png"];
-		[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
-		[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDown];
-		
-		aButton.center = center;
-		[poiOverlay addSubview:aButton];
+	for(VTAnnotation *anAnnotation in newList){
+		AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
 		[ar_poiList addObject:aPoi];
 		if([aPoi distance] > maxDistance) maxDistance = [aPoi distance];
 		[aPoi release];
-		[ar_poiViews addObject:aButton];
-		[aButton release];
-		
+		[self addPoiView];
 	}
 }
 
+-(void)addPoiView{
+	CGPoint center = {260, 260};
+	
+	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	aButton.exclusiveTouch = NO;
+	aButton.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+	aButton.backgroundColor = [UIColor clearColor];
+	UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
+	[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
+	UIImage *buttonImagePressed = [UIImage imageNamed:@"augmentedpoiselect.png"];
+	[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
+	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDown];
+	
+	aButton.center = center;
+	[poiOverlay addSubview:aButton];
+	[ar_poiViews addObject:aButton];
+	[aButton release];
+	
+}
 -(void) poiSelected:(id) poiViewId{
 	
 	if(selectedPoi >= 0){
 		UIButton *previousSelectedButton = [ar_poiViews objectAtIndex:selectedPoi];
 		[previousSelectedButton setEnabled:TRUE];
-		[infoLabelDisplay removeFromSuperview];
 		[poiOverlay sendSubviewToBack:previousSelectedButton];
 		[poiOverlay sendSubviewToBack:gridView];
 	}
@@ -174,11 +172,18 @@
 		UIButton *selectedView = [ar_poiViews objectAtIndex:selectedPoi];
 		[selectedView setEnabled:FALSE];
 		[poiOverlay bringSubviewToFront:selectedView];
-		MPNAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
-		[selectedView addSubview:infoLabelDisplay];
+		[poiOverlay bringSubviewToFront:infoLabelDisplay.view];
+		VTAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
 		[infoLabelDisplay setText:[selectedAnnotation title]];
+		[infoLabelDisplay clearTramLines];
 		
-		//[titleLabel setText:[selectedAnnotation title]];
+		NSArray *lineList = [selectedAnnotation getLineList];
+		for (VTLineInfo *aLine in lineList) {
+			[infoLabelDisplay addTramLine:aLine.lineNumber
+						  backgroundColor:aLine.backgroundColor
+						  foregroundColor:aLine.foregroundColor];
+		}
+		
 	}
 }
 
