@@ -39,6 +39,12 @@
 		F41B8299112598F0003B438C /* CoordinatesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B824F11259884003B438C /* CoordinatesTests.m */; };
 		F41B829A112598F5003B438C /* MPNAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B8277112598AD003B438C /* MPNAnnotation.m */; };
 		F41B829B112598F8003B438C /* AugmentedPoi.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B827C112598BA003B438C /* AugmentedPoi.m */; };
+		F41FF248112D37650015A2B1 /* SwedishGridTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F41FF247112D37650015A2B1 /* SwedishGridTests.m */; };
+		F41FF249112D37CD0015A2B1 /* VTApiHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F50E112BDD03003D46D8 /* VTApiHandler.m */; };
+		F41FF24A112D37D40015A2B1 /* VTAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F61E112C0393003D46D8 /* VTAnnotation.m */; };
+		F41FF24B112D37D80015A2B1 /* VTForecast.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F6DB112C2FDB003D46D8 /* VTForecast.m */; };
+		F41FF24C112D37DB0015A2B1 /* VTLineInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F881112C464E003D46D8 /* VTLineInfo.m */; };
+		F41FF29D112D38840015A2B1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		F421F50F112BDD03003D46D8 /* VTApiHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F50E112BDD03003D46D8 /* VTApiHandler.m */; };
 		F421F61F112C0393003D46D8 /* VTAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F61E112C0393003D46D8 /* VTAnnotation.m */; };
 		F421F6DC112C2FDB003D46D8 /* VTForecast.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F6DB112C2FDB003D46D8 /* VTForecast.m */; };
@@ -115,6 +121,7 @@
 		F41B8290112598DD003B438C /* MainView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainView.xib; path = Resources/MainView.xib; sourceTree = "<group>"; };
 		F41B8291112598DD003B438C /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
 		F41B8292112598DD003B438C /* MapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MapView.xib; path = Resources/MapView.xib; sourceTree = "<group>"; };
+		F41FF247112D37650015A2B1 /* SwedishGridTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwedishGridTests.m; path = Tests/SwedishGridTests.m; sourceTree = "<group>"; };
 		F421F50D112BDD03003D46D8 /* VTApiHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTApiHandler.h; path = Vasttrafik/VTApiHandler.h; sourceTree = "<group>"; };
 		F421F50E112BDD03003D46D8 /* VTApiHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTApiHandler.m; path = Vasttrafik/VTApiHandler.m; sourceTree = "<group>"; };
 		F421F61D112C0393003D46D8 /* VTAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTAnnotation.h; path = Vasttrafik/VTAnnotation.h; sourceTree = "<group>"; };
@@ -172,6 +179,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F41FF29D112D38840015A2B1 /* UIKit.framework in Frameworks */,
 				F4FABA9811216D650065CF90 /* CoreLocation.framework in Frameworks */,
 				F4FAB9FD1121698D0065CF90 /* SenTestingKit.framework in Frameworks */,
 			);
@@ -330,6 +338,7 @@
 			isa = PBXGroup;
 			children = (
 				F41B824F11259884003B438C /* CoordinatesTests.m */,
+				F41FF247112D37650015A2B1 /* SwedishGridTests.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -539,6 +548,11 @@
 				F41B8299112598F0003B438C /* CoordinatesTests.m in Sources */,
 				F41B829A112598F5003B438C /* MPNAnnotation.m in Sources */,
 				F41B829B112598F8003B438C /* AugmentedPoi.m in Sources */,
+				F41FF248112D37650015A2B1 /* SwedishGridTests.m in Sources */,
+				F41FF249112D37CD0015A2B1 /* VTApiHandler.m in Sources */,
+				F41FF24A112D37D40015A2B1 /* VTAnnotation.m in Sources */,
+				F41FF24B112D37D80015A2B1 /* VTForecast.m in Sources */,
+				F41FF24C112D37DB0015A2B1 /* VTLineInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
