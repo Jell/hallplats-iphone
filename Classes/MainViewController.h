@@ -27,6 +27,7 @@
 	
 	UIInterfaceOrientation mInterfaceOrientation;
 	bool augmentedIsOn;
+	bool firstLocationUpdate;
 	NSOperationQueue *opQueue;
 	CLLocation *currentLocation;
 	NSArray *annotationList;

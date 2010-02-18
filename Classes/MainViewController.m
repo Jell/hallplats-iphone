@@ -44,6 +44,7 @@
 	//Enable Location Manager
 	mLocationManager = [[CLLocationManager alloc] init];
 	mLocationManager.delegate = self; // send loc updates to myself
+	firstLocationUpdate = YES;
 	[mLocationManager startUpdatingLocation];
 	[mLocationManager startUpdatingHeading];
 	
@@ -60,11 +61,6 @@
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
 	[mAccelerometer setUpdateInterval:1.0f / (5.0f * (float) ACCELERATION_BUFFER_SIZE)];
 	[mAccelerometer setDelegate:self];
-	
-	//start updating POI list
-	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
-	[opQueue addOperation:request];
-	[request release];
 }
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
@@ -192,7 +188,13 @@
 	[currentLocation release];
 	currentLocation = [newLocation copy];
 	
-	
+	if(firstLocationUpdate){
+		//start updating POI list
+		NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
+		[opQueue addOperation:request];
+		[request release];
+		firstLocationUpdate = NO;
+	}
 	
 	//Dispatch new Location
 	[viewDisplayedController locationManager:manager didUpdateToLocation:currentLocation fromLocation:oldLocation];

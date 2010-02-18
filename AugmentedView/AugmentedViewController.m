@@ -67,7 +67,7 @@
 		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist];
 		
 		if(i == selectedPoi){
-			[self translateView:infoLabelDisplay.view withTeta:teta andDistance:0];
+			[self translateView:infoLabelDisplay.view withTeta:teta andDistance:-1];
 			[infoLabelDisplay setArrowLength:dist];
 		}
 		i++;
@@ -76,7 +76,14 @@
 
 -(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance{
 	if(sin(teta)<0){
-		aView.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), distance, 0);
+		if(distance>=0){
+			aView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), distance, distance),
+												   0.5+(distance/140.0),
+												   0.5+(distance/140.0),
+												   1.0);
+		}else{
+			aView.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), distance, distance);
+		}
 	}else{
 		aView.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
 	}
@@ -133,7 +140,7 @@
 	
 	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	aButton.exclusiveTouch = NO;
-	aButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
+	aButton.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
 	aButton.backgroundColor = [UIColor clearColor];
 	UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
 	[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
