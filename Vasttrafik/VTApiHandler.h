@@ -35,4 +35,7 @@ static const float deg_to_rad =  M_PI / 180.0;
 - (CLLocationCoordinate2D) rt90_to_GPS:(CLLocationCoordinate2D)gpsCoordinates;
 - (CLLocationCoordinate2D) gps_to_RT90:(CLLocationCoordinate2D)gpsCoordinates;
 
+-(int)charHexToInt:(unichar)charValue;
+-(UIColor *)stringToColor:(NSString *)stringColor;
+
 @end

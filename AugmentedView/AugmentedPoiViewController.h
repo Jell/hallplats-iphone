@@ -20,5 +20,5 @@
 -(void)setText:(NSString *) text;
 -(void)setArrowLength:(float) length;
 -(void)clearTramLines;
--(void)addTramLine:(NSString *)name color:(UIColor *)color;
+-(void)addTramLine:(NSString *)name backgroundColor:(UIColor *)backgroundColor foregroundColor:(UIColor *)foregroundColor;
 @end

@@ -13,6 +13,8 @@
 @synthesize mLocationManager;
 @synthesize mAccelerometer;
 @synthesize viewDisplayedController;
+@synthesize mMapViewController;
+@synthesize mAugmentedViewController;
 @synthesize currentLocation;
 @synthesize mVTApiHandler;
 @synthesize annotationList;
@@ -37,7 +39,9 @@
 	
 
 	currentLocation = nil;
-	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
+	mAugmentedViewController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
+	mMapViewController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
+	viewDisplayedController = mAugmentedViewController;
 	[viewDisplayed addSubview:viewDisplayedController.view];
 	augmentedIsOn = TRUE;
 	
@@ -234,7 +238,7 @@
 
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	
-	[self loadViewController:[[MapViewController alloc] initWithNibName:@"MapView" bundle:nil]
+	[self loadViewController:mMapViewController
 			  withTransition:applicationLoadViewIn];
 }
 
@@ -261,7 +265,7 @@
 	}
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	
-	[self loadViewController:[[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil]
+	[self loadViewController:mAugmentedViewController
 			  withTransition:applicationLoadViewIn];
 
 }
@@ -270,9 +274,7 @@
 			withTransition:(CATransition *)transition
 {
 	int selectedPoi = [viewDisplayedController selectedPoi];
-	[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
-	[viewDisplayedController resignFirstResponder];
-	[viewDisplayedController release];
+	[viewDisplayedController.view removeFromSuperview];
 	viewDisplayedController = viewController;
 	[[viewDisplayed layer] addAnimation:transition forKey:kCATransitionReveal];
 	[viewDisplayed addSubview:viewDisplayedController.view];
@@ -295,7 +297,8 @@
 	[mLocationManager release];
 	[mAccelerometer release];
 	[opQueue release];
-	[viewDisplayedController release];
+	[mAugmentedViewController release];
+	[mMapViewController release];
 	
 	free(xxArray);
 	free(yyArray);
@@ -311,7 +314,8 @@
 	[mLocationManager release];
 	[mAccelerometer release];
 	[opQueue release];
-	[viewDisplayedController release];
+	[mAugmentedViewController release];
+	[mMapViewController release];
 	
 	free(xxArray);
 	free(yyArray);

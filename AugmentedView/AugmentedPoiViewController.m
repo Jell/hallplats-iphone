@@ -53,22 +53,19 @@
 
 }
 
--(void)addTramLine:(NSString *)name color:(UIColor *)color{
+-(void)addTramLine:(NSString *)name backgroundColor:(UIColor *)backgroundColor foregroundColor:(UIColor *)foregroundColor{
 	UILabel *tramNumber = [[UILabel alloc ] initWithFrame:CGRectMake(0.0 + 25*tramLinesNumber, 0.0, 22.0, 20.0)];
 	tramNumber.textAlignment =  UITextAlignmentCenter;
 	tramNumber.lineBreakMode = UILineBreakModeClip;
-	if(color == [UIColor whiteColor] || color == [UIColor yellowColor]){
-		tramNumber.textColor = [UIColor blackColor];
-	}else{
-		tramNumber.textColor = [UIColor whiteColor];
-	}
-	tramNumber.backgroundColor = color;
+	tramNumber.textColor = foregroundColor;
+	tramNumber.backgroundColor = backgroundColor;
 	tramNumber.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(10.0)];
 	tramNumber.text = name;
 	[tramScroll addSubview:tramNumber];
 	[lineViews addObject:tramNumber];
-	tramLinesNumber++;
 	[tramScroll setContentSize:CGSizeMake(20.0 + 25.0 * tramLinesNumber, 20.0)];
+	tramLinesNumber++;
+
 	[tramNumber release];
 }
 

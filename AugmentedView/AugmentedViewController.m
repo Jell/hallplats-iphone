@@ -179,7 +179,9 @@
 		
 		NSArray *lineList = [selectedAnnotation getLineList];
 		for (VTLineInfo *aLine in lineList) {
-			[infoLabelDisplay addTramLine:aLine.lineNumber color:aLine.backgroundColor];
+			[infoLabelDisplay addTramLine:aLine.lineNumber
+						  backgroundColor:aLine.backgroundColor
+						  foregroundColor:aLine.foregroundColor];
 		}
 		
 	}

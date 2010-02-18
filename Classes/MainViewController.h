@@ -18,6 +18,10 @@
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate, CLLocationManagerDelegate> {
 	IBOutlet UIView *viewDisplayed;
 	UIViewController<ARViewDelegate> *viewDisplayedController;
+	
+	MapViewController *mMapViewController;
+	AugmentedViewController *mAugmentedViewController;
+	
 	IBOutlet UIActivityIndicatorView* activityIndicator;
 	IBOutlet UIButton *updateButton;
 	
@@ -45,7 +49,9 @@
 @property (retain) NSArray *annotationList;
 @property (retain) VTApiHandler *mVTApiHandler;
 @property (retain) UIAccelerometer *mAccelerometer;
-@property (retain) UIViewController *viewDisplayedController;
+@property (assign) UIViewController *viewDisplayedController;
+@property (retain) MapViewController *mMapViewController;
+@property (retain) AugmentedViewController *mAugmentedViewController;
 
 - (IBAction)showInfo;
 - (void)loadMapView;

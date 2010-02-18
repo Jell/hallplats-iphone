@@ -44,10 +44,11 @@
 				NSArray *list5 = [cut4 componentsSeparatedByString:@"]]&gt;&lt;/county&gt;"];
 				NSString *county = [list5 objectAtIndex:0];
 				
+				/*
 				NSLog(friendly_name);
 				NSLog(stop_name);
 				NSLog(county);
-				
+				*/
 				NSArray *attributesList = [attributes componentsSeparatedByString:@"\""];
 				
 				if([attributesList count]>=16){
@@ -60,10 +61,10 @@
 					int rt90_x = [[attributesList objectAtIndex:13] intValue];
 					int rt90_y = [[attributesList objectAtIndex:15] intValue];
 					
+					/*
 					NSLog(@"\nOrder: %d\nStop Id: %@\nStop Id with Hash: %@\nDistance: %dm\nShortcut: %@\nStop Type: %@\nrt90_x: %d\nrt90_y: %d\n", order, stop_id, stop_id_with_hash_key, distance, 
 						  shortcut, stop_type, rt90_x, rt90_y);
-					
-					
+					*/
 					CLLocationCoordinate2D location = {(float)rt90_x, (float)rt90_y};
 					VTAnnotation *anAnnotation = [[VTAnnotation alloc] initWithCoordinate:[self rt90_to_GPS:location]];
 					
@@ -99,13 +100,21 @@
 	CLLocationCoordinate2D centerRT90 = [self gps_to_RT90:centerCoordinates];
 	int x = centerRT90.latitude;
 	int y = centerRT90.longitude;
-	return [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat: VT_GETSTOPS_URL, x, y]]];
+	for(int i = 0; i<5; i++){
+		NSString *result = [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat: VT_GETSTOPS_URL, x, y]]];
+		NSString *test = [result substringToIndex:14];
+		if(![test isEqual:@"<!DOCTYPE html"]){
+			return result;
+		}
+	}
+	return @"";
+
 }
 
 -(NSArray *)getForcastListForPoiId:(NSString *)poiId
 {
 	NSString *toBeParsed = [self getXMLfromPoiId:poiId];
-	NSLog(toBeParsed);
+	/*NSLog(toBeParsed);*/
 	NSMutableArray *forecastList = [[NSMutableArray alloc] init];
 	
 	NSMutableArray *itemList = (NSMutableArray *)[toBeParsed componentsSeparatedByString:@"&lt;/item&gt;"];
@@ -130,13 +139,8 @@
 				
 				NSString *lineNumber = [attributesList objectAtIndex:7];
 				
-				/*
-				UIColor *foregroundColor = [attributesList objectAtIndex:9];
-				UIColor *backgroundColor = [attributesList objectAtIndex:11];
-				*/
-				
-				UIColor *foregroundColor = [UIColor whiteColor];
-				UIColor *backgroundColor = [UIColor blueColor];
+				UIColor *foregroundColor = [self stringToColor:[attributesList objectAtIndex:9]];
+				UIColor *backgroundColor = [self stringToColor:[attributesList objectAtIndex:11]];
 				
 				NSString *imageType = [attributesList objectAtIndex:3];
 				
@@ -167,25 +171,38 @@
 }
 
 -(NSString *)getXMLfromPoiId:(NSString *)poiId{
-	return [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat:VT_GETNEXT_URL, poiId]]];
+	
+	for(int i = 0; i<3; i++){
+		NSString *result = [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat:VT_GETNEXT_URL, poiId]]];
+		NSString *test = [result substringToIndex:14];
+		if(![test isEqual:@"<!DOCTYPE html"]){
+			return result;
+		}
+	}
+	return @"";
 }
 
 - (NSString *)stringWithUrl:(NSURL *)url
 {
 	NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url
 												cachePolicy:NSURLRequestReturnCacheDataElseLoad
-											timeoutInterval:30];
-	// Fetch the JSON response
-	NSData *urlData;
-	NSURLResponse *response;
-	NSError *error;
-	
-	// Make synchronous request
-	urlData = [NSURLConnection sendSynchronousRequest:urlRequest
-									returningResponse:&response
-												error:&error];
- 	// Construct a String around the Data from the response
-	return [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
+											timeoutInterval:2];
+	for(int i = 0; i<3;i++){
+		// Fetch the JSON response
+		NSData *urlData;
+		NSURLResponse *response;
+		NSError *error;
+		
+		// Make synchronous request
+		urlData = [NSURLConnection sendSynchronousRequest:urlRequest
+										returningResponse:&response
+													error:&error];
+		// Construct a String around the Data from the response
+		if(!error){
+			return [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
+		}
+	}
+	return @"";
 }
 
 
@@ -236,6 +253,7 @@
 	CLLocationCoordinate2D result = {lat_radian * 180.0 / M_PI,lng_radian * 180.0 / M_PI};
 	return result;
 }
+
 - (CLLocationCoordinate2D) gps_to_RT90:(CLLocationCoordinate2D)gpsCoordinates{
 
 	float latitude = gpsCoordinates.latitude;
@@ -285,7 +303,30 @@
 	return result;
 }
 
+-(int)charHexToInt:(unichar)charValue{
+	int result = charValue - 48;
+	if(result>9){
+		result -= 7;
+	}
+	if(result<0 || result>15){
+		return 0;
+	}else{
+		return result;
+	}
+}
 
+/** String should be #RRGGBB **/
+-(UIColor *)stringToColor:(NSString *)stringColor{
+	NSString *capitalLetters = [stringColor uppercaseString];
+	float red = [self charHexToInt:[capitalLetters characterAtIndex:1]]*16 +
+				[self charHexToInt:[capitalLetters characterAtIndex:2]];
+	float green = [self charHexToInt:[capitalLetters characterAtIndex:3]]*16 +
+				[self charHexToInt:[capitalLetters characterAtIndex:4]];
+	float blue = [self charHexToInt:[capitalLetters characterAtIndex:5]]*16 +
+				[self charHexToInt:[capitalLetters characterAtIndex:6]];
+	
+	return [UIColor colorWithRed:red/255.0 green:green/255.0 blue:blue/255.0 alpha:1.0];
+}
 
 
 
