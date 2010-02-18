@@ -162,13 +162,10 @@
 	mMapView.layer.transform = CATransform3DMakeRotation(teta, 0., 0., 1.);
 	CATransform3D annotationRotation = CATransform3DMakeRotation(phase-teta, 0., 0., 1.);
 	//Set animation and rotation for the annotations
-	int annotationNumber = mMapView.annotations.count;
-	for(int i = 0; i < annotationNumber; i++){
-		
-		CALayer *annotationLayer = [mMapView viewForAnnotation: (VTAnnotation *)[mMapView.annotations objectAtIndex:i]].layer;
+	for(VTAnnotation *annotation in mMapView.annotations){
+		CALayer *annotationLayer = [mMapView viewForAnnotation: annotation].layer;
 		annotationLayer.transform = annotationRotation;
 		annotationLayer.zPosition = cos(phase-teta)*annotationLayer.position.y - sin(phase-teta)*annotationLayer.position.x;
-		
 	}
 }
 
