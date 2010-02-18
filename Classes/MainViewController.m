@@ -8,14 +8,12 @@
 
 #import "MainViewController.h"
 #import "MainView.h"
-#import "VTApiHandler.h"
 
 @implementation MainViewController
 @synthesize mLocationManager;
 @synthesize mAccelerometer;
 @synthesize viewDisplayedController;
 @synthesize currentLocation;
-@synthesize mpnApiHandler;
 @synthesize mVTApiHandler;
 @synthesize annotationList;
 
@@ -30,27 +28,14 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	/*
-	mpnApiHandler = [[MPNApiHandler alloc] init];
+	
+	//mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
 	[activityIndicator startAnimating];
-	*/
+	
 	mVTApiHandler = [[VTApiHandler alloc] init];
 	
-	CLLocationCoordinate2D coordinates = {0,0};
-	while (YES) {
-		NSArray *testList = [mVTApiHandler getAnnotationsFromCoordinates:coordinates];
-		
-		for(VTAnnotation *annotation in testList){
-			NSArray *lineList = [annotation getLineList];
-			int i = 0;
-		}
-		
-		[testList release];
-	}
-	
 
-	/*
 	currentLocation = nil;
 	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 	[viewDisplayed addSubview:viewDisplayedController.view];
@@ -80,7 +65,6 @@
 	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
 	[opQueue addOperation:request];
 	[request release];
-	 */
 }
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
@@ -118,9 +102,8 @@
 
 - (void) performUpdate:(id)object{
 	//get the JSON
-	CLLocationCoordinate2D upperLeft = {57.60,11.80};
-	CLLocationCoordinate2D lowerRight = {57.87,12.13};
-	id response = [mpnApiHandler getAnnotationsFromCoordinates:upperLeft toCoordinates:lowerRight];
+	CLLocationCoordinate2D center = {57.7119, 11.9683};
+	id response = [mVTApiHandler getAnnotationsFromCoordinates:center];
 	[(MapViewController *)object performSelectorOnMainThread:@selector(updatePerformed:) withObject:response waitUntilDone:YES];
 }
 
@@ -297,7 +280,6 @@
 
 - (void)viewDidUnload {
 	[opQueue cancelAllOperations];
-	[mpnApiHandler release];
 	[mVTApiHandler release];
 	[mLocationManager release];
 	[mAccelerometer release];
@@ -314,7 +296,6 @@
 
 - (void)dealloc {
 	[opQueue cancelAllOperations];
-	[mpnApiHandler release];
 	[mVTApiHandler release];
 	[mLocationManager release];
 	[mAccelerometer release];

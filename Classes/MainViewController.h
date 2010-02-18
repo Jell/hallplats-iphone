@@ -23,7 +23,6 @@
 	
 	CLLocationManager *mLocationManager;
 	UIAccelerometer *mAccelerometer;
-	MPNApiHandler *mpnApiHandler;
 	VTApiHandler *mVTApiHandler;
 	
 	UIInterfaceOrientation mInterfaceOrientation;
@@ -43,7 +42,6 @@
 @property (retain) CLLocation *currentLocation;
 @property (retain) CLLocationManager *mLocationManager;
 @property (retain) NSArray *annotationList;
-@property (retain) MPNApiHandler *mpnApiHandler;
 @property (retain) VTApiHandler *mVTApiHandler;
 @property (retain) UIAccelerometer *mAccelerometer;
 @property (retain) UIViewController *viewDisplayedController;

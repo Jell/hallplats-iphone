@@ -12,6 +12,7 @@
 #import "ARViewProtocol.h"
 #import "AugmentedPoi.h"
 #import "AugmentedPoiViewController.h"
+#import "VTAnnotation.h"
 
 #define HEADING_BUFFER_SIZE 5
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{

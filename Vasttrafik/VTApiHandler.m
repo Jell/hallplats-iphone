@@ -12,18 +12,6 @@
 
 @implementation VTApiHandler
 
--(void)runTest
-{
-	CLLocationCoordinate2D coordinates = {0,0};
-	
-	NSArray *annotationList = [self getAnnotationsFromCoordinates:coordinates];
-
- 	int i = 0;
-	[annotationList release];
-	
-	
-}
-
 -(NSArray *)getAnnotationsFromCoordinates:(CLLocationCoordinate2D) centerCoordinates
 {
 	NSString *toBeParsed = [self getXMLfromCoordinates:centerCoordinates];
@@ -75,7 +63,7 @@
 				
 				
 				CLLocationCoordinate2D location = {(float)rt90_x, (float)rt90_y};
-				VTAnnotation *anAnnotation = [[VTAnnotation alloc] initWithCoordinate:location];
+				VTAnnotation *anAnnotation = [[VTAnnotation alloc] initWithCoordinate:[self rt90_to_GPS:location]];
 				
 				[anAnnotation setTitle:stop_name subtitle:[NSString stringWithFormat:@"%dm", distance]];
 				

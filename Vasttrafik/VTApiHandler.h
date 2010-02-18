@@ -25,8 +25,6 @@ static const float false_northing = -667.711;
 static const float false_easting = 1500064.274;
 static const float deg_to_rad =  M_PI / 180.0;
 
--(void)runTest;
-
 -(NSArray *)getAnnotationsFromCoordinates:(CLLocationCoordinate2D) centerCoordinates;
 -(NSString *)getXMLfromCoordinates:(CLLocationCoordinate2D) centerCoordinates;
 -(NSArray *)getForcastListForPoiId:(NSString *)poiId;

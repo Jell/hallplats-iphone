@@ -165,7 +165,7 @@
 	int annotationNumber = mMapView.annotations.count;
 	for(int i = 0; i < annotationNumber; i++){
 		
-		CALayer *annotationLayer = [mMapView viewForAnnotation: (MPNAnnotation *)[mMapView.annotations objectAtIndex:i]].layer;
+		CALayer *annotationLayer = [mMapView viewForAnnotation: (VTAnnotation *)[mMapView.annotations objectAtIndex:i]].layer;
 		annotationLayer.transform = annotationRotation;
 		annotationLayer.zPosition = cos(phase-teta)*annotationLayer.position.y - sin(phase-teta)*annotationLayer.position.x;
 		
