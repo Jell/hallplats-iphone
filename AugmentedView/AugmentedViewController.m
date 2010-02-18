@@ -175,6 +175,13 @@
 		[poiOverlay bringSubviewToFront:infoLabelDisplay.view];
 		VTAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
 		[infoLabelDisplay setText:[selectedAnnotation title]];
+		[infoLabelDisplay clearTramLines];
+		
+		NSArray *lineList = [selectedAnnotation getLineList];
+		for (VTLineInfo *aLine in lineList) {
+			[infoLabelDisplay addTramLine:aLine.lineNumber color:aLine.backgroundColor];
+		}
+		
 	}
 }
 

@@ -21,4 +21,5 @@
 @property(assign) UIColor *backgroundColor;
 @property(assign) NSString *imageType;
 
+-(NSComparisonResult)compareWith:(VTLineInfo *)anotherLine;
 @end

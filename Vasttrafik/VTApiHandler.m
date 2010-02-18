@@ -15,72 +15,75 @@
 -(NSArray *)getAnnotationsFromCoordinates:(CLLocationCoordinate2D) centerCoordinates
 {
 	NSString *toBeParsed = [self getXMLfromCoordinates:centerCoordinates];
-
+	
 	NSMutableArray *annotationList = [[NSMutableArray alloc] init];
 	
 	NSMutableArray *itemList = (NSMutableArray *)[toBeParsed componentsSeparatedByString:@"&lt;/item&gt;"];
 	
 	if(itemList&&([itemList count] > 1)){
 		[itemList removeLastObject];
+		int itemNumber = 0;
 		for(NSString *astring in itemList){
-			
-			NSArray *list1 = [astring componentsSeparatedByString:@"&lt;item"];
-			NSString *cut1 = [list1 lastObject];
-			
-			NSArray *list2 = [cut1 componentsSeparatedByString:@"&gt;&lt;friendly_name&gt;&lt;![CDATA["];
-			NSString *attributes = [list2 objectAtIndex:0];
-			NSString *cut2 = [list2 lastObject];
-			
-			NSArray *list3 = [cut2 componentsSeparatedByString:@"]]&gt;&lt;/friendly_name&gt;&lt;stop_name&gt;&lt;![CDATA["];
-			NSString *friendly_name = [list3 objectAtIndex:0];
-			NSString *cut3 = [list3 lastObject];
-			
-			NSArray *list4 = [cut3 componentsSeparatedByString:@"]]&gt;&lt;/stop_name&gt;&lt;county&gt;&lt;![CDATA["];
-			NSString *stop_name = [list4 objectAtIndex:0];
-			NSString *cut4 = [list4 lastObject];
-			
-			NSArray *list5 = [cut4 componentsSeparatedByString:@"]]&gt;&lt;/county&gt;"];
-			NSString *county = [list5 objectAtIndex:0];
-			
-			NSLog(friendly_name);
-			NSLog(stop_name);
-			NSLog(county);
-			
-			NSArray *attributesList = [attributes componentsSeparatedByString:@"\""];
-			
-			if([attributesList count]>=16){
-				int order = [[attributesList objectAtIndex:1] intValue];
-				NSString *stop_id = [attributesList objectAtIndex:3];
-				NSString *stop_id_with_hash_key = [attributesList objectAtIndex:5];
-				int distance  = [[attributesList objectAtIndex:7] intValue];
-				NSString *shortcut = [attributesList objectAtIndex:9];
-				NSString *stop_type = [attributesList objectAtIndex:11];
-				int rt90_x = [[attributesList objectAtIndex:13] intValue];
-				int rt90_y = [[attributesList objectAtIndex:15] intValue];
+			if(itemNumber <10){
+				itemNumber++;
+				NSArray *list1 = [astring componentsSeparatedByString:@"&lt;item"];
+				NSString *cut1 = [list1 lastObject];
 				
-				NSLog(@"\nOrder: %d\nStop Id: %@\nStop Id with Hash: %@\nDistance: %dm\nShortcut: %@\nStop Type: %@\nrt90_x: %d\nrt90_y: %d\n", order, stop_id, stop_id_with_hash_key, distance, 
-					  shortcut, stop_type, rt90_x, rt90_y);
+				NSArray *list2 = [cut1 componentsSeparatedByString:@"&gt;&lt;friendly_name&gt;&lt;![CDATA["];
+				NSString *attributes = [list2 objectAtIndex:0];
+				NSString *cut2 = [list2 lastObject];
 				
+				NSArray *list3 = [cut2 componentsSeparatedByString:@"]]&gt;&lt;/friendly_name&gt;&lt;stop_name&gt;&lt;![CDATA["];
+				NSString *friendly_name = [list3 objectAtIndex:0];
+				NSString *cut3 = [list3 lastObject];
 				
-				CLLocationCoordinate2D location = {(float)rt90_x, (float)rt90_y};
-				VTAnnotation *anAnnotation = [[VTAnnotation alloc] initWithCoordinate:[self rt90_to_GPS:location]];
+				NSArray *list4 = [cut3 componentsSeparatedByString:@"]]&gt;&lt;/stop_name&gt;&lt;county&gt;&lt;![CDATA["];
+				NSString *stop_name = [list4 objectAtIndex:0];
+				NSString *cut4 = [list4 lastObject];
 				
-				[anAnnotation setTitle:stop_name subtitle:[[NSString stringWithFormat:@"%dm", distance] retain]];
+				NSArray *list5 = [cut4 componentsSeparatedByString:@"]]&gt;&lt;/county&gt;"];
+				NSString *county = [list5 objectAtIndex:0];
 				
-				anAnnotation.friendly_name = friendly_name;
-				anAnnotation.stop_name = stop_name;
-				anAnnotation.county = county;
-				anAnnotation.order = order;
-				anAnnotation.stop_id = stop_id;
-				anAnnotation.stop_id_with_hash_key = stop_id_with_hash_key;
-				anAnnotation.distance = distance;
-				anAnnotation.shortcut = shortcut;
-				anAnnotation.stop_type = stop_type;
+				NSLog(friendly_name);
+				NSLog(stop_name);
+				NSLog(county);
 				
-				NSArray *forecastList = [self getForcastListForPoiId:@""];
-				anAnnotation.forecastList = forecastList;
+				NSArray *attributesList = [attributes componentsSeparatedByString:@"\""];
 				
-				[annotationList addObject:anAnnotation];
+				if([attributesList count]>=16){
+					int order = [[attributesList objectAtIndex:1] intValue];
+					NSString *stop_id = [attributesList objectAtIndex:3];
+					NSString *stop_id_with_hash_key = [attributesList objectAtIndex:5];
+					int distance  = [[attributesList objectAtIndex:7] intValue];
+					NSString *shortcut = [attributesList objectAtIndex:9];
+					NSString *stop_type = [attributesList objectAtIndex:11];
+					int rt90_x = [[attributesList objectAtIndex:13] intValue];
+					int rt90_y = [[attributesList objectAtIndex:15] intValue];
+					
+					NSLog(@"\nOrder: %d\nStop Id: %@\nStop Id with Hash: %@\nDistance: %dm\nShortcut: %@\nStop Type: %@\nrt90_x: %d\nrt90_y: %d\n", order, stop_id, stop_id_with_hash_key, distance, 
+						  shortcut, stop_type, rt90_x, rt90_y);
+					
+					
+					CLLocationCoordinate2D location = {(float)rt90_x, (float)rt90_y};
+					VTAnnotation *anAnnotation = [[VTAnnotation alloc] initWithCoordinate:[self rt90_to_GPS:location]];
+					
+					[anAnnotation setTitle:stop_name subtitle:[[NSString stringWithFormat:@"%dm", distance] retain]];
+					
+					anAnnotation.friendly_name = friendly_name;
+					anAnnotation.stop_name = stop_name;
+					anAnnotation.county = county;
+					anAnnotation.order = order;
+					anAnnotation.stop_id = stop_id;
+					anAnnotation.stop_id_with_hash_key = stop_id_with_hash_key;
+					anAnnotation.distance = distance;
+					anAnnotation.shortcut = shortcut;
+					anAnnotation.stop_type = stop_type;
+					
+					NSArray *forecastList = [self getForcastListForPoiId:stop_id];
+					anAnnotation.forecastList = forecastList;
+					
+					[annotationList addObject:anAnnotation];
+				}
 			}
 		}
 	}		

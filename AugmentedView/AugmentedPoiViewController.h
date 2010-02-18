@@ -14,9 +14,11 @@
 	IBOutlet UIScrollView *tramScroll;
 	IBOutlet UIImageView *arrowImage;
 	int tramLinesNumber;
-	UIView *viewContainer;
+	NSMutableArray *lineViews;
 }
+
 -(void)setText:(NSString *) text;
 -(void)setArrowLength:(float) length;
--(void)addTramLine:(NSString *)name color:(UIColor *)color atIndex:(int)index;
+-(void)clearTramLines;
+-(void)addTramLine:(NSString *)name color:(UIColor *)color;
 @end
