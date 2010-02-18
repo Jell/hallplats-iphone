@@ -39,8 +39,8 @@
 	location.longitude = 11.9683;
 	//starting span (=zoom)
 	MKCoordinateSpan span;
-	span.latitudeDelta = 0.3;
-	span.longitudeDelta = 0.3;
+	span.latitudeDelta = 0.02;
+	span.longitudeDelta = 0.02;
 	MKCoordinateRegion region;
 	region.center = location;
 	region.span = span;
@@ -165,7 +165,7 @@
 	int annotationNumber = mMapView.annotations.count;
 	for(int i = 0; i < annotationNumber; i++){
 		
-		CALayer *annotationLayer = [mMapView viewForAnnotation: (MPNAnnotation *)[mMapView.annotations objectAtIndex:i]].layer;
+		CALayer *annotationLayer = [mMapView viewForAnnotation: (VTAnnotation *)[mMapView.annotations objectAtIndex:i]].layer;
 		annotationLayer.transform = annotationRotation;
 		annotationLayer.zPosition = cos(phase-teta)*annotationLayer.position.y - sin(phase-teta)*annotationLayer.position.x;
 		

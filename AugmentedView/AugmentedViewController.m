@@ -119,7 +119,7 @@
 	}
 	maxDistance = 0.0;
 
-	for(MPNAnnotation *anAnnotation in newList){
+	for(VTAnnotation *anAnnotation in newList){
 		AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
 		[ar_poiList addObject:aPoi];
 		if([aPoi distance] > maxDistance) maxDistance = [aPoi distance];
@@ -166,7 +166,7 @@
 		[selectedView setEnabled:FALSE];
 		[poiOverlay bringSubviewToFront:selectedView];
 		[poiOverlay bringSubviewToFront:infoLabelDisplay.view];
-		MPNAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
+		VTAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
 		[infoLabelDisplay setText:[selectedAnnotation title]];
 	}
 }

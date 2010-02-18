@@ -14,7 +14,7 @@
 @synthesize annotation;
 @synthesize distance;
 
--(id)initWithAnnotation:(MPNAnnotation *) anAnnotation fromOrigin:(CLLocationCoordinate2D)origin
+-(id)initWithAnnotation:(VTAnnotation *) anAnnotation fromOrigin:(CLLocationCoordinate2D)origin
 {
 	self.annotation = anAnnotation;
 	[self updateAngleFrom:origin];

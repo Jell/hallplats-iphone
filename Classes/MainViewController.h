@@ -11,6 +11,7 @@
 #import "AugmentedViewController.h"
 #import "ARViewProtocol.h"
 #import <QuartzCore/QuartzCore.h>
+#import "VTApiHandler.h"
 
 #define ACCELERATION_BUFFER_SIZE 5
 
@@ -22,7 +23,8 @@
 	
 	CLLocationManager *mLocationManager;
 	UIAccelerometer *mAccelerometer;
-	MPNApiHandler *mpnApiHandler;
+	VTApiHandler *mVTApiHandler;
+	
 	UIInterfaceOrientation mInterfaceOrientation;
 	bool augmentedIsOn;
 	NSOperationQueue *opQueue;
@@ -40,7 +42,7 @@
 @property (retain) CLLocation *currentLocation;
 @property (retain) CLLocationManager *mLocationManager;
 @property (retain) NSArray *annotationList;
-@property (retain) MPNApiHandler *mpnApiHandler;
+@property (retain) VTApiHandler *mVTApiHandler;
 @property (retain) UIAccelerometer *mAccelerometer;
 @property (retain) UIViewController *viewDisplayedController;
 

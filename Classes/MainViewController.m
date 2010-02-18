@@ -14,7 +14,7 @@
 @synthesize mAccelerometer;
 @synthesize viewDisplayedController;
 @synthesize currentLocation;
-@synthesize mpnApiHandler;
+@synthesize mVTApiHandler;
 @synthesize annotationList;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -29,10 +29,13 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	mpnApiHandler = [[MPNApiHandler alloc] init];
+	//mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
 	[activityIndicator startAnimating];
 	
+	mVTApiHandler = [[VTApiHandler alloc] init];
+	
+
 	currentLocation = nil;
 	viewDisplayedController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 	[viewDisplayed addSubview:viewDisplayedController.view];
@@ -99,18 +102,23 @@
 
 - (void) performUpdate:(id)object{
 	//get the JSON
-	CLLocationCoordinate2D upperLeft = {57.60,11.80};
-	CLLocationCoordinate2D lowerRight = {57.87,12.13};
-	id response = [mpnApiHandler getAnnotationsFromCoordinates:upperLeft toCoordinates:lowerRight];
+	CLLocationCoordinate2D center = {57.7119, 11.9683};
+	if(currentLocation){
+		center = currentLocation.coordinate;
+	}
+	
+	id response = [mVTApiHandler getAnnotationsFromCoordinates:center];
+		
 	[(MapViewController *)object performSelectorOnMainThread:@selector(updatePerformed:) withObject:response waitUntilDone:YES];
+		
 }
 
 - (void) updatePerformed:(id)response {
 	
+	[viewDisplayedController setAnnotationList:(NSArray *)response];
+	
 	[annotationList release];
 	annotationList = (NSArray *)response;
-
-	[viewDisplayedController setAnnotationList:annotationList];
 	
 	[activityIndicator stopAnimating];
 	updateButton.enabled = TRUE;
@@ -183,6 +191,8 @@
 {
 	[currentLocation release];
 	currentLocation = [newLocation copy];
+	
+	
 	
 	//Dispatch new Location
 	[viewDisplayedController locationManager:manager didUpdateToLocation:currentLocation fromLocation:oldLocation];
@@ -259,6 +269,7 @@
 {
 	int selectedPoi = [viewDisplayedController selectedPoi];
 	[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
+	[viewDisplayedController resignFirstResponder];
 	[viewDisplayedController release];
 	viewDisplayedController = viewController;
 	[[viewDisplayed layer] addAnimation:transition forKey:kCATransitionReveal];
@@ -278,7 +289,7 @@
 
 - (void)viewDidUnload {
 	[opQueue cancelAllOperations];
-	[mpnApiHandler release];
+	[mVTApiHandler release];
 	[mLocationManager release];
 	[mAccelerometer release];
 	[opQueue release];
@@ -294,7 +305,7 @@
 
 - (void)dealloc {
 	[opQueue cancelAllOperations];
-	[mpnApiHandler release];
+	[mVTApiHandler release];
 	[mLocationManager release];
 	[mAccelerometer release];
 	[opQueue release];
