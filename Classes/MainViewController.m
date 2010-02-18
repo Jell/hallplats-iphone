@@ -103,16 +103,22 @@
 - (void) performUpdate:(id)object{
 	//get the JSON
 	CLLocationCoordinate2D center = {57.7119, 11.9683};
+	if(currentLocation){
+		center = currentLocation.coordinate;
+	}
+	
 	id response = [mVTApiHandler getAnnotationsFromCoordinates:center];
+		
 	[(MapViewController *)object performSelectorOnMainThread:@selector(updatePerformed:) withObject:response waitUntilDone:YES];
+		
 }
 
 - (void) updatePerformed:(id)response {
 	
+	[viewDisplayedController setAnnotationList:(NSArray *)response];
+	
 	[annotationList release];
 	annotationList = (NSArray *)response;
-
-	[viewDisplayedController setAnnotationList:annotationList];
 	
 	[activityIndicator stopAnimating];
 	updateButton.enabled = TRUE;
@@ -185,6 +191,8 @@
 {
 	[currentLocation release];
 	currentLocation = [newLocation copy];
+	
+	
 	
 	//Dispatch new Location
 	[viewDisplayedController locationManager:manager didUpdateToLocation:currentLocation fromLocation:oldLocation];
@@ -261,6 +269,7 @@
 {
 	int selectedPoi = [viewDisplayedController selectedPoi];
 	[[viewDisplayed.subviews objectAtIndex:0] removeFromSuperview];
+	[viewDisplayedController resignFirstResponder];
 	[viewDisplayedController release];
 	viewDisplayedController = viewController;
 	[[viewDisplayed layer] addAnimation:transition forKey:kCATransitionReveal];

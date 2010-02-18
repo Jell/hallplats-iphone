@@ -7,8 +7,8 @@
 //
 
 #import "VTApiHandler.h"
-#define VT_GETSTOPS_URL @"http://www.vasttrafik.se/External_Services/TravelPlanner.asmx/GetStopListBasedOnCoordinate?identifier=3e383cd8-30fa-47dc-8379-7d4295dc9db2&xCoord=6403382&yCoord=1272443"
-#define VT_GETNEXT_URL @"http://www.vasttrafik.se/External_Services/NextTrip.asmx/GetForecast?identifier=3e383cd8-30fa-47dc-8379-7d4295dc9db2&stopId=00007172"
+#define VT_GETSTOPS_URL @"http://www.vasttrafik.se/External_Services/TravelPlanner.asmx/GetStopListBasedOnCoordinate?identifier=3e383cd8-30fa-47dc-8379-7d4295dc9db2&xCoord=%d&yCoord=%d"
+#define VT_GETNEXT_URL @"http://www.vasttrafik.se/External_Services/NextTrip.asmx/GetForecast?identifier=3e383cd8-30fa-47dc-8379-7d4295dc9db2&stopId=%@"
 
 @implementation VTApiHandler
 
@@ -65,7 +65,7 @@
 				CLLocationCoordinate2D location = {(float)rt90_x, (float)rt90_y};
 				VTAnnotation *anAnnotation = [[VTAnnotation alloc] initWithCoordinate:[self rt90_to_GPS:location]];
 				
-				[anAnnotation setTitle:stop_name subtitle:[NSString stringWithFormat:@"%dm", distance]];
+				[anAnnotation setTitle:stop_name subtitle:[[NSString stringWithFormat:@"%dm", distance] retain]];
 				
 				anAnnotation.friendly_name = friendly_name;
 				anAnnotation.stop_name = stop_name;
@@ -93,7 +93,10 @@
 
 -(NSString *)getXMLfromCoordinates:(CLLocationCoordinate2D) centerCoordinates
 {
-	return [self stringWithUrl:[NSURL URLWithString:VT_GETSTOPS_URL]];;
+	CLLocationCoordinate2D centerRT90 = [self gps_to_RT90:centerCoordinates];
+	int x = centerRT90.latitude;
+	int y = centerRT90.longitude;
+	return [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat: VT_GETSTOPS_URL, x, y]]];
 }
 
 -(NSArray *)getForcastListForPoiId:(NSString *)poiId
@@ -161,7 +164,7 @@
 }
 
 -(NSString *)getXMLfromPoiId:(NSString *)poiId{
-	return [self stringWithUrl:[NSURL URLWithString:VT_GETNEXT_URL]];
+	return [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat:VT_GETNEXT_URL, poiId]]];
 }
 
 - (NSString *)stringWithUrl:(NSURL *)url
