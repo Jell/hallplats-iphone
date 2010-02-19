@@ -8,7 +8,6 @@
 
 #import "AugmentedPoiViewController.h"
 
-
 @implementation AugmentedPoiViewController
 
 /*
@@ -26,9 +25,8 @@
     [super viewDidLoad];
 	UIView *myView = [self view];
 	//[myView setFrame:CGRectMake(15 -[myView frame].size.width / 2 , 5 -[myView frame].size.height , [myView frame].size.width, [myView frame].size.height)];
-	[myView setFrame:CGRectMake(0.0, 0.0, [myView frame].size.width, [myView frame].size.height)];
 	myView.exclusiveTouch = NO;
-	myView.center = CGPointMake(260.0, 220.0);
+	myView.center = CGPointMake(260.0, 200.0);
 	
 	tramScroll.backgroundColor = [UIColor clearColor];
 	tramScroll.scrollEnabled = YES;

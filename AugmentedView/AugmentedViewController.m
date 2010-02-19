@@ -8,6 +8,14 @@
 
 #import "AugmentedViewController.h"
 #import "AugmentedView.h"
+#define GRID_HEIGHT				100.0
+#define GRID_SQUARE_WIDTH		80.0
+#define MIN_SCREEN_WIDTH		320.0
+#define MAX_SCREEN_WIDTH		480.0
+#define OFFSCREEN_SQUARE_SIZE	520.0
+#define CAMERA_ANGLE_X			17.0
+#define CAMERA_ANGLE_Y			28.0
+#define POI_BUTTON_SIZE			40.0
 
 @implementation AugmentedViewController
 @synthesize currentLocation;
@@ -24,9 +32,12 @@
 	infoLabelDisplay = [[AugmentedPoiViewController alloc] initWithNibName:@"AugmentedPoiView" bundle:nil];
 
 	[poiOverlay addSubview:infoLabelDisplay.view];
+	[poiOverlay sendSubviewToBack:gridView];
+	[poiOverlay bringSubviewToFront:infoLabelDisplay.view];
 	
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
+
 	
 	headingBufferIndex = 0;
 	for(int i = 0; i < HEADING_BUFFER_SIZE; i++){
@@ -46,7 +57,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
 	
-	headingBuffer[headingBufferIndex] = 3.14 * newHeading.trueHeading / 180.0;	
+	headingBuffer[headingBufferIndex] = M_PI * newHeading.trueHeading / 180.0;	
 	float headinAngle = 0.0;
 	
 	for(int i = 0; i<HEADING_BUFFER_SIZE; i++){
@@ -60,10 +71,10 @@
 	
 	float jitter = angleXY - headinAngle;
 	int i = 0;
-	[self translateView:infoLabelDisplay.view withTeta:3.14 andDistance:0];
+	[self translateView:infoLabelDisplay.view withTeta:M_PI andDistance:0];
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta = jitter - [aPoi teta];
-		float dist = 70.0 - 70.0*[aPoi distance] / maxDistance;
+		float dist = GRID_HEIGHT * (1 - [aPoi distance] / maxDistance);
 		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist];
 		
 		if(i == selectedPoi){
@@ -77,16 +88,14 @@
 }
 
 -(void)translateGridWithTeta:(float)teta{
-	float tetaBis = teta;
-	if(teta<0){
-		tetaBis += 2*M_PI;
-	}
+	float tetaBis = teta + 2*M_PI;
 	float tetaModulo = round((tetaBis + M_PI/2.0) / (M_PI/2.0));
 	tetaBis = tetaBis - tetaModulo * M_PI/2.0;
 	
 	float translation = [self translationFromAngle:tetaBis];
-	float modulo = round(translation / 80.0);
-	translation -= modulo * 80.0;
+	float modulo = round(translation / GRID_SQUARE_WIDTH);
+	translation -= modulo * GRID_SQUARE_WIDTH;
+	
 	gridView.layer.transform = CATransform3DMakeTranslation(translation, 0.0, 0.0);
 }
 
@@ -94,8 +103,8 @@
 	if(sin(teta)<0){
 		if(distance>=0){
 			aView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation([self translationFromAngle:teta], distance, distance),
-												   0.5+(distance/140.0),
-												   0.5+(distance/140.0),
+												   0.5+(distance/(GRID_HEIGHT*2.0)),
+												   0.5+(distance/(GRID_HEIGHT*2.0)),
 												   1.0);
 		}else{
 			aView.layer.transform = CATransform3DMakeTranslation([self translationFromAngle:teta], distance, distance);
@@ -106,7 +115,7 @@
 }
 
 -(float)translationFromAngle:(float)teta{
-	return (160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180);
+	return ((MIN_SCREEN_WIDTH/2.0) + ((MIN_SCREEN_WIDTH - MAX_SCREEN_WIDTH)/2.0) * abs(sin(angleXY))) * cos(teta) / sin(CAMERA_ANGLE_X * M_PI / 180);
 }
 -(void)accelerationChangedX:(float)x y:(float)y z:(float)z
 {
@@ -114,10 +123,8 @@
 	float phi = atan2(sqrt(y*y+x*x), z);
 	angleXY = atan2(-x, y);
 
-	poiOverlay.layer.transform = CATransform3DMakeRotation(3.14-angleXY, 0.0, 0.0, 1.0);
-	
-	poiOverlay.layer.transform = CATransform3DTranslate(poiOverlay.layer.transform,0.0, 240.0 * sin(phi + (3.14 / 2.0))/ sin(28 * 3.14 / 180), 0.0);
-	//self.view.layer.transform = CATransform3DRotate(self.view.layer.transform, 3.14-angleXY, 0.0, 0.0, 1.0);
+	poiOverlay.layer.transform = CATransform3DMakeRotation(M_PI-angleXY, 0.0, 0.0, 1.0);	
+	poiOverlay.layer.transform = CATransform3DTranslate(poiOverlay.layer.transform,0.0, (MAX_SCREEN_WIDTH/2.0) * sin(phi + (M_PI / 2.0))/ sin(CAMERA_ANGLE_Y * M_PI / 180), 0.0);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -155,11 +162,11 @@
 }
 
 -(void)addPoiView{
-	CGPoint center = {260, 260};
+	CGPoint center = {OFFSCREEN_SQUARE_SIZE/2.0, OFFSCREEN_SQUARE_SIZE/2.0};
 	
 	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	aButton.exclusiveTouch = NO;
-	aButton.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+	aButton.frame = CGRectMake(0.0, 0.0, POI_BUTTON_SIZE, POI_BUTTON_SIZE);
 	aButton.backgroundColor = [UIColor clearColor];
 	UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
 	[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
