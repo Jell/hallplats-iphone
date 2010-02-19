@@ -33,7 +33,9 @@
 @property (retain) NSMutableArray *ar_poiViews;
 @property (assign)  CLLocation *currentLocation;
 
+-(void)translateGridWithTeta:(float)teta;
 -(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance;
+-(float)translationFromAngle:(float)teta;
 -(void) poiSelected:(id) poiViewId;
 -(void)addPoiView;
 

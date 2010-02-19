@@ -72,23 +72,42 @@
 		}
 		i++;
 	}
+	
+	[self translateGridWithTeta:jitter];
+}
+
+-(void)translateGridWithTeta:(float)teta{
+	float tetaBis = teta;
+	if(teta<0){
+		tetaBis += 2*M_PI;
+	}
+	float tetaModulo = round((tetaBis + M_PI/2.0) / (M_PI/2.0));
+	tetaBis = tetaBis - tetaModulo * M_PI/2.0;
+	
+	float translation = [self translationFromAngle:tetaBis];
+	float modulo = round(translation / 80.0);
+	translation -= modulo * 80.0;
+	gridView.layer.transform = CATransform3DMakeTranslation(translation, 0.0, 0.0);
 }
 
 -(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance{
 	if(sin(teta)<0){
 		if(distance>=0){
-			aView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), distance, distance),
+			aView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation([self translationFromAngle:teta], distance, distance),
 												   0.5+(distance/140.0),
 												   0.5+(distance/140.0),
 												   1.0);
 		}else{
-			aView.layer.transform = CATransform3DMakeTranslation((160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180), distance, distance);
+			aView.layer.transform = CATransform3DMakeTranslation([self translationFromAngle:teta], distance, distance);
 		}
 	}else{
 		aView.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
 	}
 }
 
+-(float)translationFromAngle:(float)teta{
+	return (160.0 + 80 * abs(sin(angleXY))) * cos(teta) / sin(17. * 3.14 / 180);
+}
 -(void)accelerationChangedX:(float)x y:(float)y z:(float)z
 {
 	// Get the current device angle

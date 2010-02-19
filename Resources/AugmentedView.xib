@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="35"/>
+			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -44,12 +44,12 @@
 							<object class="IBUIImageView" id="849524303">
 								<reference key="NSNextResponder" ref="375838859"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{0, 270}, {520, 100}}</string>
+								<string key="NSFrame">{{0, 270}, {600, 100}}</string>
 								<reference key="NSSuperview" ref="375838859"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-								<float key="IBUIAlpha">4.000000e-01</float>
-								<int key="IBUIContentMode">2</int>
+								<float key="IBUIAlpha">6.000000e-01</float>
+								<int key="IBUIContentMode">4</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
@@ -208,7 +208,7 @@
 					<string key="superclassName">UIView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">AugmentedView.h</string>
+						<string key="minorKey">AugmentedView/AugmentedView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -229,7 +229,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">AugmentedViewController.h</string>
+						<string key="minorKey">AugmentedView/AugmentedViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -249,7 +249,7 @@
 			</object>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
-		<string key="IBDocument.LastKnownRelativeProjectPath">AugmentedMPN.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../AugmentedMPN.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<string key="IBCocoaTouchPluginVersion">3.1</string>
 	</data>
