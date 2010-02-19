@@ -39,6 +39,7 @@
 	lineViews = [[NSMutableArray alloc] init];
 	
 	[tramScroll flashScrollIndicators];
+	infoButton.hidden = YES;
 
 }
 
@@ -47,26 +48,29 @@
 		[aView removeFromSuperview];
 	}
 	[lineViews release];
+	infoButton.hidden = YES;
 	lineViews = [[NSMutableArray alloc] init];
 	tramLinesNumber = 0;
-	[tramScroll setContentSize:CGSizeMake(20.0, 20.0)];
+	[tramScroll setContentSize:CGSizeMake(30.0, 30.0)];
 
 }
 
 -(void)addTramLine:(NSString *)name backgroundColor:(UIColor *)backgroundColor foregroundColor:(UIColor *)foregroundColor{
-	UILabel *tramNumber = [[UILabel alloc ] initWithFrame:CGRectMake(0.0 + 25*tramLinesNumber, 0.0, 22.0, 20.0)];
+	UILabel *tramNumber = [[UILabel alloc ] initWithFrame:CGRectMake(0.0 + 33*tramLinesNumber, 0.0, 30.0, 30.0)];
 	tramNumber.textAlignment =  UITextAlignmentCenter;
 	tramNumber.lineBreakMode = UILineBreakModeClip;
 	tramNumber.textColor = foregroundColor;
 	tramNumber.backgroundColor = backgroundColor;
-	tramNumber.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(10.0)];
+	tramNumber.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
 	tramNumber.text = name;
 	[tramScroll addSubview:tramNumber];
 	[lineViews addObject:tramNumber];
-	[tramScroll setContentSize:CGSizeMake(20.0 + 25.0 * tramLinesNumber, 20.0)];
+	[tramScroll setContentSize:CGSizeMake(30.0 + 33.0 * tramLinesNumber, 30.0)];
 	tramLinesNumber++;
 
 	[tramNumber release];
+	
+	infoButton.hidden = NO;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -82,11 +86,12 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 */
--(void)setText:(NSString *) text{
-	[infoLabel setText:text];
+-(void)setTitle:(NSString *)title subtitle:(NSString *)subtitle{
+	[infoLabel setText:title];
+	[subtitleLabel setText:subtitle];
 }
 -(void)setArrowLength:(float) length{
-	arrowImage.frame = CGRectMake(92, 42, 16, 20 + length);
+	arrowImage.frame = CGRectMake(arrowImage.frame.origin.x, arrowImage.frame.origin.y, arrowImage.frame.size.width, 20 + length);
 }
 
 - (void)didReceiveMemoryWarning {

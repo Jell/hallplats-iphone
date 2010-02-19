@@ -14,6 +14,8 @@
 		288765590DF743DE002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765580DF743DE002DB57D /* CoreGraphics.framework */; };
 		289233A60DB2D0840083E9F9 /* FlipsideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A30DB2D0840083E9F9 /* FlipsideView.m */; };
 		289233A70DB2D0840083E9F9 /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A50DB2D0840083E9F9 /* MainView.m */; };
+		F400709B112E8D2200982525 /* coolbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = F400709A112E8D2200982525 /* coolbutton.png */; };
+		F40070A4112E8E8200982525 /* coolbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = F400709A112E8D2200982525 /* coolbutton.png */; };
 		F41B825A11259890003B438C /* arrowdown.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B825111259890003B438C /* arrowdown.png */; };
 		F41B825B11259890003B438C /* augmentedpoi.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B825211259890003B438C /* augmentedpoi.png */; };
 		F41B825C11259890003B438C /* augmentedpoiselect.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B825311259890003B438C /* augmentedpoiselect.png */; };
@@ -90,6 +92,7 @@
 		289233A50DB2D0840083E9F9 /* MainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainView.m; path = Classes/MainView.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* AugmentedMPN-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AugmentedMPN-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		F400709A112E8D2200982525 /* coolbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = coolbutton.png; path = Images/coolbutton.png; sourceTree = "<group>"; };
 		F41B824F11259884003B438C /* CoordinatesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoordinatesTests.m; path = Tests/CoordinatesTests.m; sourceTree = "<group>"; };
 		F41B825111259890003B438C /* arrowdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrowdown.png; path = Images/arrowdown.png; sourceTree = "<group>"; };
 		F41B825211259890003B438C /* augmentedpoi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = augmentedpoi.png; path = Images/augmentedpoi.png; sourceTree = "<group>"; };
@@ -310,6 +313,7 @@
 		F425E990111B208A00D2FC2A /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F400709A112E8D2200982525 /* coolbutton.png */,
 				F41B825111259890003B438C /* arrowdown.png */,
 				F41B825211259890003B438C /* augmentedpoi.png */,
 				F41B825311259890003B438C /* augmentedpoiselect.png */,
@@ -481,6 +485,7 @@
 				F41B8296112598DD003B438C /* MainWindow.xib in Resources */,
 				F41B8297112598DD003B438C /* MapView.xib in Resources */,
 				F4274BC4112AA66D0018F77C /* AugmentedPoiView.xib in Resources */,
+				F40070A4112E8E8200982525 /* coolbutton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,6 +493,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F400709B112E8D2200982525 /* coolbutton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
