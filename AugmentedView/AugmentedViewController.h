@@ -14,7 +14,7 @@
 #import "AugmentedPoiViewController.h"
 #import "VTAnnotation.h"
 
-#define HEADING_BUFFER_SIZE 5
+#define HEADING_BUFFER_SIZE 1
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
 	IBOutlet UIView *poiOverlay;
 	IBOutlet UIView *gridView;

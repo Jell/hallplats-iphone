@@ -82,7 +82,7 @@
 	controller.delegate = self;
 	int selected = [viewDisplayedController selectedPoi];
 	if(selected >=0){
-		MPNAnnotation *anAnnotation = [annotationList objectAtIndex:selected];
+		VTAnnotation *anAnnotation = [annotationList objectAtIndex:selected];
 		[controller setAnnotationDisplayed:anAnnotation];
 	}
 	controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;

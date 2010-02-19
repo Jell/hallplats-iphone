@@ -6,19 +6,20 @@
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
-#import "MPNAnnotation.h"
+#import "VTAnnotation.h"
 
 @protocol FlipsideViewControllerDelegate;
 
 
-@interface FlipsideViewController : UIViewController {
+@interface FlipsideViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>{
 	id <FlipsideViewControllerDelegate> delegate;
-	MPNAnnotation *annotationDisplayed;
+	VTAnnotation *annotationDisplayed;
 	IBOutlet UILabel *titleLabel;
+	IBOutlet UITableView *mTableView;
 }
 
 @property (assign) id <FlipsideViewControllerDelegate> delegate;
-@property (assign) MPNAnnotation *annotationDisplayed;
+@property (assign) VTAnnotation *annotationDisplayed;
 
 - (IBAction)done;
 

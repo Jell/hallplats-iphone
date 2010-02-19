@@ -172,7 +172,7 @@
 
 -(NSString *)getXMLfromPoiId:(NSString *)poiId{
 	
-	for(int i = 0; i<3; i++){
+	for(int i = 0; i<1; i++){
 		NSString *result = [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat:VT_GETNEXT_URL, poiId]]];
 		NSString *test = [result substringToIndex:14];
 		if(![test isEqual:@"<!DOCTYPE html"]){
