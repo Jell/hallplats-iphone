@@ -75,6 +75,13 @@
 	return -1;
 }
 
+-(void)setSelectedPoi:(int)poiId{
+	selectedPoi = poiId;
+	if(selectedPoi >=0){
+		[mMapView selectAnnotation:[annotationList objectAtIndex:selectedPoi] animated:NO];
+	}
+}
+
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
 	if(!animated){
 		if(currentLocation){
