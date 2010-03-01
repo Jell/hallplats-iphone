@@ -25,6 +25,7 @@
 	CLLocation *currentLocation;
 	float angleXY;
 	float maxDistance;
+	float minDistance;
 	int headingBufferIndex;
 	float headingBuffer[HEADING_BUFFER_SIZE];
 }
@@ -35,6 +36,7 @@
 
 -(void)translateGridWithTeta:(float)teta;
 -(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance;
+-(void)translateBubbleWithTeta:(float)teta andDistance:(float)distance;
 -(float)translationFromAngle:(float)teta;
 -(void) poiSelected:(id) poiViewId;
 -(void)addPoiView;

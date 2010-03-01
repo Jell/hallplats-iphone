@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="35"/>
+			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -44,12 +44,11 @@
 							<object class="IBUIImageView" id="849524303">
 								<reference key="NSNextResponder" ref="375838859"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{0, 270}, {520, 110}}</string>
+								<string key="NSFrame">{{-490, -340}, {1500, 1200}}</string>
 								<reference key="NSSuperview" ref="375838859"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-								<float key="IBUIAlpha">4.000000e-01</float>
-								<int key="IBUIContentMode">4</int>
+								<float key="IBUIAlpha">2.000000e-01</float>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
@@ -172,7 +171,7 @@
 					<string>AugmentedViewController</string>
 					<string>UIResponder</string>
 					<string>AugmentedView</string>
-					<string>{{471, 214}, {320, 480}}</string>
+					<string>{{492, 143}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
