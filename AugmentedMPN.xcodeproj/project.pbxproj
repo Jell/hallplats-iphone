@@ -16,6 +16,7 @@
 		289233A70DB2D0840083E9F9 /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A50DB2D0840083E9F9 /* MainView.m */; };
 		F400709B112E8D2200982525 /* coolbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = F400709A112E8D2200982525 /* coolbutton.png */; };
 		F40070A4112E8E8200982525 /* coolbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = F400709A112E8D2200982525 /* coolbutton.png */; };
+		F40071DC112EDDC300982525 /* VTTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F40071DB112EDDC300982525 /* VTTableViewCell.m */; };
 		F41B825A11259890003B438C /* arrowdown.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B825111259890003B438C /* arrowdown.png */; };
 		F41B825B11259890003B438C /* augmentedpoi.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B825211259890003B438C /* augmentedpoi.png */; };
 		F41B825C11259890003B438C /* augmentedpoiselect.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B825311259890003B438C /* augmentedpoiselect.png */; };
@@ -93,6 +94,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* AugmentedMPN-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AugmentedMPN-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		F400709A112E8D2200982525 /* coolbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = coolbutton.png; path = Images/coolbutton.png; sourceTree = "<group>"; };
+		F40071DA112EDDC300982525 /* VTTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTTableViewCell.h; path = Vasttrafik/VTTableViewCell.h; sourceTree = "<group>"; };
+		F40071DB112EDDC300982525 /* VTTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTTableViewCell.m; path = Vasttrafik/VTTableViewCell.m; sourceTree = "<group>"; };
 		F41B824F11259884003B438C /* CoordinatesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoordinatesTests.m; path = Tests/CoordinatesTests.m; sourceTree = "<group>"; };
 		F41B825111259890003B438C /* arrowdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrowdown.png; path = Images/arrowdown.png; sourceTree = "<group>"; };
 		F41B825211259890003B438C /* augmentedpoi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = augmentedpoi.png; path = Images/augmentedpoi.png; sourceTree = "<group>"; };
@@ -217,6 +220,8 @@
 				F44173D9110F252C00CBFE29 /* FlipsideViewController.m */,
 				289233A20DB2D0840083E9F9 /* FlipsideView.h */,
 				289233A30DB2D0840083E9F9 /* FlipsideView.m */,
+				F40071DA112EDDC300982525 /* VTTableViewCell.h */,
+				F40071DB112EDDC300982525 /* VTTableViewCell.m */,
 			);
 			name = "Flipside View";
 			sourceTree = "<group>";
@@ -544,6 +549,7 @@
 				F421F61F112C0393003D46D8 /* VTAnnotation.m in Sources */,
 				F421F6DC112C2FDB003D46D8 /* VTForecast.m in Sources */,
 				F421F882112C464E003D46D8 /* VTLineInfo.m in Sources */,
+				F40071DC112EDDC300982525 /* VTTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

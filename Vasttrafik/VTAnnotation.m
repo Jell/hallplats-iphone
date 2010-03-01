@@ -48,7 +48,6 @@
 		}
 	}
 	
-	[lineList sortUsingSelector:@selector(compareWith:)];
 	NSArray *result = [[NSArray alloc] initWithArray:lineList];
 	[lineList release];
 	[lineNumbers release];

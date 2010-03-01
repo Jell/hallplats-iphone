@@ -31,4 +31,6 @@
 @property(retain) NSString *darefterTime;
 @property BOOL darefterHandicap;
 
+-(NSComparisonResult)compareWith:(VTForecast *)anotherForecast;
+
 @end

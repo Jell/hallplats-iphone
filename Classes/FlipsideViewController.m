@@ -7,7 +7,7 @@
 //
 
 #import "FlipsideViewController.h"
-
+#import "VTTableViewCell.h"
 
 @implementation FlipsideViewController
 
@@ -17,7 +17,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];  
+	
 	NSString *text = [annotationDisplayed title];
+	
 	if(annotationDisplayed){
 		titleLabel.text = [NSString stringWithFormat:@"%@", text];
 	}else{
@@ -35,6 +37,7 @@
 
 -(void)setAnnotationDisplayed:(VTAnnotation *)anAnnotation{
 	annotationDisplayed = anAnnotation;
+	lineList = [anAnnotation getLineList];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -50,14 +53,40 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+	if(lineList){
+		return [lineList count];
+	}else {
+		return 0;
+	}
+
 }
 
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView{
+	NSMutableArray *indexNames = [[NSMutableArray alloc] init];
+	for(VTLineInfo *lineinfo in lineList){
+		[indexNames addObject:lineinfo.lineNumber];
+	}
+	return indexNames;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+	return [(VTLineInfo *)[lineList objectAtIndex:section] lineNumber];
+}
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if(annotationDisplayed){
-		return [annotationDisplayed.forecastList count];
+		
+		int i = 0;
+		NSString *sectionName = [(VTLineInfo *)[lineList objectAtIndex:section] lineNumber];
+		
+		for(VTForecast *forecast in annotationDisplayed.forecastList){
+			if([forecast.lineNumber isEqual: sectionName]){
+				i++;
+			}
+		}
+
+		return i;
 	}else{
 		return 0;
 	}
@@ -68,20 +97,30 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString *CellIdentifier = @"Cell";
 		
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	VTTableViewCell *cell = (VTTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+		cell = [[[VTTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
 	}
-		
+
 	// Set up the cell...
-	VTForecast *forecast = [annotationDisplayed.forecastList objectAtIndex:indexPath.row];
-	[[cell textLabel] setFont:[UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)]];
-	//[[cell textLabel] setTextColor:forecast.foregroundColor];
-	//[[cell textLabel] setBackgroundColor:forecast.backgroundColor];
-	[[cell textLabel] setNumberOfLines:3];
-	[[cell textLabel] setText:[NSString stringWithFormat:@"Line: %@\nDestination: %@\n       Nästa: %@min      Därefter: %@min",
-							   forecast.lineNumber, forecast.destination, forecast.nastaTime, forecast.darefterTime]];
-		
+	int i = 0;
+	NSString *sectionName = [(VTLineInfo *)[lineList objectAtIndex:indexPath.section] lineNumber];
+	VTForecast *forecast = nil;
+	
+	for(VTForecast *forecastTmp in annotationDisplayed.forecastList){
+		if([forecastTmp.lineNumber isEqual:sectionName]){
+			if(i == indexPath.row){
+				forecast = forecastTmp;
+				break;
+			}
+			i++;
+		}
+	}
+	
+	
+
+	[cell setForecast:forecast];
+	
 	return cell;
 }
 

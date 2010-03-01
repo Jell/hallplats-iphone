@@ -16,6 +16,8 @@
 	VTAnnotation *annotationDisplayed;
 	IBOutlet UILabel *titleLabel;
 	IBOutlet UITableView *mTableView;
+	NSArray *lineList;
+	int lineNumber;
 }
 
 @property (assign) id <FlipsideViewControllerDelegate> delegate;
