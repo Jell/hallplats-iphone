@@ -71,16 +71,14 @@
 	
 	float jitter = angleXY - headinAngle;
 	int i = 0;
-	[self translateView:infoLabelDisplay.view withTeta:M_PI andDistance:0];
+	[self translateView:infoLabelDisplay.view withTeta:M_PI andDistance:0 withZoom:NO];
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta = jitter - [aPoi teta];
 		float dist = GRID_HEIGHT * ([aPoi distance] - minDistance)/ (maxDistance - minDistance);
-		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist];
+		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist withZoom:YES];
 		
 		if(i == selectedPoi){
-			[self translateBubbleWithTeta:teta andDistance:dist];
-			//[self translateView:infoLabelDisplay.view withTeta:teta andDistance:-1];
-			//[infoLabelDisplay setArrowLength:dist];
+			[self translateView:infoLabelDisplay.view withTeta:teta andDistance:dist withZoom:NO];
 		}
 		i++;
 	}
@@ -101,78 +99,31 @@
 	rotationAndPerspectiveTransform.m34 = 1.0 / -500;
 	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, 90.0f * M_PI / 180.0f, 1.0f, 0.0f, 0.0f);
 	gridView.layer.transform = rotationAndPerspectiveTransform;
-	
-	
-	//gridView.layer.transform = CATransform3DRotate(gridView.layer.transform,0.01, 1.0, 0.0, 0.0);
-	//CATransform3DRotate(CATransform3DMakeTranslation(translation, 0.0, 0.0), M_PI/6, 0.0, 1.0, 0.0);
 }
 
--(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance{
+-(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance withZoom:(BOOL)zoom{
 	if(sin(teta)<0){
-			CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
-			rotationAndPerspectiveTransform.m34 = 1.0 / -500;
-			rotationAndPerspectiveTransform = CATransform3DTranslate(rotationAndPerspectiveTransform, [self translationFromAngle:teta], 100.0, -distance);
-			rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, 5.0f * M_PI / 180.0f, 1.0f, 0.0f, 0.0f);
-			aView.layer.transform = rotationAndPerspectiveTransform;
-			/*
-			aView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation([self translationFromAngle:teta], distance,  1000.0),
-												   0.5+(distance/(GRID_HEIGHT*2.0)),
-												   0.5+(distance/(GRID_HEIGHT*2.0)),
-												   1.0);
-			 */
+		CATransform3D transfomMatrix = [self make3dTransformWithTranslation:[self translationFromAngle:teta]
+																andDistance:distance];
+		
+		if(!zoom){
+			transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
+		}
+
+		aView.layer.transform = transfomMatrix;
 	}else{
 		aView.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
 	}
 }
 
--(void)translateBubbleWithTeta:(float)teta andDistance:(float)distance{
-	if(sin(teta)<0){
-		CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
-		rotationAndPerspectiveTransform.m34 = 1.0 / -500;
-		rotationAndPerspectiveTransform = CATransform3DTranslate(rotationAndPerspectiveTransform, [self translationFromAngle:teta], 100.0, -distance);
-		rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, 5.0f * M_PI / 180.0f, 1.0f, 0.0f, 0.0f);
-		NSLog(@"\n\n%f    ,%f    ,%f    ,%f\n%f    ,%f     ,%f     ,%f\n%f     ,%f     ,%f    ,%f\n%f     ,%f     ,%f    ,%f\n\n",
-			  rotationAndPerspectiveTransform.m11,
-			  rotationAndPerspectiveTransform.m12,
-			  rotationAndPerspectiveTransform.m13,
-			  rotationAndPerspectiveTransform.m14,
-			  rotationAndPerspectiveTransform.m21,
-			  rotationAndPerspectiveTransform.m22,
-			  rotationAndPerspectiveTransform.m23,
-			  rotationAndPerspectiveTransform.m24,
-			  rotationAndPerspectiveTransform.m31,
-			  rotationAndPerspectiveTransform.m32,
-			  rotationAndPerspectiveTransform.m33,
-			  rotationAndPerspectiveTransform.m34,
-			  rotationAndPerspectiveTransform.m41,
-			  rotationAndPerspectiveTransform.m42,
-			  rotationAndPerspectiveTransform.m43,
-			  rotationAndPerspectiveTransform.m44);
-		
-		CATransform3D onlyTranslation = CATransform3DIdentity;
-		//onlyTranslation.m14 = rotationAndPerspectiveTransform.m14;
-		//onlyTranslation.m24 = rotationAndPerspectiveTransform.m24;
-		onlyTranslation.m41 = rotationAndPerspectiveTransform.m41;
-		onlyTranslation.m42 = rotationAndPerspectiveTransform.m42;
-		onlyTranslation.m43 = rotationAndPerspectiveTransform.m43;
-		onlyTranslation.m44 = rotationAndPerspectiveTransform.m44;
-		onlyTranslation.m34 = 1.0 / -500;
-		onlyTranslation = CATransform3DScale(onlyTranslation, onlyTranslation.m44, onlyTranslation.m44, 1.0);
-		
-		infoLabelDisplay.view.layer.transform = onlyTranslation;
-		/*
-		 aView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation([self translationFromAngle:teta], distance,  1000.0),
-		 0.5+(distance/(GRID_HEIGHT*2.0)),
-		 0.5+(distance/(GRID_HEIGHT*2.0)),
-		 1.0);
-		 */
-	}else{
-		infoLabelDisplay.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
-	}
-}
-
 -(float)translationFromAngle:(float)teta{
 	return ((MIN_SCREEN_WIDTH/2.0) + ((MIN_SCREEN_WIDTH - MAX_SCREEN_WIDTH)/2.0) * abs(sin(angleXY))) * cos(teta) / sin(CAMERA_ANGLE_X * M_PI / 180);
+}
+
+-(CATransform3D)make3dTransformWithTranslation:(float)translation andDistance:(float)distance{
+	CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
+	rotationAndPerspectiveTransform.m34 = 1.0 / -500;
+	return CATransform3DTranslate(rotationAndPerspectiveTransform, translation, 100.0, -distance);
 }
 -(void)accelerationChangedX:(float)x y:(float)y z:(float)z
 {
