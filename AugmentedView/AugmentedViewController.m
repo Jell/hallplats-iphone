@@ -71,14 +71,14 @@
 	
 	float jitter = angleXY - headinAngle;
 	int i = 0;
-	[self translateView:infoLabelDisplay.view withTeta:M_PI andDistance:0 withZoom:NO];
+	[self translateView:infoLabelDisplay.view withTeta:M_PI andDistance:0 withScale:NO];
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta = jitter - [aPoi teta];
 		float dist = GRID_HEIGHT * ([aPoi distance] - minDistance)/ (maxDistance - minDistance);
-		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist withZoom:YES];
+		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist withScale:YES];
 		
 		if(i == selectedPoi){
-			[self translateView:infoLabelDisplay.view withTeta:teta andDistance:dist withZoom:NO];
+			[self translateView:infoLabelDisplay.view withTeta:teta andDistance:dist withScale:NO];
 		}
 		i++;
 	}
@@ -101,12 +101,12 @@
 	gridView.layer.transform = rotationAndPerspectiveTransform;
 }
 
--(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance withZoom:(BOOL)zoom{
+-(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance withScale:(BOOL)scaleEnabled{
 	if(sin(teta)<0){
 		CATransform3D transfomMatrix = [self make3dTransformWithTranslation:[self translationFromAngle:teta]
 																andDistance:distance];
 		
-		if(!zoom){
+		if(!scaleEnabled){
 			transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
 		}
 

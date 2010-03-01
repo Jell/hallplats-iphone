@@ -35,7 +35,7 @@
 @property (assign)  CLLocation *currentLocation;
 
 -(void)translateGridWithTeta:(float)teta;
--(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance withZoom:(BOOL)zoom;
+-(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance withScale:(BOOL)scaleEnabled;
 -(float)translationFromAngle:(float)teta;
 -(CATransform3D)make3dTransformWithTranslation:(float)translation andDistance:(float)distance;
 -(void) poiSelected:(id) poiViewId;
