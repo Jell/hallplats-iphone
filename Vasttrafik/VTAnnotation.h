@@ -37,7 +37,6 @@
 	NSArray *forecastList;
 }
 
-
 @property(retain) NSString *friendly_name;
 @property(retain) NSString *stop_name;
 @property(retain) NSString *county;
