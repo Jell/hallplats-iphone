@@ -58,8 +58,9 @@
 	float lat2 = annotation.coordinate.latitude * 3.14 / 180.0;
 	float lon2 = annotation.coordinate.longitude * 3.14 / 180.0;
 	
-	const float R = 6371.0; // km
+	const float R = 6371000.0; // m
 	distance = acos(sin(lat1)*sin(lat2) + cos(lat1)*cos(lat2) * cos(lon2-lon1)) * R;
+	[annotation setSubtitle:[NSString stringWithFormat:@"%dm", (int)distance]];
 }
 
 - (void)dealloc {

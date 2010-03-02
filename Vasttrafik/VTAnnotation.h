@@ -52,6 +52,7 @@
 @property(retain) NSArray *forecastList;
 
 -(void)setTitle:(NSString *)title subtitle:(NSString *)subtitle;
+-(void)setSubtitle:(NSString *)subtitle;
 -(NSArray *)getLineList;
 
 @end
