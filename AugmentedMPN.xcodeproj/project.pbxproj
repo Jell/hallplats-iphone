@@ -27,8 +27,6 @@
 		F41B826111259890003B438C /* horizontal_grid.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B825811259890003B438C /* horizontal_grid.png */; };
 		F41B826211259890003B438C /* direction.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B825911259890003B438C /* direction.png */; };
 		F41B82641125989C003B438C /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B82631125989C003B438C /* Icon.png */; };
-		F41B8279112598AD003B438C /* MPNApiHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B8275112598AD003B438C /* MPNApiHandler.m */; };
-		F41B827A112598AD003B438C /* MPNAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B8277112598AD003B438C /* MPNAnnotation.m */; };
 		F41B8283112598BA003B438C /* AugmentedPoi.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B827C112598BA003B438C /* AugmentedPoi.m */; };
 		F41B8285112598BA003B438C /* AugmentedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B8280112598BA003B438C /* AugmentedView.m */; };
 		F41B8286112598BA003B438C /* AugmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B8282112598BA003B438C /* AugmentedViewController.m */; };
@@ -483,8 +481,6 @@
 				289233A70DB2D0840083E9F9 /* MainView.m in Sources */,
 				F441738C110F232600CBFE29 /* MainViewController.m in Sources */,
 				F44173DA110F252C00CBFE29 /* FlipsideViewController.m in Sources */,
-				F41B8279112598AD003B438C /* MPNApiHandler.m in Sources */,
-				F41B827A112598AD003B438C /* MPNAnnotation.m in Sources */,
 				F41B8283112598BA003B438C /* AugmentedPoi.m in Sources */,
 				F41B8285112598BA003B438C /* AugmentedView.m in Sources */,
 				F41B8286112598BA003B438C /* AugmentedViewController.m in Sources */,
