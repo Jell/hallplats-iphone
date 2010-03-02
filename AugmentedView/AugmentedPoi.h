@@ -19,6 +19,9 @@
 @property float distance;
 @property(assign) VTAnnotation *annotation;
 
+/**
+ Initialize an Augmented Poi with an Annotation and an origin
+ */
 -(id)initWithAnnotation:(VTAnnotation *) anAnnotation fromOrigin:(CLLocationCoordinate2D)origin;
 -(void)updateFrom:(CLLocationCoordinate2D)origin;
 -(void)updateAngleFrom:(CLLocationCoordinate2D)origin;
