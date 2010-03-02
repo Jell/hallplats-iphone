@@ -315,7 +315,7 @@
 	}
 }
 
-/** String should be #RRGGBB **/
+/** String should be RRGGBB */
 -(UIColor *)stringToColor:(NSString *)stringColor{
 	NSString *capitalLetters = [stringColor uppercaseString];
 	float red = [self charHexToInt:[capitalLetters characterAtIndex:1]]*16 +
