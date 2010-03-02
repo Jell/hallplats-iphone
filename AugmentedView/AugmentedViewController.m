@@ -73,7 +73,7 @@
 	int i = 0;
 	[self translateView:infoLabelDisplay.view withTeta:M_PI andDistance:0 withScale:NO];
 	for (AugmentedPoi *aPoi in ar_poiList) {
-		float teta = jitter - [aPoi teta];
+		float teta = jitter - [aPoi azimuth];
 		float dist = GRID_HEIGHT * ([aPoi distance] - minDistance)/ (maxDistance - minDistance);
 		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist withScale:YES];
 		

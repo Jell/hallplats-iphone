@@ -36,12 +36,12 @@
 }
 
 -(void) testAngleConsistancy{
-	float teta = poiEquator.teta;
+	float teta = poiEquator.azimuth;
 	CLLocationCoordinate2D origin = {10.0,0.0};
 	
 	[poiEquator updateAngleFrom:origin];
 	//STAssertTrue(FALSE, @"not correct angle");
-	STAssertTrue(teta == poiEquator.teta, @"not consistant angle");
+	STAssertTrue(teta == poiEquator.azimuth, @"not consistant angle");
 }
 
 -(void) testAngleEquator {
@@ -51,32 +51,32 @@
 	origin.latitude = 10.0;
 	origin.longitude = 0.0;
 	[poiEquator updateAngleFrom:origin];
-	teta = poiEquator.teta;
+	teta = poiEquator.azimuth;
 	STAssertTrue(abs(teta - 1.57) < 0.01, @"not correct angle: %f instead of PI/2", teta);
 	
 	origin.latitude = -10.0;
 	origin.longitude = 0;
 	[poiEquator updateAngleFrom:origin];
-	teta = poiEquator.teta;
+	teta = poiEquator.azimuth;
 	STAssertTrue(abs(teta + 1.57) < 0.01, @"not correct angle: %f instead of -PI/2", teta);
 	
 	origin.latitude = 0.0;
 	origin.longitude = 10.0;
 	[poiEquator updateAngleFrom:origin];
-	teta = poiEquator.teta;
+	teta = poiEquator.azimuth;
 	STAssertTrue(abs(teta) < 0.01, @"not correct angle: %f instead of 0.0", teta);
 	
 	origin.latitude = 0.0;
 	origin.longitude = -10.0;
 	[poiEquator updateAngleFrom:origin];
-	teta = poiEquator.teta;
+	teta = poiEquator.azimuth;
 	STAssertTrue(abs(teta - 3.14159265) < 0.01 || abs(teta + 3.14159265) < 0.01, @"not correct angle: %f instead of PI", teta);
 	//STAssertTrue(TRUE, @"It Works!");
 	
 	origin.latitude = 0.0;
 	origin.longitude = 0.0;
 	[poiEquator updateAngleFrom:origin];
-	teta = poiEquator.teta;
+	teta = poiEquator.azimuth;
 	STAssertTrue(teta == 0.0, @"not correct angle: %f instead of 0.0", teta);
 }
 
@@ -87,32 +87,32 @@
 	origin.latitude = 90.0;
 	origin.longitude = 0.0;
 	[poiNorthPole updateAngleFrom:origin];
-	teta = poiNorthPole.teta;
+	teta = poiNorthPole.azimuth;
 	STAssertTrue(abs(teta - 1.57) < 0.01, @"not correct angle: %f instead of PI/2", teta);
 	
 	origin.latitude = 80.0;
 	origin.longitude = 0;
 	[poiNorthPole updateAngleFrom:origin];
-	teta = poiNorthPole.teta;
+	teta = poiNorthPole.azimuth;
 	STAssertTrue(abs(teta + 1.57) < 0.01, @"not correct angle: %f instead of -PI/2", teta);
 	
 	origin.latitude = 89.0;
 	origin.longitude = 10.0;
 	[poiNorthPole updateAngleFrom:origin];
-	teta = poiNorthPole.teta;
+	teta = poiNorthPole.azimuth;
 	STAssertTrue(abs(teta) < 0.01, @"not correct angle: %f instead of 0.0", teta);
 	
 	origin.latitude = 89.0;
 	origin.longitude = -10.0;
 	[poiNorthPole updateAngleFrom:origin];
-	teta = poiNorthPole.teta;
+	teta = poiNorthPole.azimuth;
 	STAssertTrue(abs(teta - 3.14159265) < 0.01 || abs(teta + 3.14159265) < 0.01, @"not correct angle: %f instead of PI", teta);
 	//STAssertTrue(TRUE, @"It Works!");
 	
 	origin.latitude = 89.0;
 	origin.longitude = 0.0;
 	[poiNorthPole updateAngleFrom:origin];
-	teta = poiNorthPole.teta;
+	teta = poiNorthPole.azimuth;
 	STAssertTrue(teta == 0.0, @"not correct angle: %f instead of 0.0", teta);
 }
 

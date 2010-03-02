@@ -10,7 +10,7 @@
 
 
 @implementation AugmentedPoi
-@synthesize teta;
+@synthesize azimuth;
 @synthesize annotation;
 @synthesize distance;
 
@@ -39,19 +39,15 @@
 	float lon2 = annotation.coordinate.longitude * 3.14 / 180.0;
 	
 	if(lat1 == lat2 && lon1 == lon2){
-		teta = 0.0;
+		azimuth = 0.0;
 	}else{
 		float dLon = lon2-lon1; 
 		
 		float y = sin(dLon) * cos(lat2);
 		float x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
 		
-		teta = atan2(-x, -y);
+		azimuth = atan2(-x, -y);
 	}
-	/*
-	 self.teta = atan2((origin.latitude - annotation.coordinate.latitude)* (110.574 + 0.562 * abs(origin.latitude / 90)),
-	 (origin.longitude - annotation.coordinate.longitude) * 111.320 * cos(origin.latitude * 3.14 / 180));
-	 */
 }
 
 -(void)updateDistanceFrom:(CLLocationCoordinate2D)origin
