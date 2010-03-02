@@ -37,12 +37,6 @@
 	
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
-
-	
-	headingBufferIndex = 0;
-	for(int i = 0; i < HEADING_BUFFER_SIZE; i++){
-		headingBuffer[i] = 0;
-	}
 } 
 
 - (void)locationManager: (CLLocationManager *)manager
@@ -57,18 +51,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
 	
-	headingBuffer[headingBufferIndex] = M_PI * newHeading.trueHeading / 180.0;	
-	float headinAngle = 0.0;
-	
-	for(int i = 0; i<HEADING_BUFFER_SIZE; i++){
-		headinAngle += headingBuffer[i];
-	}
-	
-	headinAngle /=  (float) HEADING_BUFFER_SIZE;
-	
-	headingBufferIndex++;
-	headingBufferIndex %= HEADING_BUFFER_SIZE;
-	
+	float headinAngle = M_PI * newHeading.trueHeading / 180.0;
 	float jitter = angleXY - headinAngle;
 	int i = 0;
 	[self translateView:infoLabelDisplay.view withTeta:M_PI andDistance:0 withScale:NO];
@@ -241,7 +224,6 @@
 	}
 	[ar_poiViews release];
 	
-	free(headingBuffer);
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
@@ -254,8 +236,7 @@
 		[aView removeFromSuperview];
 	}
 	[ar_poiViews release];
-	
-	free(headingBuffer);
+
     [super dealloc];
 }
 
