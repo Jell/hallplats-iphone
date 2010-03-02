@@ -1,3 +1,7 @@
+/**
+ Container for Västtrafik stop information
+ */
+
 //
 //  VTAnnotation.h
 //  AugmentedMPN

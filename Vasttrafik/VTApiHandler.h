@@ -1,3 +1,7 @@
+/**
+ Responsible for API requests to the Västtrafik webservices
+ */
+
 //
 //  VTApiHandler.h
 //  AugmentedMPN
@@ -25,17 +29,33 @@ static const float false_northing = -667.711;
 static const float false_easting = 1500064.274;
 static const float deg_to_rad =  M_PI / 180.0;
 
+/** Fetch a VTAnnotation list from the given origin */
 -(NSArray *)getAnnotationsFromCoordinates:(CLLocationCoordinate2D) centerCoordinates;
+
+/** Request the list of stops close to the given origin */
 -(NSString *)getXMLfromCoordinates:(CLLocationCoordinate2D) centerCoordinates;
+
+/** Fetch a VTForecast list from the given stop ID */
 -(NSArray *)getForcastListForPoiId:(NSString *)poiId;
+
+/** Request the list of forecasts from the given stop ID */
 -(NSString *)getXMLfromPoiId:(NSString *)poiId;
 
+/** Get the content of the given URL */
 - (NSString *)stringWithUrl:(NSURL *)url;
 
+/** Convert RT90 coordinates to WGS84 coordinate system */
 - (CLLocationCoordinate2D) rt90_to_GPS:(CLLocationCoordinate2D)gpsCoordinates;
+
+/** Convert WGS84 coordinates to RT90 coordinate system */
 - (CLLocationCoordinate2D) gps_to_RT90:(CLLocationCoordinate2D)gpsCoordinates;
 
+/** Retrieve the decimal value from a hexadecimal value represented by a single Char
+ @param charValue should be 1~9 or A~F */
 -(int)charHexToInt:(unichar)charValue;
+
+/** Convert a String to a UIColor
+ @param stringColor should be \#RRGGBB */
 -(UIColor *)stringToColor:(NSString *)stringColor;
 
 @end

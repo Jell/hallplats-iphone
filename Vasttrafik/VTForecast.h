@@ -1,3 +1,7 @@
+/**
+ Container for Västtrafik forecast information
+ */
+
 //
 //  VTForecast.h
 //  AugmentedMPN

@@ -1,3 +1,7 @@
+/**
+ Container for Västtrafik line information
+ */
+
 //
 //  VTLineInfo.h
 //  AugmentedMPN
