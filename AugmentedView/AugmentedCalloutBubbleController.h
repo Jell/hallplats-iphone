@@ -1,5 +1,5 @@
 /**
- View representation for an AugmentedPoi
+ Callout bubble view for an AugmentedPoi
  @see AugmentedPoi
  */
 
@@ -12,9 +12,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VTLineInfo.h"
 
-
-@interface AugmentedPoiViewController : UIViewController <UIScrollViewDelegate>{
+@interface AugmentedCalloutBubbleController : UIViewController <UIScrollViewDelegate>{
 	IBOutlet UILabel *infoLabel;				/**<Title view */
 	IBOutlet UILabel *subtitleLabel;			/**<Subtitle view */
 	IBOutlet UIScrollView *tramScroll;			/**<Scrolling view for tram line display*/
@@ -26,6 +26,9 @@
 
 /** Set the title and subtitle of the view */
 -(void)setTitle:(NSString *)title subtitle:(NSString *)subtitle;
+
+/** Set the tram line list */
+-(void)setTramLines:(NSArray *)lineList;
 
 /** clear all the tram lines from the view */
 -(void)clearTramLines;

@@ -43,7 +43,6 @@
 	mMapViewController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
 	viewDisplayedController = mAugmentedViewController;
 	[viewDisplayed addSubview:viewDisplayedController.view];
-	augmentedIsOn = TRUE;
 	
 	//Enable Location Manager
 	mLocationManager = [[CLLocationManager alloc] init];
@@ -148,7 +147,7 @@
 	float zz = zzAverage;
 
 	// Check if we have to switch view
-	if(augmentedIsOn){
+	if(viewDisplayedController == mAugmentedViewController){
 		if(zz < -0.9 && (yy > -0.2 && yy <  0.2 && xx > -0.2 && xx <  0.2))
 		{
 			[self loadMapView];
@@ -215,8 +214,6 @@
 }
 
 - (void)loadMapView{
-	augmentedIsOn = FALSE;
-	
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
 	[applicationLoadViewIn setType:kCATransitionPush];
@@ -243,8 +240,6 @@
 }
 
 - (void)loadAugmentedView{
-	augmentedIsOn = TRUE;
-	
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
 	[applicationLoadViewIn setType:kCATransitionPush];

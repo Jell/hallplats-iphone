@@ -6,9 +6,9 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "AugmentedPoiViewController.h"
+#import "AugmentedCalloutBubbleController.h"
 
-@implementation AugmentedPoiViewController
+@implementation AugmentedCalloutBubbleController
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -41,6 +41,16 @@
 
 }
 
+-(void)setTramLines:(NSArray *)lineList{
+	[self clearTramLines];
+	
+	for (VTLineInfo *aLine in lineList) {
+		[self addTramLine:aLine.lineNumber
+				   backgroundColor:aLine.backgroundColor
+				   foregroundColor:aLine.foregroundColor];
+	}
+	
+}
 -(void)clearTramLines{
 	for(UIView *aView in lineViews){
 		[aView removeFromSuperview];

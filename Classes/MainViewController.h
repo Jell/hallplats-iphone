@@ -33,8 +33,7 @@
 	UIAccelerometer *mAccelerometer;								/**< Responsible for dispatching acceleration updates*/
 	VTApiHandler *mVTApiHandler;									/**< Used to interact with the Västtrafik API*/
 	
-	UIInterfaceOrientation mInterfaceOrientation;					/**< Current orientation of the device*/
-	bool augmentedIsOn;												
+	UIInterfaceOrientation mInterfaceOrientation;					/**< Current orientation of the device*/										
 	bool firstLocationUpdate;
 	NSOperationQueue *opQueue;										/**< Operation Queue used for multithreading*/
 	CLLocation *currentLocation;									/**< Current User location*/

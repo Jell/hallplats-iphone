@@ -15,14 +15,14 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ARViewProtocol.h"
 #import "AugmentedPoi.h"
-#import "AugmentedPoiViewController.h"
+#import "AugmentedCalloutBubbleController.h"
 #import "VTAnnotation.h"
 
 #define HEADING_BUFFER_SIZE 1
 @interface AugmentedViewController : UIViewController <ARViewDelegate>{
 	IBOutlet UIView *poiOverlay;					/**< View container for Poi display */
 	IBOutlet UIView *gridView;						/**< Perspective Grid View */
-	AugmentedPoiViewController *infoLabelDisplay;	/**< Poi call out bubble controller */
+	AugmentedCalloutBubbleController *calloutBubble;	/**< Poi call out bubble controller */
 	int selectedPoi;								/**< Currently selected POI, -1 if none is selected */
 	NSMutableArray *ar_poiList;						/**< List containing the POI */
 	NSMutableArray *ar_poiViews;					/**< List containing the POI views */

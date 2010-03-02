@@ -29,11 +29,11 @@
 	currentLocation = nil;
 	selectedPoi = -1;
 	
-	infoLabelDisplay = [[AugmentedPoiViewController alloc] initWithNibName:@"AugmentedPoiView" bundle:nil];
+	calloutBubble = [[AugmentedCalloutBubbleController alloc] initWithNibName:@"AugmentedPoiView" bundle:nil];
 
-	[poiOverlay addSubview:infoLabelDisplay.view];
+	[poiOverlay addSubview:calloutBubble.view];
 	[poiOverlay sendSubviewToBack:gridView];
-	[poiOverlay bringSubviewToFront:infoLabelDisplay.view];
+	[poiOverlay bringSubviewToFront:calloutBubble.view];
 	
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
@@ -54,14 +54,14 @@
 	float headinAngle = M_PI * newHeading.trueHeading / 180.0;
 	float jitter = angleXY - headinAngle;
 	int i = 0;
-	[self translateView:infoLabelDisplay.view withTeta:M_PI andDistance:0 withScale:NO];
+	[self translateView:calloutBubble.view withTeta:M_PI andDistance:0 withScale:NO];
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta = jitter - [aPoi azimuth];
 		float dist = GRID_HEIGHT * ([aPoi distance] - minDistance)/ (maxDistance - minDistance);
 		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist withScale:YES];
 		
 		if(i == selectedPoi){
-			[self translateView:infoLabelDisplay.view withTeta:teta andDistance:dist withScale:NO];
+			[self translateView:calloutBubble.view withTeta:teta andDistance:dist withScale:NO];
 		}
 		i++;
 	}
@@ -191,18 +191,11 @@
 		UIButton *selectedView = [ar_poiViews objectAtIndex:selectedPoi];
 		[selectedView setEnabled:FALSE];
 		[poiOverlay bringSubviewToFront:selectedView];
-		[poiOverlay bringSubviewToFront:infoLabelDisplay.view];
+		[poiOverlay bringSubviewToFront:calloutBubble.view];
 		VTAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
-		[infoLabelDisplay setTitle:[selectedAnnotation title] subtitle:[selectedAnnotation subtitle]];
-		[infoLabelDisplay clearTramLines];
 		
-		NSArray *lineList = [selectedAnnotation getLineList];
-		for (VTLineInfo *aLine in lineList) {
-			[infoLabelDisplay addTramLine:aLine.lineNumber
-						  backgroundColor:aLine.backgroundColor
-						  foregroundColor:aLine.foregroundColor];
-		}
-		
+		[calloutBubble setTitle:[selectedAnnotation title] subtitle:[selectedAnnotation subtitle]];
+		[calloutBubble setTramLines:[selectedAnnotation getLineList]];
 	}
 }
 
@@ -217,7 +210,7 @@
 }
 
 - (void)viewDidUnload {
-	[infoLabelDisplay release];
+	[calloutBubble release];
 	[ar_poiList release];
 	for(UIView *aView in ar_poiViews){
 		[aView removeFromSuperview];
@@ -230,7 +223,7 @@
 
 
 - (void)dealloc {
-	[infoLabelDisplay release];
+	[calloutBubble release];
 	[ar_poiList release];
 	for(UIView *aView in ar_poiViews){
 		[aView removeFromSuperview];
