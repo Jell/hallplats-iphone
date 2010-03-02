@@ -1,3 +1,7 @@
+/**
+ Controller responsible for handling the Flipside View that displays detailed information about one POI.
+ */
+
 //
 //  FlipsideViewController.h
 //  AugmentedMPN
@@ -12,23 +16,26 @@
 
 
 @interface FlipsideViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>{
-	id <FlipsideViewControllerDelegate> delegate;
-	VTAnnotation *annotationDisplayed;
-	IBOutlet UILabel *titleLabel;
-	IBOutlet UITableView *mTableView;
-	NSArray *lineList;
-	int lineNumber;
+	id <FlipsideViewControllerDelegate> delegate;	/**< */
+	VTAnnotation *annotationDisplayed;				/**< The Annotation being displayed*/
+	IBOutlet UILabel *titleLabel;					/**< Container for the Title of the annotation*/
+	IBOutlet UITableView *mTableView;				/**< The Table view containing a list of items corresponing to the details of the annotation*/
+	NSArray *lineList;								/**< List of VTLineInfo*/
+	int lineNumber;									/**< Number of lines in the lineList*/
 }
 
 @property (assign) id <FlipsideViewControllerDelegate> delegate;
 @property (assign) VTAnnotation *annotationDisplayed;
 
+/** Called when the "Done" button is pressed*/
 - (IBAction)done;
 
 @end
 
 
 @protocol FlipsideViewControllerDelegate
+
+/** Called when the view controller did finish*/
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller;
 @end
 

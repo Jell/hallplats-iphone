@@ -199,8 +199,6 @@
 				F44173D9110F252C00CBFE29 /* FlipsideViewController.m */,
 				289233A20DB2D0840083E9F9 /* FlipsideView.h */,
 				289233A30DB2D0840083E9F9 /* FlipsideView.m */,
-				F40071DA112EDDC300982525 /* VTTableViewCell.h */,
-				F40071DB112EDDC300982525 /* VTTableViewCell.m */,
 			);
 			name = "Flipside View";
 			sourceTree = "<group>";
@@ -288,6 +286,8 @@
 				F421F6DB112C2FDB003D46D8 /* VTForecast.m */,
 				F421F880112C464E003D46D8 /* VTLineInfo.h */,
 				F421F881112C464E003D46D8 /* VTLineInfo.m */,
+				F40071DA112EDDC300982525 /* VTTableViewCell.h */,
+				F40071DB112EDDC300982525 /* VTTableViewCell.m */,
 			);
 			name = "Västtrafik";
 			sourceTree = "<group>";

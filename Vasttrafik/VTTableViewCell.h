@@ -1,3 +1,7 @@
+/**
+ View for a VTForecast to be displayed in a Table view.
+ */
+
 //
 //  VTTableViewCell.h
 //  AugmentedMPN

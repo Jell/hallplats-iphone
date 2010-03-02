@@ -1,3 +1,7 @@
+/**
+ Used to switch between Map View and Augmented View and to dispatch events.
+ */
+
 //
 //  MainViewController.h
 //  AugmentedMPN
@@ -16,31 +20,32 @@
 #define ACCELERATION_BUFFER_SIZE 5
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate, CLLocationManagerDelegate> {
-	IBOutlet UIView *viewDisplayed;
-	UIViewController<ARViewDelegate> *viewDisplayedController;
+	IBOutlet UIView *viewDisplayed;									/**< The view container in which the Map View or Augmented View are displayed*/
+	UIViewController<ARViewDelegate> *viewDisplayedController;		/**< Pointer to current display type (Map or Augmented)*/
 	
-	MapViewController *mMapViewController;
-	AugmentedViewController *mAugmentedViewController;
+	MapViewController *mMapViewController;							/**< Map View Controller*/
+	AugmentedViewController *mAugmentedViewController;				/**< AUgmented View Controller*/
 	
-	IBOutlet UIActivityIndicatorView* activityIndicator;
-	IBOutlet UIButton *updateButton;
+	IBOutlet UIActivityIndicatorView* activityIndicator;			/**< Loading indicator */
+	IBOutlet UIButton *updateButton;								/**< Update Button */
 	
-	CLLocationManager *mLocationManager;
-	UIAccelerometer *mAccelerometer;
-	VTApiHandler *mVTApiHandler;
+	CLLocationManager *mLocationManager;							/**< Responsible for dispatching location updates*/
+	UIAccelerometer *mAccelerometer;								/**< Responsible for dispatching acceleration updates*/
+	VTApiHandler *mVTApiHandler;									/**< Used to interact with the Västtrafik API*/
 	
-	UIInterfaceOrientation mInterfaceOrientation;
-	bool augmentedIsOn;
+	UIInterfaceOrientation mInterfaceOrientation;					/**< Current orientation of the device*/
+	bool augmentedIsOn;												
 	bool firstLocationUpdate;
-	NSOperationQueue *opQueue;
-	CLLocation *currentLocation;
-	NSArray *annotationList;
-	float xxArray[ACCELERATION_BUFFER_SIZE];
-	float yyArray[ACCELERATION_BUFFER_SIZE];
-	float zzArray[ACCELERATION_BUFFER_SIZE];
-	float xxAverage;
-	float yyAverage;
-	float zzAverage;
+	NSOperationQueue *opQueue;										/**< Operation Queue used for multithreading*/
+	CLLocation *currentLocation;									/**< Current User location*/
+	NSArray *annotationList;										/**< List of VTAnnotation*/
+	
+	float xxArray[ACCELERATION_BUFFER_SIZE];						/**< Acceleration Buffer along x axis*/
+	float yyArray[ACCELERATION_BUFFER_SIZE];						/**< Acceleration Buffer along y axis*/
+	float zzArray[ACCELERATION_BUFFER_SIZE];						/**< Acceleration Buffer along z axis*/
+	float xxAverage;												/**< Acceleration Average along x axis*/
+	float yyAverage;												/**< Acceleration Average along y axis*/
+	float zzAverage;												/**< Acceleration Average along z axis*/
 	int accelerationBufferIndex;
 }
 
@@ -53,12 +58,25 @@
 @property (retain) MapViewController *mMapViewController;
 @property (retain) AugmentedViewController *mAugmentedViewController;
 
+/** Switch to flipside view to display detailed information*/
 - (IBAction)showInfo;
+
+/** Load the Map View on screen*/
 - (void)loadMapView;
+
+/** Load the Augmented View on screen*/
 - (void)loadAugmentedView;
+
+/** Generic function to load a view controller*/
 - (void)loadViewController:(UIViewController<ARViewDelegate> *)viewController withTransition:(CATransition *)transition;
+
+/** Update the Annotation List*/ 
 - (IBAction)updateInfo;
+
+/** Start updating hte Annotation List*/
 - (void) performUpdate:(id)object;
+
+/** Update the system state according to the update that has been performed*/
 - (void) updatePerformed:(id)response;
 
 @end
