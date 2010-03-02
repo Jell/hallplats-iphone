@@ -51,7 +51,7 @@
 		F421F6DC112C2FDB003D46D8 /* VTForecast.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F6DB112C2FDB003D46D8 /* VTForecast.m */; };
 		F421F882112C464E003D46D8 /* VTLineInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F881112C464E003D46D8 /* VTLineInfo.m */; };
 		F4274BC3112AA66D0018F77C /* AugmentedCalloutBubbleController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4274BC1112AA66D0018F77C /* AugmentedCalloutBubbleController.m */; };
-		F4274BC4112AA66D0018F77C /* AugmentedPoiView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4274BC2112AA66D0018F77C /* AugmentedPoiView.xib */; };
+		F4274BC4112AA66D0018F77C /* AugmentedCalloutBubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4274BC2112AA66D0018F77C /* AugmentedCalloutBubbleView.xib */; };
 		F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4DE711104AF900C312F4 /* MapKit.framework */; };
 		F43B4E871110725E00C312F4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4E861110725E00C312F4 /* QuartzCore.framework */; };
 		F441738C110F232600CBFE29 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F441738B110F232600CBFE29 /* MainViewController.m */; };
@@ -130,7 +130,7 @@
 		F421F881112C464E003D46D8 /* VTLineInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTLineInfo.m; path = Vasttrafik/VTLineInfo.m; sourceTree = "<group>"; };
 		F4274BC0112AA66D0018F77C /* AugmentedCalloutBubbleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AugmentedCalloutBubbleController.h; path = AugmentedView/AugmentedCalloutBubbleController.h; sourceTree = "<group>"; };
 		F4274BC1112AA66D0018F77C /* AugmentedCalloutBubbleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AugmentedCalloutBubbleController.m; path = AugmentedView/AugmentedCalloutBubbleController.m; sourceTree = "<group>"; };
-		F4274BC2112AA66D0018F77C /* AugmentedPoiView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AugmentedPoiView.xib; path = AugmentedView/AugmentedPoiView.xib; sourceTree = "<group>"; };
+		F4274BC2112AA66D0018F77C /* AugmentedCalloutBubbleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AugmentedCalloutBubbleView.xib; path = AugmentedView/AugmentedCalloutBubbleView.xib; sourceTree = "<group>"; };
 		F434D91F1121546E00DF67CE /* CoordinatesTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoordinatesTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F434D9201121546E00DF67CE /* CoordinatesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoordinatesTests-Info.plist"; sourceTree = "<group>"; };
 		F43B4DE711104AF900C312F4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -249,7 +249,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F4274BC2112AA66D0018F77C /* AugmentedPoiView.xib */,
+				F4274BC2112AA66D0018F77C /* AugmentedCalloutBubbleView.xib */,
 				F41B828E112598DD003B438C /* AugmentedView.xib */,
 				F41B828F112598DD003B438C /* FlipsideView.xib */,
 				F41B8290112598DD003B438C /* MainView.xib */,
@@ -440,7 +440,7 @@
 				F41B8295112598DD003B438C /* MainView.xib in Resources */,
 				F41B8296112598DD003B438C /* MainWindow.xib in Resources */,
 				F41B8297112598DD003B438C /* MapView.xib in Resources */,
-				F4274BC4112AA66D0018F77C /* AugmentedPoiView.xib in Resources */,
+				F4274BC4112AA66D0018F77C /* AugmentedCalloutBubbleView.xib in Resources */,
 				F40070A4112E8E8200982525 /* coolbutton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

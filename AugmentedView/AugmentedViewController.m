@@ -29,7 +29,7 @@
 	currentLocation = nil;
 	selectedPoi = -1;
 	
-	calloutBubble = [[AugmentedCalloutBubbleController alloc] initWithNibName:@"AugmentedPoiView" bundle:nil];
+	calloutBubble = [[AugmentedCalloutBubbleController alloc] initWithNibName:@"AugmentedCalloutBubbleView" bundle:nil];
 
 	[poiOverlay addSubview:calloutBubble.view];
 	[poiOverlay sendSubviewToBack:gridView];
