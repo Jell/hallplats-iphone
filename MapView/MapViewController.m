@@ -14,6 +14,7 @@
 @synthesize annotationList;
 @synthesize currentLocation;
 @synthesize selectedPoi;
+@synthesize delegate;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -75,6 +76,13 @@
 	return -1;
 }
 
+-(void)setSelectedPoi:(int)poiId{
+	selectedPoi = poiId;
+	if(selectedPoi >=0){
+		[mMapView selectAnnotation:[annotationList objectAtIndex:selectedPoi] animated:NO];
+	}
+}
+
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
 	if(!animated){
 		if(currentLocation){
@@ -110,8 +118,7 @@
 	
 	MKPinAnnotationView *view = nil;
 	if(annotation != mapView.userLocation) {
-		view = (MKPinAnnotationView *)
-        [mapView dequeueReusableAnnotationViewWithIdentifier:[annotation title]];
+		view = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:[annotation title]];
 		if(nil == view) {
 			view = [[[MKPinAnnotationView alloc]
 					 initWithAnnotation:annotation reuseIdentifier:[annotation title]]
@@ -121,18 +128,19 @@
 		[view setCanShowCallout:YES];
 		[view setAnimatesDrop:YES];
 		
-		UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-		aButton.exclusiveTouch = NO;
-		aButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
-		aButton.backgroundColor = [UIColor clearColor];
-		UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
-		[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
-		UIImage *buttonImagePressed = [UIImage imageNamed:@"augmentedpoiselect.png"];
-		[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
+		UIImageView *busImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
+		busImage.layer.frame = CGRectMake(-3, -3, busImage.layer.frame.size.width, busImage.layer.frame.size.height);
+		[view addSubview:busImage];
+		[busImage release];
 		
+		UIButton *infoButton = [[UIButton buttonWithType:UIButtonTypeDetailDisclosure] retain];
+		infoButton.exclusiveTouch = YES;
+		infoButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
+		[infoButton addTarget:delegate action:@selector(showInfo:) forControlEvents:UIControlEventTouchDown];
+
+		[view setRightCalloutAccessoryView:infoButton];
 		
-		[view setLeftCalloutAccessoryView:aButton];
-		[aButton release];
+		[infoButton release];
 	} else {
 		CLLocation *location = [[CLLocation alloc] 
 								initWithLatitude:annotation.coordinate.latitude

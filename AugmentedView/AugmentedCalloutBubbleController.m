@@ -6,10 +6,10 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "AugmentedPoiViewController.h"
+#import "AugmentedCalloutBubbleController.h"
 
-
-@implementation AugmentedPoiViewController
+@implementation AugmentedCalloutBubbleController
+@synthesize delegate;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -26,9 +26,8 @@
     [super viewDidLoad];
 	UIView *myView = [self view];
 	//[myView setFrame:CGRectMake(15 -[myView frame].size.width / 2 , 5 -[myView frame].size.height , [myView frame].size.width, [myView frame].size.height)];
-	[myView setFrame:CGRectMake(0.0, 0.0, [myView frame].size.width, [myView frame].size.height)];
 	myView.exclusiveTouch = NO;
-	myView.center = CGPointMake(260.0, 220.0);
+	myView.center = CGPointMake(260.0, 200.0);
 	
 	tramScroll.backgroundColor = [UIColor clearColor];
 	tramScroll.scrollEnabled = YES;
@@ -39,34 +38,49 @@
 	lineViews = [[NSMutableArray alloc] init];
 	
 	[tramScroll flashScrollIndicators];
+	infoButton.hidden = YES;
+	[infoButton addTarget:delegate action:@selector(showInfo:) forControlEvents:UIControlEventTouchDown];
 
 }
 
+-(void)setTramLines:(NSArray *)lineList{
+	[self clearTramLines];
+	
+	for (VTLineInfo *aLine in lineList) {
+		[self addTramLine:aLine.lineNumber
+				   backgroundColor:aLine.backgroundColor
+				   foregroundColor:aLine.foregroundColor];
+	}
+	
+}
 -(void)clearTramLines{
 	for(UIView *aView in lineViews){
 		[aView removeFromSuperview];
 	}
 	[lineViews release];
+	infoButton.hidden = YES;
 	lineViews = [[NSMutableArray alloc] init];
 	tramLinesNumber = 0;
-	[tramScroll setContentSize:CGSizeMake(20.0, 20.0)];
+	[tramScroll setContentSize:CGSizeMake(30.0, 30.0)];
 
 }
 
 -(void)addTramLine:(NSString *)name backgroundColor:(UIColor *)backgroundColor foregroundColor:(UIColor *)foregroundColor{
-	UILabel *tramNumber = [[UILabel alloc ] initWithFrame:CGRectMake(0.0 + 25*tramLinesNumber, 0.0, 22.0, 20.0)];
+	UILabel *tramNumber = [[UILabel alloc ] initWithFrame:CGRectMake(0.0 + 33*tramLinesNumber, 0.0, 30.0, 30.0)];
 	tramNumber.textAlignment =  UITextAlignmentCenter;
 	tramNumber.lineBreakMode = UILineBreakModeClip;
 	tramNumber.textColor = foregroundColor;
 	tramNumber.backgroundColor = backgroundColor;
-	tramNumber.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(10.0)];
+	tramNumber.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
 	tramNumber.text = name;
 	[tramScroll addSubview:tramNumber];
 	[lineViews addObject:tramNumber];
-	[tramScroll setContentSize:CGSizeMake(20.0 + 25.0 * tramLinesNumber, 20.0)];
+	[tramScroll setContentSize:CGSizeMake(30.0 + 33.0 * tramLinesNumber, 30.0)];
 	tramLinesNumber++;
 
 	[tramNumber release];
+	
+	infoButton.hidden = NO;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -82,11 +96,12 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 */
--(void)setText:(NSString *) text{
-	[infoLabel setText:text];
+-(void)setTitle:(NSString *)title subtitle:(NSString *)subtitle{
+	[infoLabel setText:title];
+	[subtitleLabel setText:subtitle];
 }
 -(void)setArrowLength:(float) length{
-	arrowImage.frame = CGRectMake(92, 42, 16, 20 + length);
+	arrowImage.frame = CGRectMake(arrowImage.frame.origin.x, arrowImage.frame.origin.y, arrowImage.frame.size.width, 20 + length);
 }
 
 - (void)didReceiveMemoryWarning {

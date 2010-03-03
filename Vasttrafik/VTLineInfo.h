@@ -1,3 +1,7 @@
+/**
+ Container for Västtrafik line information
+ */
+
 //
 //  VTLineInfo.h
 //  AugmentedMPN
@@ -21,5 +25,4 @@
 @property(assign) UIColor *backgroundColor;
 @property(assign) NSString *imageType;
 
--(NSComparisonResult)compareWith:(VTLineInfo *)anotherLine;
 @end

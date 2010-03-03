@@ -28,8 +28,18 @@
 }
 
 -(void)setTitle:(NSString *)title subtitle:(NSString *)subtitle{
+	[mTitle release];
 	mTitle = title;
+	[mTitle retain];
+	
+	[mSubTitle release];
 	mSubTitle = subtitle;
+	[mSubTitle retain];
+}
+-(void)setSubtitle:(NSString *)subtitle{
+	[mSubTitle release];
+	mSubTitle = subtitle;
+	[mSubTitle retain];
 }
 
 -(NSArray *)getLineList{
@@ -48,7 +58,6 @@
 		}
 	}
 	
-	[lineList sortUsingSelector:@selector(compareWith:)];
 	NSArray *result = [[NSArray alloc] initWithArray:lineList];
 	[lineList release];
 	[lineNumbers release];
@@ -56,6 +65,8 @@
 }
 
 -(void)dealloc{
+	[mTitle release];
+	[mSubTitle release];
 	[friendly_name release];
 	[stop_name release];
 	[county release];

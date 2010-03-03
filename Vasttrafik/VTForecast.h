@@ -1,3 +1,7 @@
+/**
+ Container for Västtrafik forecast information
+ */
+
 //
 //  VTForecast.h
 //  AugmentedMPN
@@ -30,5 +34,7 @@
 @property BOOL nastaHandicap;
 @property(retain) NSString *darefterTime;
 @property BOOL darefterHandicap;
+
+-(NSComparisonResult)compareWith:(VTForecast *)anotherForecast;
 
 @end

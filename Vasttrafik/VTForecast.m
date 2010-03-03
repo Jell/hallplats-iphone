@@ -13,6 +13,21 @@
 
 @synthesize lineNumber, foregroundColor, backgroundColor, imageType, destination, nastaTime, nastaHandicap, darefterTime, darefterHandicap;
 
+-(NSComparisonResult)compareWith:(VTForecast *)anotherForecast{
+	int value1 = [[self lineNumber] intValue];
+	int value2 = [[anotherForecast lineNumber] intValue];
+	
+	if(value1 > value2){
+		return NSOrderedDescending;
+	}else{
+		if(value1 == value2){
+			return NSOrderedSame;
+		}else{
+			return NSOrderedAscending;
+		}
+	}
+}
+
 -(void)dealloc{
 	[lineNumber release];
 	[foregroundColor release];

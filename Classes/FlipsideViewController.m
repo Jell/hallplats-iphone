@@ -7,7 +7,7 @@
 //
 
 #import "FlipsideViewController.h"
-
+#import "VTTableViewCell.h"
 
 @implementation FlipsideViewController
 
@@ -17,8 +17,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];  
+	
 	NSString *text = [annotationDisplayed title];
-	titleLabel.text = [NSString stringWithFormat:@"%@", text];
+	
+	if(annotationDisplayed){
+		titleLabel.text = [NSString stringWithFormat:@"%@", text];
+	}else{
+		titleLabel.text = @"";
+	}
+	[mTableView setDelegate:self];
+	[mTableView setDataSource:self];
+	[mTableView reloadData];
 }
 
 
@@ -26,9 +35,9 @@
 	[self.delegate flipsideViewControllerDidFinish:self];	
 }
 
--(void)setAnnotationDisplayed:(MPNAnnotation *)anAnnotation{
+-(void)setAnnotationDisplayed:(VTAnnotation *)anAnnotation{
 	annotationDisplayed = anAnnotation;
-
+	lineList = [anAnnotation getLineList];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,6 +52,77 @@
 	// e.g. self.myOutlet = nil;
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	if(lineList){
+		return [lineList count];
+	}else {
+		return 0;
+	}
+
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView{
+	NSMutableArray *indexNames = [[NSMutableArray alloc] init];
+	for(VTLineInfo *lineinfo in lineList){
+		[indexNames addObject:lineinfo.lineNumber];
+	}
+	return indexNames;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+	return [(VTLineInfo *)[lineList objectAtIndex:section] lineNumber];
+}
+
+// Customize the number of rows in the table view.
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	if(annotationDisplayed){
+		
+		int i = 0;
+		NSString *sectionName = [(VTLineInfo *)[lineList objectAtIndex:section] lineNumber];
+		
+		for(VTForecast *forecast in annotationDisplayed.forecastList){
+			if([forecast.lineNumber isEqual: sectionName]){
+				i++;
+			}
+		}
+
+		return i;
+	}else{
+		return 0;
+	}
+}
+
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	static NSString *CellIdentifier = @"Cell";
+		
+	VTTableViewCell *cell = (VTTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil) {
+		cell = [[[VTTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+	}
+
+	// Set up the cell...
+	int i = 0;
+	NSString *sectionName = [(VTLineInfo *)[lineList objectAtIndex:indexPath.section] lineNumber];
+	VTForecast *forecast = nil;
+	
+	for(VTForecast *forecastTmp in annotationDisplayed.forecastList){
+		if([forecastTmp.lineNumber isEqual:sectionName]){
+			if(i == indexPath.row){
+				forecast = forecastTmp;
+				break;
+			}
+			i++;
+		}
+	}
+	
+	
+
+	[cell setForecast:forecast];
+	
+	return cell;
+}
 
 - (void)dealloc {
     [super dealloc];

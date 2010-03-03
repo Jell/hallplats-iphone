@@ -1,3 +1,7 @@
+/**
+ Controller responsible for handling a Map View.
+ */
+
 //
 //  MapViewController.h
 //  AugmentedMPN
@@ -15,18 +19,21 @@
 #import "VTAnnotation.h"
 
 @interface MapViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
-	IBOutlet MKMapView *mMapView;
-	IBOutlet UIImageView *arrowView;
-	int selectedPoi;
-	CLLocation *currentLocation;
-	NSArray *annotationList;
-	float phase;
-	bool recentering;
+	IBOutlet MKMapView *mMapView;			/**< Google Map View */
+	IBOutlet UIImageView *arrowView;		/**< Arrow image indicating the user's orientation */
+	int selectedPoi;						/**< Currently selected Poi index */
+	CLLocation *currentLocation;			/**< Current user's Location */
+	NSArray *annotationList;				/**< Annotation List */
+	float phase;							/**< Orientation Phase */
+	bool recentering;						/**< Boolean indicating if the map is beeing centered */
+	id delegate;
 }
 
+@property (assign) id delegate;
 @property (assign) CLLocation *currentLocation;
 @property (assign) NSArray *annotationList;
 
+/** Rotate the map view at a given angle */
 - (void)rotateMapWithTeta:(float)teta;
 
 @end

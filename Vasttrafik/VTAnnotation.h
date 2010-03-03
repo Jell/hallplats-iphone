@@ -1,3 +1,7 @@
+/**
+ Container for Västtrafik stop information
+ */
+
 //
 //  VTAnnotation.h
 //  AugmentedMPN
@@ -33,7 +37,6 @@
 	NSArray *forecastList;
 }
 
-
 @property(retain) NSString *friendly_name;
 @property(retain) NSString *stop_name;
 @property(retain) NSString *county;
@@ -49,6 +52,7 @@
 @property(retain) NSArray *forecastList;
 
 -(void)setTitle:(NSString *)title subtitle:(NSString *)subtitle;
+-(void)setSubtitle:(NSString *)subtitle;
 -(NSArray *)getLineList;
 
 @end

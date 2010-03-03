@@ -1,3 +1,7 @@
+/**
+ Application delegate.
+ */
+
 //
 //  AugmentedMPNAppDelegate.h
 //  AugmentedMPN
@@ -9,9 +13,9 @@
 @class MainViewController;
 
 @interface AugmentedMPNAppDelegate : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
-    MainViewController *mainViewController;
-	UIImagePickerController *camera;
+    UIWindow *window;							/**< Main Window*/
+    MainViewController *mainViewController;		/**< Main Controller*/
+	UIImagePickerController *camera;			/**< Camera display*/
 }
 
 @property (retain) IBOutlet UIWindow *window;

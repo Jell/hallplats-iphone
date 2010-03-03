@@ -33,7 +33,7 @@
 	
 	//mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
-	[activityIndicator startAnimating];
+	//[activityIndicator startAnimating];
 	
 	mVTApiHandler = [[VTApiHandler alloc] init];
 	
@@ -41,9 +41,10 @@
 	currentLocation = nil;
 	mAugmentedViewController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 	mMapViewController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
+	mMapViewController.delegate = self;
+	
 	viewDisplayedController = mAugmentedViewController;
 	[viewDisplayed addSubview:viewDisplayedController.view];
-	augmentedIsOn = TRUE;
 	
 	//Enable Location Manager
 	mLocationManager = [[CLLocationManager alloc] init];
@@ -73,8 +74,7 @@
 	[mAccelerometer setDelegate:self];
 }
 
-
-- (IBAction)showInfo {    
+- (void)showInfo:(id)sender {    
 	//Stop Updating:
 	[mAccelerometer setDelegate:nil];
 	//Launch flipside Modal View
@@ -82,7 +82,7 @@
 	controller.delegate = self;
 	int selected = [viewDisplayedController selectedPoi];
 	if(selected >=0){
-		MPNAnnotation *anAnnotation = [annotationList objectAtIndex:selected];
+		VTAnnotation *anAnnotation = [annotationList objectAtIndex:selected];
 		[controller setAnnotationDisplayed:anAnnotation];
 	}
 	controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -101,6 +101,7 @@
 }
 
 - (void) performUpdate:(id)object{
+	[activityIndicator startAnimating];
 	//get the JSON
 	CLLocationCoordinate2D center = {57.7119, 11.9683};
 	if(currentLocation){
@@ -114,7 +115,15 @@
 }
 
 - (void) updatePerformed:(id)response {
-	
+	if(response == nil){
+		UIAlertView *myAlert = [[UIAlertView alloc] initWithTitle:@"Impossible to reach the servers" 
+														  message:@"The application couldn't reach the server. Verify that your device is connected to the Internet, and check again later."
+														 delegate:nil
+												cancelButtonTitle:@"Ok"
+												otherButtonTitles:nil];
+		[myAlert show];
+		[myAlert release];
+	}
 	[viewDisplayedController setAnnotationList:(NSArray *)response];
 	
 	[annotationList release];
@@ -148,7 +157,7 @@
 	float zz = zzAverage;
 
 	// Check if we have to switch view
-	if(augmentedIsOn){
+	if(viewDisplayedController == mAugmentedViewController){
 		if(zz < -0.9 && (yy > -0.2 && yy <  0.2 && xx > -0.2 && xx <  0.2))
 		{
 			[self loadMapView];
@@ -215,8 +224,6 @@
 }
 
 - (void)loadMapView{
-	augmentedIsOn = FALSE;
-	
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
 	[applicationLoadViewIn setType:kCATransitionPush];
@@ -243,8 +250,6 @@
 }
 
 - (void)loadAugmentedView{
-	augmentedIsOn = TRUE;
-	
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
 	[applicationLoadViewIn setType:kCATransitionPush];
