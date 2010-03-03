@@ -93,10 +93,6 @@
 	[controller release];
 }
 
-- (IBAction)updateInfo {
-	[self timerUpdate:nil];
-}
-
 - (void) performUpdate:(id)object{
 	//get the JSON
 	CLLocationCoordinate2D center = {57.7119, 11.9683};
@@ -111,7 +107,6 @@
 }
 
 - (void) timerUpdate:(id)object {
-	updateButton.enabled = FALSE;
 	[activityIndicator startAnimating];
 	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
 	[opQueue addOperation:request];
@@ -135,9 +130,8 @@
 	[self setAnnotationList:(NSArray *)response];
 	
 	[activityIndicator stopAnimating];
-	updateButton.enabled = TRUE;
 	
-	timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerUpdate:) userInfo:nil repeats:NO];
+	timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerUpdate:) userInfo:nil repeats:NO];
 }
  
 

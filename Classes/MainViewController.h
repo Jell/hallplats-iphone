@@ -27,7 +27,6 @@
 	AugmentedViewController *mAugmentedViewController;				/**< AUgmented View Controller*/
 	
 	IBOutlet UIActivityIndicatorView* activityIndicator;			/**< Loading indicator */
-	IBOutlet UIButton *updateButton;								/**< Update Button */
 	
 	CLLocationManager *mLocationManager;							/**< Responsible for dispatching location updates*/
 	UIAccelerometer *mAccelerometer;								/**< Responsible for dispatching acceleration updates*/
