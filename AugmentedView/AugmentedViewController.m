@@ -34,8 +34,6 @@
 	calloutBubble.delegate = self.delegate;
 	
 	[poiOverlay addSubview:calloutBubble.view];
-	[poiOverlay sendSubviewToBack:gridView];
-	[poiOverlay bringSubviewToFront:calloutBubble.view];
 	
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
@@ -55,6 +53,7 @@
 	
 	float headinAngle = M_PI * newHeading.trueHeading / 180.0;
 	float jitter = angleXY - headinAngle;
+	
 	int i = 0;
 	[self translateView:calloutBubble.view withTeta:M_PI andDistance:0 withScale:NO];
 	for (AugmentedPoi *aPoi in ar_poiList) {
@@ -67,38 +66,28 @@
 		}
 		i++;
 	}
-	
 	[self translateGridWithTeta:jitter];
 }
 
 -(void)translateGridWithTeta:(float)teta{
-	float tetaBis = teta + 2*M_PI;
-	float tetaModulo = round((tetaBis + M_PI/2.0) / (M_PI/2.0));
-	tetaBis = tetaBis - tetaModulo * M_PI/2.0;
-	
-	float translation = [self translationFromAngle:tetaBis];
-	//float modulo = round(translation / GRID_SQUARE_WIDTH);
-	//translation -= modulo * GRID_SQUARE_WIDTH;
-	
-	CATransform3D rotationAndPerspectiveTransform = CATransform3DMakeTranslation(translation, 100.0 + 40, 0.0);
+	CATransform3D rotationAndPerspectiveTransform = CATransform3DMakeTranslation(0.0, 100.0 + 40, 0.0);
 	rotationAndPerspectiveTransform.m34 = 1.0 / -500;
+	rotationAndPerspectiveTransform = CATransform3DTranslate(rotationAndPerspectiveTransform, 0.0, 0.0, 400.0);
+	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, -teta, 0.0f, 1.0f, 0.0f);
 	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, 90.0f * M_PI / 180.0f, 1.0f, 0.0f, 0.0f);
 	gridView.layer.transform = rotationAndPerspectiveTransform;
 }
 
 -(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance withScale:(BOOL)scaleEnabled{
-	if(sin(teta)<0){
-		CATransform3D transfomMatrix = [self make3dTransformWithTranslation:[self translationFromAngle:teta]
-																andDistance:distance];
-		
-		if(!scaleEnabled){
-			transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
-		}
-
-		aView.layer.transform = transfomMatrix;
-	}else{
-		aView.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
+	CATransform3D transfomMatrix = CATransform3DIdentity;
+	transfomMatrix.m34 = 1.0 / -500;
+	transfomMatrix = CATransform3DTranslate(transfomMatrix, (distance+200) * cos(teta), 100 , (distance+200) * sin(teta) +400);
+	
+	if(!scaleEnabled){
+		transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
 	}
+
+	aView.layer.transform = transfomMatrix;
 }
 
 -(float)translationFromAngle:(float)teta{
@@ -161,7 +150,7 @@
 	
 	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	aButton.exclusiveTouch = NO;
-	aButton.frame = CGRectMake(0.0, 0.0, POI_BUTTON_SIZE, POI_BUTTON_SIZE);
+	aButton.frame = CGRectMake(0.0, 0.0, POI_BUTTON_SIZE/1.5, POI_BUTTON_SIZE/1.5);
 	aButton.backgroundColor = [UIColor clearColor];
 	UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
 	[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
@@ -170,6 +159,7 @@
 	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDown];
 	
 	aButton.center = center;
+		
 	[poiOverlay addSubview:aButton];
 	[ar_poiViews addObject:aButton];
 	[aButton release];
@@ -180,8 +170,6 @@
 	if(selectedPoi >= 0){
 		UIButton *previousSelectedButton = [ar_poiViews objectAtIndex:selectedPoi];
 		[previousSelectedButton setEnabled:TRUE];
-		[poiOverlay sendSubviewToBack:previousSelectedButton];
-		[poiOverlay sendSubviewToBack:gridView];
 	}
 	
 	[self setSelectedPoi:[ar_poiViews indexOfObject:poiViewId]];
@@ -192,8 +180,6 @@
 	if(selectedPoi >=0){
 		UIButton *selectedView = [ar_poiViews objectAtIndex:selectedPoi];
 		[selectedView setEnabled:FALSE];
-		[poiOverlay bringSubviewToFront:selectedView];
-		[poiOverlay bringSubviewToFront:calloutBubble.view];
 		VTAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
 		
 		[calloutBubble setTitle:[selectedAnnotation title] subtitle:[selectedAnnotation subtitle]];
