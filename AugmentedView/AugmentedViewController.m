@@ -120,6 +120,15 @@
 		[aView removeFromSuperview];
 	}
 	
+	NSString *selectedAnnotationTitle = nil;
+	
+	if(selectedPoi >= 0){
+		VTAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
+		selectedAnnotationTitle = [selectedAnnotation title];
+	}
+	
+	[self setSelectedPoi:-1];
+	
 	[ar_poiViews release];
 	[ar_poiList release];
 	
@@ -133,6 +142,7 @@
 	maxDistance = 0.0;
 	minDistance = 999999.0;
 
+	int i = 0;
 	for(VTAnnotation *anAnnotation in newList){
 		AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
 		[ar_poiList addObject:aPoi];
@@ -140,6 +150,10 @@
 		if([aPoi distance] < minDistance) minDistance = [aPoi distance];
 		[aPoi release];
 		[self addPoiView];
+		if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
+			[self setSelectedPoi:i];
+		}
+		i++;
 	}
 }
 
@@ -164,16 +178,14 @@
 	
 }
 -(void) poiSelected:(id) poiViewId{
-	
-	if(selectedPoi >= 0){
-		UIButton *previousSelectedButton = [ar_poiViews objectAtIndex:selectedPoi];
-		[previousSelectedButton setEnabled:TRUE];
-	}
-	
 	[self setSelectedPoi:[ar_poiViews indexOfObject:poiViewId]];
 }
 
 -(void) setSelectedPoi:(int)value{
+	if(selectedPoi >= 0){
+		UIButton *previousSelectedButton = [ar_poiViews objectAtIndex:selectedPoi];
+		[previousSelectedButton setEnabled:TRUE];
+	}
 	selectedPoi = value;
 	if(selectedPoi >=0){
 		UIButton *selectedView = [ar_poiViews objectAtIndex:selectedPoi];
