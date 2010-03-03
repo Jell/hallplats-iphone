@@ -57,9 +57,6 @@
 @property (retain) MapViewController *mMapViewController;
 @property (retain) AugmentedViewController *mAugmentedViewController;
 
-/** Switch to flipside view to display detailed information*/
-- (IBAction)showInfo;
-
 /** Load the Map View on screen*/
 - (void)loadMapView;
 

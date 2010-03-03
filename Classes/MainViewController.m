@@ -33,7 +33,7 @@
 	
 	//mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
-	[activityIndicator startAnimating];
+	//[activityIndicator startAnimating];
 	
 	mVTApiHandler = [[VTApiHandler alloc] init];
 	
@@ -41,6 +41,8 @@
 	currentLocation = nil;
 	mAugmentedViewController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 	mMapViewController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
+	mMapViewController.delegate = self;
+	
 	viewDisplayedController = mAugmentedViewController;
 	[viewDisplayed addSubview:viewDisplayedController.view];
 	
@@ -72,8 +74,7 @@
 	[mAccelerometer setDelegate:self];
 }
 
-
-- (IBAction)showInfo {    
+- (void)showInfo:(id)sender {    
 	//Stop Updating:
 	[mAccelerometer setDelegate:nil];
 	//Launch flipside Modal View
@@ -100,6 +101,7 @@
 }
 
 - (void) performUpdate:(id)object{
+	[activityIndicator startAnimating];
 	//get the JSON
 	CLLocationCoordinate2D center = {57.7119, 11.9683};
 	if(currentLocation){
@@ -113,7 +115,15 @@
 }
 
 - (void) updatePerformed:(id)response {
-	
+	if(response == nil){
+		UIAlertView *myAlert = [[UIAlertView alloc] initWithTitle:@"Impossible to reach the servers" 
+														  message:@"The application couldn't reach the server. Verify that your device is connected to the Internet, and check again later."
+														 delegate:nil
+												cancelButtonTitle:@"Ok"
+												otherButtonTitles:nil];
+		[myAlert show];
+		[myAlert release];
+	}
 	[viewDisplayedController setAnnotationList:(NSArray *)response];
 	
 	[annotationList release];

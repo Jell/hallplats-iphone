@@ -15,6 +15,9 @@
 -(NSArray *)getAnnotationsFromCoordinates:(CLLocationCoordinate2D) centerCoordinates
 {
 	NSString *toBeParsed = [self getXMLfromCoordinates:centerCoordinates];
+	if([toBeParsed isEqual:@""]){
+		return nil;
+	}
 	
 	NSMutableArray *annotationList = [[NSMutableArray alloc] init];
 	
@@ -102,11 +105,14 @@
 	int y = centerRT90.longitude;
 	for(int i = 0; i<5; i++){
 		NSString *result = [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat: VT_GETSTOPS_URL, x, y]]];
-		NSString *test = [result substringToIndex:14];
-		if(![test isEqual:@"<!DOCTYPE html"]){
-			return result;
+		if([result length]>14){
+			NSString *test = [result substringToIndex:14];
+			if(![test isEqual:@"<!DOCTYPE html"]){
+				return result;
+			}
 		}
 	}
+	
 	return @"";
 
 }
@@ -174,9 +180,11 @@
 	
 	for(int i = 0; i<3; i++){
 		NSString *result = [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat:VT_GETNEXT_URL, poiId]]];
-		NSString *test = [result substringToIndex:14];
-		if(![test isEqual:@"<!DOCTYPE html"]){
-			return result;
+		if([result length]>14){
+			NSString *test = [result substringToIndex:14];
+			if(![test isEqual:@"<!DOCTYPE html"]){
+				return result;
+			}
 		}
 	}
 	return @"";
@@ -185,7 +193,7 @@
 - (NSString *)stringWithUrl:(NSURL *)url
 {
 	NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url
-												cachePolicy:NSURLRequestReturnCacheDataElseLoad
+												cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
 											timeoutInterval:2];
 	for(int i = 0; i<3;i++){
 		// Fetch the JSON response

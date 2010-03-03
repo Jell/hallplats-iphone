@@ -30,11 +30,13 @@
 	float angleXY;									/**< Angle at which the iPhone is held on the XY plane*/
 	float maxDistance;								/**< Distance to the furthest POI */
 	float minDistance;								/**< Distance to the closest POI */
+	id delegate;
 }
 
 @property (retain) NSMutableArray *ar_poiList;
 @property (retain) NSMutableArray *ar_poiViews;
 @property (assign)  CLLocation *currentLocation;
+@property(assign) id delegate;
 
 /** Moves the perspective grid according to the given orientation
  @param teta current azimuth of the user from -pi to pi */

@@ -22,6 +22,7 @@
 @synthesize ar_poiList;
 @synthesize ar_poiViews;
 @synthesize selectedPoi;
+@synthesize delegate;
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -30,7 +31,8 @@
 	selectedPoi = -1;
 	
 	calloutBubble = [[AugmentedCalloutBubbleController alloc] initWithNibName:@"AugmentedCalloutBubbleView" bundle:nil];
-
+	calloutBubble.delegate = self.delegate;
+	
 	[poiOverlay addSubview:calloutBubble.view];
 	[poiOverlay sendSubviewToBack:gridView];
 	[poiOverlay bringSubviewToFront:calloutBubble.view];
@@ -220,7 +222,6 @@
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
-
 
 - (void)dealloc {
 	[calloutBubble release];

@@ -26,8 +26,10 @@
 	NSArray *annotationList;				/**< Annotation List */
 	float phase;							/**< Orientation Phase */
 	bool recentering;						/**< Boolean indicating if the map is beeing centered */
+	id delegate;
 }
 
+@property (assign) id delegate;
 @property (assign) CLLocation *currentLocation;
 @property (assign) NSArray *annotationList;
 

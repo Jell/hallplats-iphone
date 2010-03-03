@@ -22,7 +22,10 @@
 	IBOutlet UIButton *infoButton;				/**<Button that triggers info display */
 	int tramLinesNumber;						/**<Number of tram lines for the POI*/
 	NSMutableArray *lineViews;					/**<List of tram number Views */
+	id delegate;
 }
+
+@property(assign) id delegate;
 
 /** Set the title and subtitle of the view */
 -(void)setTitle:(NSString *)title subtitle:(NSString *)subtitle;
