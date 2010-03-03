@@ -16,7 +16,7 @@
 #define CAMERA_ANGLE_X			17.0
 #define CAMERA_ANGLE_Y			28.0
 #define POI_BUTTON_SIZE			40.0
-#define PERSPECTIVE_VERTICAL_OFFSET			100
+#define PERSPECTIVE_VERTICAL_OFFSET			10
 #define PERSPECTIVE_DEPTH_OFFSET			450
 #define PERSPECTIVE_INNER_CIRCLE_RADIUS		250
 
@@ -40,6 +40,24 @@
 	
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
+	
+	CLLocationCoordinate2D location;
+	location.latitude = 57.7119;
+	location.longitude = 11.9683;
+	//starting span (=zoom)
+	MKCoordinateSpan span;
+	span.latitudeDelta = 0.01;
+	span.longitudeDelta = 0.01;
+	MKCoordinateRegion region;
+	region.center = location;
+	region.span = span;
+	//Set MapView
+	gridView.region = [gridView regionThatFits:region];
+	gridView.mapType=MKMapTypeStandard;
+	gridView.zoomEnabled=FALSE;
+	gridView.scrollEnabled =FALSE;
+	gridView.showsUserLocation = FALSE;
+	gridView.delegate = self;
 } 
 
 - (void)locationManager: (CLLocationManager *)manager
@@ -47,6 +65,7 @@
 		   fromLocation:(CLLocation *)oldLocation
 {
 	currentLocation = newLocation;
+	[gridView setCenterCoordinate:newLocation.coordinate];
 	maxDistance = 0.0;
 	minDistance = 999999.0;
 	for (AugmentedPoi *aPoi in ar_poiList) {
@@ -80,7 +99,7 @@
 	CATransform3D rotationAndPerspectiveTransform = CATransform3DMakeTranslation(0.0, PERSPECTIVE_VERTICAL_OFFSET + 40, 0.0);
 	rotationAndPerspectiveTransform.m34 = 1.0 / -500;
 	rotationAndPerspectiveTransform = CATransform3DTranslate(rotationAndPerspectiveTransform, 0.0, 0.0, PERSPECTIVE_DEPTH_OFFSET);
-	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, -teta, 0.0f, 1.0f, 0.0f);
+	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, M_PI-teta, 0.0f, 1.0f, 0.0f);
 	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, M_PI / 2.0f, 1.0f, 0.0f, 0.0f);
 	gridView.layer.transform = rotationAndPerspectiveTransform;
 }

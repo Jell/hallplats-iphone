@@ -19,9 +19,9 @@
 #import "VTAnnotation.h"
 
 #define HEADING_BUFFER_SIZE 1
-@interface AugmentedViewController : UIViewController <ARViewDelegate>{
+@interface AugmentedViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
 	IBOutlet UIView *poiOverlay;					/**< View container for Poi display */
-	IBOutlet UIView *gridView;						/**< Perspective Grid View */
+	IBOutlet MKMapView *gridView;						/**< Perspective Grid View */
 	AugmentedCalloutBubbleController *calloutBubble;	/**< Poi call out bubble controller */
 	int selectedPoi;								/**< Currently selected POI, -1 if none is selected */
 	NSMutableArray *ar_poiList;						/**< List containing the POI */
