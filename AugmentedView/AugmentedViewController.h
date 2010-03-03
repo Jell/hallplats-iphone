@@ -49,14 +49,6 @@
  @param scaleEnabled If set to YES, the view is scaled to perspective*/
 -(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance withScale:(BOOL)scaleEnabled;
 
-/** Projection from radial coorditates to plane */
--(float)translationFromAngle:(float)teta;
-
-/** Creates a transform matrix corresponding to the given translation and distance
- @param translation
- @param distance must be greater than zero */
--(CATransform3D)make3dTransformWithTranslation:(float)translation andDistance:(float)distance;
-
 /** Performed when a POI is selected */
 -(void) poiSelected:(id) poiViewId;
 

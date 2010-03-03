@@ -16,6 +16,9 @@
 #define CAMERA_ANGLE_X			17.0
 #define CAMERA_ANGLE_Y			28.0
 #define POI_BUTTON_SIZE			40.0
+#define PERSPECTIVE_VERTICAL_OFFSET			100
+#define PERSPECTIVE_DEPTH_OFFSET			450
+#define PERSPECTIVE_INNER_CIRCLE_RADIUS		250
 
 @implementation AugmentedViewController
 @synthesize currentLocation;
@@ -44,8 +47,12 @@
 		   fromLocation:(CLLocation *)oldLocation
 {
 	currentLocation = newLocation;
+	maxDistance = 0.0;
+	minDistance = 999999.0;
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		[aPoi updateFrom:newLocation.coordinate];
+		if([aPoi distance] > maxDistance) maxDistance = [aPoi distance];
+		if([aPoi distance] < minDistance) minDistance = [aPoi distance];
 	}
 }
 
@@ -70,18 +77,18 @@
 }
 
 -(void)translateGridWithTeta:(float)teta{
-	CATransform3D rotationAndPerspectiveTransform = CATransform3DMakeTranslation(0.0, 100.0 + 40, 0.0);
+	CATransform3D rotationAndPerspectiveTransform = CATransform3DMakeTranslation(0.0, PERSPECTIVE_VERTICAL_OFFSET + 40, 0.0);
 	rotationAndPerspectiveTransform.m34 = 1.0 / -500;
-	rotationAndPerspectiveTransform = CATransform3DTranslate(rotationAndPerspectiveTransform, 0.0, 0.0, 400.0);
+	rotationAndPerspectiveTransform = CATransform3DTranslate(rotationAndPerspectiveTransform, 0.0, 0.0, PERSPECTIVE_DEPTH_OFFSET);
 	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, -teta, 0.0f, 1.0f, 0.0f);
-	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, 90.0f * M_PI / 180.0f, 1.0f, 0.0f, 0.0f);
+	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, M_PI / 2.0f, 1.0f, 0.0f, 0.0f);
 	gridView.layer.transform = rotationAndPerspectiveTransform;
 }
 
 -(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance withScale:(BOOL)scaleEnabled{
 	CATransform3D transfomMatrix = CATransform3DIdentity;
 	transfomMatrix.m34 = 1.0 / -500;
-	transfomMatrix = CATransform3DTranslate(transfomMatrix, (distance+200) * cos(teta), 100 , (distance+200) * sin(teta) +400);
+	transfomMatrix = CATransform3DTranslate(transfomMatrix, (distance+PERSPECTIVE_INNER_CIRCLE_RADIUS) * cos(teta), PERSPECTIVE_VERTICAL_OFFSET , (distance+PERSPECTIVE_INNER_CIRCLE_RADIUS) * sin(teta) + PERSPECTIVE_DEPTH_OFFSET);
 	
 	if(!scaleEnabled){
 		transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
@@ -90,15 +97,6 @@
 	aView.layer.transform = transfomMatrix;
 }
 
--(float)translationFromAngle:(float)teta{
-	return ((MIN_SCREEN_WIDTH/2.0) + ((MIN_SCREEN_WIDTH - MAX_SCREEN_WIDTH)/2.0) * abs(sin(angleXY))) * cos(teta) / sin(CAMERA_ANGLE_X * M_PI / 180);
-}
-
--(CATransform3D)make3dTransformWithTranslation:(float)translation andDistance:(float)distance{
-	CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
-	rotationAndPerspectiveTransform.m34 = 1.0 / -500;
-	return CATransform3DTranslate(rotationAndPerspectiveTransform, translation, 100.0, -distance);
-}
 -(void)accelerationChangedX:(float)x y:(float)y z:(float)z
 {
 	// Get the current device angle

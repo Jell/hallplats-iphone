@@ -49,6 +49,7 @@
 		F421F61F112C0393003D46D8 /* VTAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F61E112C0393003D46D8 /* VTAnnotation.m */; };
 		F421F6DC112C2FDB003D46D8 /* VTForecast.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F6DB112C2FDB003D46D8 /* VTForecast.m */; };
 		F421F882112C464E003D46D8 /* VTLineInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F421F881112C464E003D46D8 /* VTLineInfo.m */; };
+		F4253E97113EA08A0089952F /* handicap.gif in Resources */ = {isa = PBXBuildFile; fileRef = F4253E96113EA08A0089952F /* handicap.gif */; };
 		F4274BC3112AA66D0018F77C /* AugmentedCalloutBubbleController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4274BC1112AA66D0018F77C /* AugmentedCalloutBubbleController.m */; };
 		F4274BC4112AA66D0018F77C /* AugmentedCalloutBubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4274BC2112AA66D0018F77C /* AugmentedCalloutBubbleView.xib */; };
 		F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4DE711104AF900C312F4 /* MapKit.framework */; };
@@ -126,6 +127,7 @@
 		F421F6DB112C2FDB003D46D8 /* VTForecast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTForecast.m; path = Vasttrafik/VTForecast.m; sourceTree = "<group>"; };
 		F421F880112C464E003D46D8 /* VTLineInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTLineInfo.h; path = Vasttrafik/VTLineInfo.h; sourceTree = "<group>"; };
 		F421F881112C464E003D46D8 /* VTLineInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTLineInfo.m; path = Vasttrafik/VTLineInfo.m; sourceTree = "<group>"; };
+		F4253E96113EA08A0089952F /* handicap.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = handicap.gif; path = Images/handicap.gif; sourceTree = "<group>"; };
 		F4274BC0112AA66D0018F77C /* AugmentedCalloutBubbleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AugmentedCalloutBubbleController.h; path = AugmentedView/AugmentedCalloutBubbleController.h; sourceTree = "<group>"; };
 		F4274BC1112AA66D0018F77C /* AugmentedCalloutBubbleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AugmentedCalloutBubbleController.m; path = AugmentedView/AugmentedCalloutBubbleController.m; sourceTree = "<group>"; };
 		F4274BC2112AA66D0018F77C /* AugmentedCalloutBubbleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AugmentedCalloutBubbleView.xib; path = AugmentedView/AugmentedCalloutBubbleView.xib; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 		F425E990111B208A00D2FC2A /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F4253E96113EA08A0089952F /* handicap.gif */,
 				F400709A112E8D2200982525 /* coolbutton.png */,
 				F41B825111259890003B438C /* arrowdown.png */,
 				F41B825211259890003B438C /* augmentedpoi.png */,
@@ -438,6 +441,7 @@
 				F41B8297112598DD003B438C /* MapView.xib in Resources */,
 				F4274BC4112AA66D0018F77C /* AugmentedCalloutBubbleView.xib in Resources */,
 				F40070A4112E8E8200982525 /* coolbutton.png in Resources */,
+				F4253E97113EA08A0089952F /* handicap.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

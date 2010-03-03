@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];  
+	self.view.backgroundColor = [UIColor colorWithRed:1.0/255.0 green:115.0/255.0 blue:184.0/255.0 alpha:1.0];  
 	
 	NSString *text = [annotationDisplayed title];
 	
@@ -28,6 +28,7 @@
 	[mTableView setDelegate:self];
 	[mTableView setDataSource:self];
 	[mTableView reloadData];
+	[mTableView setBackgroundColor:[UIColor colorWithRed:196.0/255.0 green:216.0/255.0 blue:1.0/255.0 alpha:1.0]];
 }
 
 
@@ -60,17 +61,17 @@
 	}
 
 }
-
+/*
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView{
 	NSMutableArray *indexNames = [[NSMutableArray alloc] init];
 	for(VTLineInfo *lineinfo in lineList){
 		[indexNames addObject:lineinfo.lineNumber];
 	}
 	return indexNames;
-}
+}*/
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-	return [(VTLineInfo *)[lineList objectAtIndex:section] lineNumber];
+	return [NSString stringWithFormat:@"Linje %@", [(VTLineInfo *)[lineList objectAtIndex:section] lineNumber]];
 }
 
 // Customize the number of rows in the table view.

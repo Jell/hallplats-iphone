@@ -20,6 +20,9 @@
 	UIImage *nastaHandicapImage;
 	UILabel *darefterLabel;
 	UIImage *darefterHandicapImage;
+	UIImageView *nastaHandicap;
+	UIImageView *darefterHandicap;
+	
 }
 
 -(void)setForecast:(VTForecast *)forecast;
