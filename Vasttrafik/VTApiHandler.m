@@ -95,6 +95,7 @@
 	
 	NSArray *result = [[NSArray alloc] initWithArray:annotationList];
 	[annotationList release];
+	[toBeParsed release];
 	return result;
 }
 
@@ -174,6 +175,7 @@
 	[forecastList sortUsingSelector:@selector(compareWith:)];
 	NSArray *result = [[NSArray alloc] initWithArray:forecastList];
 	[forecastList release];
+	[toBeParsed release];
 	return result;
 }
 

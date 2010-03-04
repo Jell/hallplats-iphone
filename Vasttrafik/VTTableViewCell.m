@@ -18,7 +18,6 @@
 		tramNumber.lineBreakMode = UILineBreakModeClip;
 		tramNumber.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
 		[self addSubview:tramNumber];
-		[tramNumber release];
 		
 		destinationLabel = [[UILabel alloc ] initWithFrame:CGRectMake(55.0, 0.0, 240.0, 20.0)];
 		destinationLabel.textAlignment =  UITextAlignmentLeft;
@@ -26,7 +25,6 @@
 		destinationLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(14.0)];
 		destinationLabel.backgroundColor = [UIColor clearColor];
 		[self addSubview:destinationLabel];
-		[destinationLabel release];
 		
 		nastaLabel = [[UILabel alloc ] initWithFrame:CGRectMake(55.0, 20.0, 240.0, 20.0)];
 		nastaLabel.textAlignment =  UITextAlignmentLeft;
@@ -34,13 +32,11 @@
 		nastaLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(14.0)];
 		nastaLabel.backgroundColor = [UIColor clearColor];
 		[self addSubview:nastaLabel];
-		[nastaLabel release];
 		
 		nastaHandicap = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"handicap.gif"]];
 		nastaHandicap.frame = CGRectMake(120, 23, 15, 15);
 		nastaHandicap.hidden = YES;
 		[self addSubview:nastaHandicap];
-		[nastaHandicap release];
 		
 		darefterLabel = [[UILabel alloc ] initWithFrame:CGRectMake(220.0, 20.0, 240.0, 20.0)];
 		darefterLabel.textAlignment =  UITextAlignmentLeft;
@@ -48,14 +44,11 @@
 		darefterLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(14.0)];
 		darefterLabel.backgroundColor = [UIColor clearColor];
 		[self addSubview:darefterLabel];
-		[darefterLabel release];
 		
 		darefterHandicap = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"handicap.gif"]];
 		darefterHandicap.frame = CGRectMake(200, 23, 15, 15);
 		darefterHandicap.hidden = YES;
 		[self addSubview:darefterHandicap];
-		[darefterHandicap release];
-		
     }
     return self;
 }
@@ -81,6 +74,12 @@
 
 
 - (void)dealloc {
+	[darefterHandicap release];
+	[darefterLabel release];
+	[nastaHandicap release];
+	[nastaLabel release];
+	[destinationLabel release];
+	[tramNumber release];
     [super dealloc];
 }
 

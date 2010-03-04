@@ -34,12 +34,11 @@
 	
 	//mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
-	[activityIndicator startAnimating];
 	
 	mVTApiHandler = [[VTApiHandler alloc] init];
 	
-
 	currentLocation = nil;
+	
 	mAugmentedViewController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 	mMapViewController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
 	mMapViewController.delegate = self;
@@ -203,10 +202,7 @@
 	currentLocation = [newLocation copy];
 	
 	if(firstLocationUpdate){
-		//start updating POI list
-		NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
-		[opQueue addOperation:request];
-		[request release];
+		[self timerUpdate:nil];
 		firstLocationUpdate = NO;
 	}
 	
