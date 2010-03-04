@@ -106,7 +106,7 @@
 }
 
 - (void) timerUpdate:(id)object {
-	[activityIndicator startAnimating];
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
 	[opQueue addOperation:request];
 	[request release];
@@ -128,8 +128,7 @@
 	[annotationList release];
 	[self setAnnotationList:(NSArray *)response];
 	
-	[activityIndicator stopAnimating];
-	
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 	timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerUpdate:) userInfo:nil repeats:NO];
 }
  
