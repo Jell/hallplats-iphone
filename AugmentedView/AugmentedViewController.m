@@ -134,45 +134,46 @@
 }
 
 -(void)setAnnotationList:(NSArray *)newList{
-	
-	for(UIView *aView in ar_poiViews){
-		[aView removeFromSuperview];
-	}
-	
-	NSString *selectedAnnotationTitle = nil;
-	
-	if(selectedPoi >= 0){
-		VTAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
-		selectedAnnotationTitle = [selectedAnnotation title];
-	}
-	
-	[self setSelectedPoi:-1];
-	
-	[ar_poiViews release];
-	[ar_poiList release];
-	
-	ar_poiList = [[NSMutableArray alloc] init];
-	ar_poiViews = [[NSMutableArray alloc] init];
-	
-	CLLocationCoordinate2D origin = {0,0};
-	if(currentLocation){
-		origin = currentLocation.coordinate;
-	}
-	maxDistance = 0.0;
-	minDistance = 999999.0;
-
-	int i = 0;
-	for(VTAnnotation *anAnnotation in newList){
-		AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
-		[ar_poiList addObject:aPoi];
-		if([aPoi distance] > maxDistance) maxDistance = [aPoi distance];
-		if([aPoi distance] < minDistance) minDistance = [aPoi distance];
-		[aPoi release];
-		[self addPoiView];
-		if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
-			[self setSelectedPoi:i];
+	@synchronized(self){
+		for(UIView *aView in ar_poiViews){
+			[aView removeFromSuperview];
 		}
-		i++;
+		
+		NSString *selectedAnnotationTitle = nil;
+		
+		if(selectedPoi >= 0){
+			VTAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
+			selectedAnnotationTitle = [selectedAnnotation title];
+		}
+		
+		[self setSelectedPoi:-1];
+		
+		[ar_poiViews release];
+		[ar_poiList release];
+		
+		ar_poiList = [[NSMutableArray alloc] init];
+		ar_poiViews = [[NSMutableArray alloc] init];
+		
+		CLLocationCoordinate2D origin = {0,0};
+		if(currentLocation){
+			origin = currentLocation.coordinate;
+		}
+		maxDistance = 0.0;
+		minDistance = 999999.0;
+		
+		int i = 0;
+		for(VTAnnotation *anAnnotation in newList){
+			AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
+			[ar_poiList addObject:aPoi];
+			if([aPoi distance] > maxDistance) maxDistance = [aPoi distance];
+			if([aPoi distance] < minDistance) minDistance = [aPoi distance];
+			[aPoi release];
+			[self addPoiView];
+			if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
+				[self setSelectedPoi:i];
+			}
+			i++;
+		}
 	}
 }
 

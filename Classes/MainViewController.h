@@ -27,7 +27,6 @@
 	AugmentedViewController *mAugmentedViewController;				/**< AUgmented View Controller*/
 	
 	IBOutlet UIActivityIndicatorView* activityIndicator;			/**< Loading indicator */
-	IBOutlet UIButton *updateButton;								/**< Update Button */
 	
 	CLLocationManager *mLocationManager;							/**< Responsible for dispatching location updates*/
 	UIAccelerometer *mAccelerometer;								/**< Responsible for dispatching acceleration updates*/
@@ -46,8 +45,11 @@
 	float yyAverage;												/**< Acceleration Average along y axis*/
 	float zzAverage;												/**< Acceleration Average along z axis*/
 	int accelerationBufferIndex;
+	
+	NSTimer * timer;
 }
 
+@property (nonatomic, retain) NSTimer * timer;
 @property (retain) CLLocation *currentLocation;
 @property (retain) CLLocationManager *mLocationManager;
 @property (retain) NSArray *annotationList;
@@ -66,11 +68,10 @@
 /** Generic function to load a view controller*/
 - (void)loadViewController:(UIViewController<ARViewDelegate> *)viewController withTransition:(CATransition *)transition;
 
-/** Update the Annotation List*/ 
-- (IBAction)updateInfo;
-
 /** Start updating hte Annotation List*/
 - (void) performUpdate:(id)object;
+
+- (void) timerUpdate:(id)object;
 
 /** Update the system state according to the update that has been performed*/
 - (void) updatePerformed:(id)response;

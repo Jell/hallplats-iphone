@@ -178,24 +178,24 @@
 }
 
 -(void)setAnnotationList:(NSArray *)newList{
-	NSString *selectedAnnotationTitle = nil;
-	int selectedPoiIndex = [self selectedPoi];
-	if(selectedPoiIndex >= 0){
-		VTAnnotation *selectedAnnotation = [annotationList objectAtIndex:selectedPoiIndex];
-		selectedAnnotationTitle = [selectedAnnotation title];
-	}
-	[self setSelectedPoi:-1];
-	
-	[mMapView removeAnnotations:annotationList];
-	annotationList = newList;
-	[mMapView addAnnotations:annotationList];
-	
-	int i = 0;
-	for(VTAnnotation *anAnnotation in newList){
-		if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
-			[self setSelectedPoi:i];
+	@synchronized(self) {
+		NSString *selectedAnnotationTitle = nil;
+		int selectedPoiIndex = [self selectedPoi];
+		if(selectedPoiIndex >= 0){
+			VTAnnotation *selectedAnnotation = [annotationList objectAtIndex:selectedPoiIndex];
+			selectedAnnotationTitle = [selectedAnnotation title];
 		}
-		i++;
+		[mMapView removeAnnotations:annotationList];
+		annotationList = newList;
+		[mMapView addAnnotations:annotationList];
+		
+		int i = 0;
+		for(VTAnnotation *anAnnotation in newList){
+			if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
+				[self setSelectedPoi:i];
+			}
+			i++;
+		}
 	}
 }
 

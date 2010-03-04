@@ -10,6 +10,7 @@
 #import "MainView.h"
 
 @implementation MainViewController
+@synthesize timer;
 @synthesize mLocationManager;
 @synthesize mAccelerometer;
 @synthesize viewDisplayedController;
@@ -33,12 +34,11 @@
 	
 	//mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
-	//[activityIndicator startAnimating];
 	
 	mVTApiHandler = [[VTApiHandler alloc] init];
 	
-
 	currentLocation = nil;
+	
 	mAugmentedViewController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 	mMapViewController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
 	mMapViewController.delegate = self;
@@ -92,16 +92,7 @@
 	[controller release];
 }
 
-- (IBAction)updateInfo {
-	updateButton.enabled = FALSE;
-	[activityIndicator startAnimating];
-	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
-	[opQueue addOperation:request];
-	[request release];
-}
-
 - (void) performUpdate:(id)object{
-	[activityIndicator startAnimating];
 	//get the JSON
 	CLLocationCoordinate2D center = {57.7119, 11.9683};
 	if(currentLocation){
@@ -110,8 +101,15 @@
 	
 	id response = [mVTApiHandler getAnnotationsFromCoordinates:center];
 		
-	[(MapViewController *)object performSelectorOnMainThread:@selector(updatePerformed:) withObject:response waitUntilDone:YES];
+	[self performSelectorOnMainThread:@selector(updatePerformed:) withObject:response waitUntilDone:YES];
 		
+}
+
+- (void) timerUpdate:(id)object {
+	[activityIndicator startAnimating];
+	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
+	[opQueue addOperation:request];
+	[request release];
 }
 
 - (void) updatePerformed:(id)response {
@@ -124,13 +122,15 @@
 		[myAlert show];
 		[myAlert release];
 	}
-	[viewDisplayedController setAnnotationList:(NSArray *)response];
+	[mMapViewController setAnnotationList:(NSArray *)response];
+	[mAugmentedViewController setAnnotationList:(NSArray *)response];
 	
 	[annotationList release];
-	annotationList = (NSArray *)response;
+	[self setAnnotationList:(NSArray *)response];
 	
 	[activityIndicator stopAnimating];
-	updateButton.enabled = TRUE;
+	
+	timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerUpdate:) userInfo:nil repeats:NO];
 }
  
 
@@ -202,10 +202,7 @@
 	currentLocation = [newLocation copy];
 	
 	if(firstLocationUpdate){
-		//start updating POI list
-		NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
-		[opQueue addOperation:request];
-		[request release];
+		[self timerUpdate:nil];
 		firstLocationUpdate = NO;
 	}
 	
@@ -278,15 +275,17 @@
 - (void)loadViewController:(UIViewController<ARViewDelegate> *)viewController
 			withTransition:(CATransition *)transition
 {
-	int selectedPoi = [viewDisplayedController selectedPoi];
-	[viewDisplayedController.view removeFromSuperview];
-	viewDisplayedController = viewController;
-	[[viewDisplayed layer] addAnimation:transition forKey:kCATransitionReveal];
-	[viewDisplayed addSubview:viewDisplayedController.view];
-	[viewDisplayedController setCurrentLocation:currentLocation];
-	[viewDisplayedController setAnnotationList:annotationList];
-	[viewDisplayedController setOrientation:mInterfaceOrientation];
-	[viewDisplayedController setSelectedPoi:selectedPoi];
+	@synchronized(self){
+		int selectedPoi = [viewDisplayedController selectedPoi];
+		[viewDisplayedController.view removeFromSuperview];
+		viewDisplayedController = viewController;
+		[[viewDisplayed layer] addAnimation:transition forKey:kCATransitionReveal];
+		[viewDisplayed addSubview:viewDisplayedController.view];
+		[viewDisplayedController setCurrentLocation:currentLocation];
+		[viewDisplayedController setAnnotationList:annotationList];
+		[viewDisplayedController setOrientation:mInterfaceOrientation];
+		[viewDisplayedController setSelectedPoi:selectedPoi];
+	}
 }
 
 - (void)didReceiveMemoryWarning {
