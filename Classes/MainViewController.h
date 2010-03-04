@@ -68,9 +68,6 @@
 /** Generic function to load a view controller*/
 - (void)loadViewController:(UIViewController<ARViewDelegate> *)viewController withTransition:(CATransition *)transition;
 
-/** Update the Annotation List*/ 
-- (IBAction)updateInfo;
-
 /** Start updating hte Annotation List*/
 - (void) performUpdate:(id)object;
 

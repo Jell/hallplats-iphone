@@ -7,8 +7,9 @@
 //
 
 #import "VTApiHandler.h"
-#define VT_GETSTOPS_URL @"http://www.vasttrafik.se/External_Services/TravelPlanner.asmx/GetStopListBasedOnCoordinate?identifier=3e383cd8-30fa-47dc-8379-7d4295dc9db2&xCoord=%d&yCoord=%d"
-#define VT_GETNEXT_URL @"http://www.vasttrafik.se/External_Services/NextTrip.asmx/GetForecast?identifier=3e383cd8-30fa-47dc-8379-7d4295dc9db2&stopId=%@"
+#define VT_IDENTIFIER			@"3e383cd8-30fa-47dc-8379-7d4295dc9db2"
+#define VT_GETSTOPS_URL			@"http://www.vasttrafik.se/External_Services/TravelPlanner.asmx/GetStopListBasedOnCoordinate?identifier=%@&xCoord=%d&yCoord=%d"
+#define VT_GETNEXT_URL			@"http://www.vasttrafik.se/External_Services/NextTrip.asmx/GetForecast?identifier=%@&stopId=%@"
 
 @implementation VTApiHandler
 
@@ -104,7 +105,7 @@
 	int x = centerRT90.latitude;
 	int y = centerRT90.longitude;
 	for(int i = 0; i<5; i++){
-		NSString *result = [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat: VT_GETSTOPS_URL, x, y]]];
+		NSString *result = [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat: VT_GETSTOPS_URL,VT_IDENTIFIER, x, y]]];
 		if([result length]>14){
 			NSString *test = [result substringToIndex:14];
 			if(![test isEqual:@"<!DOCTYPE html"]){
@@ -179,7 +180,7 @@
 -(NSString *)getXMLfromPoiId:(NSString *)poiId{
 	
 	for(int i = 0; i<3; i++){
-		NSString *result = [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat:VT_GETNEXT_URL, poiId]]];
+		NSString *result = [self stringWithUrl:[NSURL URLWithString:[NSString stringWithFormat:VT_GETNEXT_URL,VT_IDENTIFIER, poiId]]];
 		if([result length]>14){
 			NSString *test = [result substringToIndex:14];
 			if(![test isEqual:@"<!DOCTYPE html"]){
