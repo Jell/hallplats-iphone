@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.view.backgroundColor = [UIColor colorWithRed:1.0/255.0 green:115.0/255.0 blue:184.0/255.0 alpha:1.0];  
+	self.view.backgroundColor = [UIColor colorWithRed:52.0/255.0 green:48.0/255.0 blue:80.0/255.0 alpha:1.0];  
 	
 	NSString *text = [annotationDisplayed title];
 	
@@ -28,7 +28,8 @@
 	[mTableView setDelegate:self];
 	[mTableView setDataSource:self];
 	[mTableView reloadData];
-	[mTableView setBackgroundColor:[UIColor colorWithRed:196.0/255.0 green:216.0/255.0 blue:1.0/255.0 alpha:1.0]];
+
+	[mTableView setBackgroundColor:[UIColor colorWithRed:62.0/255.0 green:166.0/255.0 blue:247.0/255.0 alpha:1.0]];
 }
 
 

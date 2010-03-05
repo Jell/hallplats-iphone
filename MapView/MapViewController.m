@@ -132,7 +132,7 @@
 		[view setAnimatesDrop:YES];
 		
 		UIImageView *busImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
-		busImage.layer.frame = CGRectMake(-3, -3, busImage.layer.frame.size.width, busImage.layer.frame.size.height);
+		busImage.layer.frame = CGRectMake(-3, -3, 20, 20);
 		[view addSubview:busImage];
 		[busImage release];
 		

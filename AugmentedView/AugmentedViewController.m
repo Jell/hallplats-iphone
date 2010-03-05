@@ -78,7 +78,7 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
-	
+
 	float headinAngle = M_PI * newHeading.trueHeading / 180.0;
 	float jitter = angleXY - headinAngle;
 	
@@ -205,6 +205,7 @@
 	UIImage *buttonImagePressed = [UIImage imageNamed:@"augmentedpoiselect.png"];
 	[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
 	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDown];
+	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDragInside];
 	
 	aButton.center = center;
 	

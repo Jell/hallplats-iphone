@@ -31,7 +31,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
+	[self becomeFirstResponder];
 	//mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
 	
@@ -64,7 +64,7 @@
 		zzArray[i] = 0;
 	}
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
-	[mAccelerometer setUpdateInterval:1.0f / (5.0f * (float) ACCELERATION_BUFFER_SIZE)];
+	[mAccelerometer setUpdateInterval:1.0f / (10.0f * (float) ACCELERATION_BUFFER_SIZE)];
 	[mAccelerometer setDelegate:self];
 }
 
@@ -186,7 +186,7 @@
 		mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;	
 	}
 	
-		// Dispatch acceleration
+	// Dispatch acceleration
 	if(accelerationBufferIndex == 0){
 		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
 	}
@@ -214,6 +214,7 @@
 	[viewDisplayedController locationManager:manager didUpdateHeading:newHeading];
 }
 
+	
 - (void)locationManager: (CLLocationManager *)manager
 	   didFailWithError: (NSError *)error
 {
@@ -309,7 +310,6 @@
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
-
 
 - (void)dealloc {
 	[opQueue cancelAllOperations];

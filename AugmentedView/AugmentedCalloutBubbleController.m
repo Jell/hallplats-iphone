@@ -31,7 +31,7 @@
 	
 	tramScroll.backgroundColor = [UIColor clearColor];
 	tramScroll.scrollEnabled = YES;
-	tramScroll.clipsToBounds = YES;
+	tramScroll.clipsToBounds = NO;
 	[tramScroll setDelegate:self];
 	
 	tramLinesNumber = 0;
