@@ -77,6 +77,9 @@
 }
 
 -(void)setSelectedPoi:(int)poiId{
+	if(selectedPoi >=0){
+		[mMapView deselectAnnotation:[annotationList objectAtIndex:selectedPoi] animated:NO];
+	}
 	selectedPoi = poiId;
 	if(selectedPoi >=0){
 		[mMapView selectAnnotation:[annotationList objectAtIndex:selectedPoi] animated:NO];
@@ -129,7 +132,7 @@
 		[view setAnimatesDrop:YES];
 		
 		UIImageView *busImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
-		busImage.layer.frame = CGRectMake(-3, -3, busImage.layer.frame.size.width, busImage.layer.frame.size.height);
+		busImage.layer.frame = CGRectMake(-3, -3, 20, 20);
 		[view addSubview:busImage];
 		[busImage release];
 		
@@ -178,9 +181,25 @@
 }
 
 -(void)setAnnotationList:(NSArray *)newList{
-	[mMapView removeAnnotations:annotationList];
-	annotationList = newList;
-	[mMapView addAnnotations:annotationList];
+	@synchronized(self) {
+		NSString *selectedAnnotationTitle = nil;
+		int selectedPoiIndex = [self selectedPoi];
+		if(selectedPoiIndex >= 0){
+			VTAnnotation *selectedAnnotation = [annotationList objectAtIndex:selectedPoiIndex];
+			selectedAnnotationTitle = [selectedAnnotation title];
+		}
+		[mMapView removeAnnotations:annotationList];
+		annotationList = newList;
+		[mMapView addAnnotations:annotationList];
+		
+		int i = 0;
+		for(VTAnnotation *anAnnotation in newList){
+			if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
+				[self setSelectedPoi:i];
+			}
+			i++;
+		}
+	}
 }
 
 -(void)setOrientation:(UIInterfaceOrientation)orientation{

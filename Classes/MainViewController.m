@@ -10,6 +10,7 @@
 #import "MainView.h"
 
 @implementation MainViewController
+@synthesize timer;
 @synthesize mLocationManager;
 @synthesize mAccelerometer;
 @synthesize viewDisplayedController;
@@ -30,15 +31,14 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
+	[self becomeFirstResponder];
 	//mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
-	//[activityIndicator startAnimating];
 	
 	mVTApiHandler = [[VTApiHandler alloc] init];
 	
-
 	currentLocation = nil;
+	
 	mAugmentedViewController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
 	mMapViewController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
 	mMapViewController.delegate = self;
@@ -64,7 +64,7 @@
 		zzArray[i] = 0;
 	}
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
-	[mAccelerometer setUpdateInterval:1.0f / (5.0f * (float) ACCELERATION_BUFFER_SIZE)];
+	[mAccelerometer setUpdateInterval:1.0f / (10.0f * (float) ACCELERATION_BUFFER_SIZE)];
 	[mAccelerometer setDelegate:self];
 }
 
@@ -92,16 +92,7 @@
 	[controller release];
 }
 
-- (IBAction)updateInfo {
-	updateButton.enabled = FALSE;
-	[activityIndicator startAnimating];
-	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
-	[opQueue addOperation:request];
-	[request release];
-}
-
 - (void) performUpdate:(id)object{
-	[activityIndicator startAnimating];
 	//get the JSON
 	CLLocationCoordinate2D center = {57.7119, 11.9683};
 	if(currentLocation){
@@ -110,8 +101,15 @@
 	
 	id response = [mVTApiHandler getAnnotationsFromCoordinates:center];
 		
-	[(MapViewController *)object performSelectorOnMainThread:@selector(updatePerformed:) withObject:response waitUntilDone:YES];
+	[self performSelectorOnMainThread:@selector(updatePerformed:) withObject:response waitUntilDone:YES];
 		
+}
+
+- (void) timerUpdate:(id)object {
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
+	[opQueue addOperation:request];
+	[request release];
 }
 
 - (void) updatePerformed:(id)response {
@@ -124,13 +122,14 @@
 		[myAlert show];
 		[myAlert release];
 	}
-	[viewDisplayedController setAnnotationList:(NSArray *)response];
+	[mMapViewController setAnnotationList:(NSArray *)response];
+	[mAugmentedViewController setAnnotationList:(NSArray *)response];
 	
 	[annotationList release];
-	annotationList = (NSArray *)response;
+	[self setAnnotationList:(NSArray *)response];
 	
-	[activityIndicator stopAnimating];
-	updateButton.enabled = TRUE;
+	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerUpdate:) userInfo:nil repeats:NO];
 }
  
 
@@ -187,7 +186,7 @@
 		mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;	
 	}
 	
-		// Dispatch acceleration
+	// Dispatch acceleration
 	if(accelerationBufferIndex == 0){
 		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
 	}
@@ -202,10 +201,7 @@
 	currentLocation = [newLocation copy];
 	
 	if(firstLocationUpdate){
-		//start updating POI list
-		NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
-		[opQueue addOperation:request];
-		[request release];
+		[self timerUpdate:nil];
 		firstLocationUpdate = NO;
 	}
 	
@@ -218,6 +214,7 @@
 	[viewDisplayedController locationManager:manager didUpdateHeading:newHeading];
 }
 
+	
 - (void)locationManager: (CLLocationManager *)manager
 	   didFailWithError: (NSError *)error
 {
@@ -226,8 +223,8 @@
 - (void)loadMapView{
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
-	[applicationLoadViewIn setType:kCATransitionPush];
-	
+	[applicationLoadViewIn setType:kCATransitionFade];
+	/*
 	switch (mInterfaceOrientation) {
 		case UIInterfaceOrientationPortrait:
 			[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
@@ -242,7 +239,7 @@
 			[applicationLoadViewIn setSubtype:kCATransitionFromTop];
 			break;
 	}
-
+*/
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	
 	[self loadViewController:mMapViewController
@@ -252,7 +249,7 @@
 - (void)loadAugmentedView{
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
-	[applicationLoadViewIn setType:kCATransitionPush];
+	[applicationLoadViewIn setType:kCATransitionReveal];
 	
 	switch (mInterfaceOrientation) {
 		case UIInterfaceOrientationPortrait:
@@ -278,15 +275,17 @@
 - (void)loadViewController:(UIViewController<ARViewDelegate> *)viewController
 			withTransition:(CATransition *)transition
 {
-	int selectedPoi = [viewDisplayedController selectedPoi];
-	[viewDisplayedController.view removeFromSuperview];
-	viewDisplayedController = viewController;
-	[[viewDisplayed layer] addAnimation:transition forKey:kCATransitionReveal];
-	[viewDisplayed addSubview:viewDisplayedController.view];
-	[viewDisplayedController setCurrentLocation:currentLocation];
-	[viewDisplayedController setAnnotationList:annotationList];
-	[viewDisplayedController setOrientation:mInterfaceOrientation];
-	[viewDisplayedController setSelectedPoi:selectedPoi];
+	@synchronized(self){
+		int selectedPoi = [viewDisplayedController selectedPoi];
+		[viewDisplayedController.view removeFromSuperview];
+		viewDisplayedController = viewController;
+		[[viewDisplayed layer] addAnimation:transition forKey:kCATransitionReveal];
+		[viewDisplayed addSubview:viewDisplayedController.view];
+		[viewDisplayedController setCurrentLocation:currentLocation];
+		[viewDisplayedController setAnnotationList:annotationList];
+		[viewDisplayedController setOrientation:mInterfaceOrientation];
+		[viewDisplayedController setSelectedPoi:selectedPoi];
+	}
 }
 
 - (void)didReceiveMemoryWarning {
@@ -311,7 +310,6 @@
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
-
 
 - (void)dealloc {
 	[opQueue cancelAllOperations];

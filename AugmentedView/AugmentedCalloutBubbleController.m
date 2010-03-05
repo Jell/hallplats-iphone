@@ -31,7 +31,7 @@
 	
 	tramScroll.backgroundColor = [UIColor clearColor];
 	tramScroll.scrollEnabled = YES;
-	tramScroll.clipsToBounds = YES;
+	tramScroll.clipsToBounds = NO;
 	[tramScroll setDelegate:self];
 	
 	tramLinesNumber = 0;
@@ -66,7 +66,7 @@
 }
 
 -(void)addTramLine:(NSString *)name backgroundColor:(UIColor *)backgroundColor foregroundColor:(UIColor *)foregroundColor{
-	UILabel *tramNumber = [[UILabel alloc ] initWithFrame:CGRectMake(0.0 + 33*tramLinesNumber, 0.0, 30.0, 30.0)];
+	UILabel *tramNumber = [[UILabel alloc ] initWithFrame:CGRectMake(0.0 + 33*tramLinesNumber, 40.0, 30.0, 30.0)];
 	tramNumber.textAlignment =  UITextAlignmentCenter;
 	tramNumber.lineBreakMode = UILineBreakModeClip;
 	tramNumber.textColor = foregroundColor;

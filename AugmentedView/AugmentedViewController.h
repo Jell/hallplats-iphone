@@ -19,9 +19,10 @@
 #import "VTAnnotation.h"
 
 #define HEADING_BUFFER_SIZE 1
-@interface AugmentedViewController : UIViewController <ARViewDelegate>{
+@interface AugmentedViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
 	IBOutlet UIView *poiOverlay;					/**< View container for Poi display */
-	IBOutlet UIView *gridView;						/**< Perspective Grid View */
+	IBOutlet MKMapView *gridView;						/**< Perspective Grid View */
+	IBOutlet UIButton *backgroundButton;
 	AugmentedCalloutBubbleController *calloutBubble;	/**< Poi call out bubble controller */
 	int selectedPoi;								/**< Currently selected POI, -1 if none is selected */
 	NSMutableArray *ar_poiList;						/**< List containing the POI */
@@ -49,13 +50,7 @@
  @param scaleEnabled If set to YES, the view is scaled to perspective*/
 -(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance withScale:(BOOL)scaleEnabled;
 
-/** Projection from radial coorditates to plane */
--(float)translationFromAngle:(float)teta;
-
-/** Creates a transform matrix corresponding to the given translation and distance
- @param translation
- @param distance must be greater than zero */
--(CATransform3D)make3dTransformWithTranslation:(float)translation andDistance:(float)distance;
+-(IBAction) blankTouch:(id)view;
 
 /** Performed when a POI is selected */
 -(void) poiSelected:(id) poiViewId;
