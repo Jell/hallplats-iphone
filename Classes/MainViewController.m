@@ -223,7 +223,7 @@
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
 	[applicationLoadViewIn setType:kCATransitionFade];
-	
+	/*
 	switch (mInterfaceOrientation) {
 		case UIInterfaceOrientationPortrait:
 			[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
@@ -238,7 +238,7 @@
 			[applicationLoadViewIn setSubtype:kCATransitionFromTop];
 			break;
 	}
-
+*/
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	
 	[self loadViewController:mMapViewController

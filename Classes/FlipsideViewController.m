@@ -61,14 +61,14 @@
 	}
 
 }
-/*
+
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView{
 	NSMutableArray *indexNames = [[NSMutableArray alloc] init];
 	for(VTLineInfo *lineinfo in lineList){
 		[indexNames addObject:lineinfo.lineNumber];
 	}
 	return indexNames;
-}*/
+}
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
 	return [NSString stringWithFormat:@"Linje %@", [(VTLineInfo *)[lineList objectAtIndex:section] lineNumber]];
