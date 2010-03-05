@@ -22,6 +22,7 @@
 @interface AugmentedViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
 	IBOutlet UIView *poiOverlay;					/**< View container for Poi display */
 	IBOutlet MKMapView *gridView;						/**< Perspective Grid View */
+	IBOutlet UIButton *backgroundButton;
 	AugmentedCalloutBubbleController *calloutBubble;	/**< Poi call out bubble controller */
 	int selectedPoi;								/**< Currently selected POI, -1 if none is selected */
 	NSMutableArray *ar_poiList;						/**< List containing the POI */
@@ -48,6 +49,8 @@
  @param distance distance of the POI represented by the view, must be greater than 0
  @param scaleEnabled If set to YES, the view is scaled to perspective*/
 -(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance withScale:(BOOL)scaleEnabled;
+
+-(IBAction) blankTouch:(id)view;
 
 /** Performed when a POI is selected */
 -(void) poiSelected:(id) poiViewId;

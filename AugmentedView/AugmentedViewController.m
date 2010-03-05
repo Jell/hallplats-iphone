@@ -37,6 +37,8 @@
 	calloutBubble.delegate = self.delegate;
 	
 	[poiOverlay addSubview:calloutBubble.view];
+	//[poiOverlay addTarget:self action:@selector(blankTouch:) forControlEvents:UIControlEventTouchDown];
+
 	
 	ar_poiList = [[NSMutableArray alloc] init];
 	ar_poiViews = [[NSMutableArray alloc] init];
@@ -217,6 +219,11 @@
 	[aButton release];
 	
 }
+
+-(IBAction) blankTouch:(id)view{
+	[self setSelectedPoi:-1];
+}
+
 -(void) poiSelected:(id) poiViewId{
 	[self setSelectedPoi:[ar_poiViews indexOfObject:poiViewId]];
 }

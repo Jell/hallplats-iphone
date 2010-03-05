@@ -77,6 +77,9 @@
 }
 
 -(void)setSelectedPoi:(int)poiId{
+	if(selectedPoi >=0){
+		[mMapView deselectAnnotation:[annotationList objectAtIndex:selectedPoi] animated:NO];
+	}
 	selectedPoi = poiId;
 	if(selectedPoi >=0){
 		[mMapView selectAnnotation:[annotationList objectAtIndex:selectedPoi] animated:NO];
