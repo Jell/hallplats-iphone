@@ -105,9 +105,6 @@
 				recentering = NO;
 			}
 		}
-		
-		CGPoint directionCenter = [mapView convertCoordinate:mapView.userLocation.coordinate toPointToView:self.view];
-		[arrowView setCenter:directionCenter];
 	}
 }
 
@@ -184,9 +181,13 @@
 		annotationLayer.transform = annotationRotation;
 		annotationLayer.zPosition = cos(phase-teta)*annotationLayer.position.y - sin(phase-teta)*annotationLayer.position.x;
 	}
-	if(currentLocation){
-		CGPoint directionCenter = [mMapView convertCoordinate:mMapView.userLocation.coordinate toPointToView:self.view];
-		[arrowView setCenter:directionCenter];
+	
+	UIView *locationView = [mMapView viewForAnnotation:mMapView.userLocation];
+	if(locationView != nil){
+		[arrowView removeFromSuperview];
+		CGPoint center = {12, 10};
+		[arrowView setCenter:center];
+		[locationView addSubview:arrowView];
 	}
 }
 
@@ -227,7 +228,7 @@
 			phase = 0.0;
 			break;
 	}
-	arrowView.layer.transform = CATransform3DMakeRotation(phase, 0.0, 0.0, 1.0);
+	//arrowView.layer.transform = CATransform3DMakeRotation(phase, 0.0, 0.0, 1.0);
 }
 
 -(void)accelerationChangedX:(float)x y:(float)y z:(float)z
