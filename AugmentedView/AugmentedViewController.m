@@ -178,11 +178,7 @@
 			[ar_poiList addObject:aPoi];
 
 			[aPoi release];
-			if([[anAnnotation title] isEqual:@"ICE House AB"]){
-				[self addHQView];
-			}else {
-				[self addPoiView];
-			}
+			[self addPoiView];
 
 			if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
 				[self setSelectedPoi:i];
@@ -202,34 +198,6 @@
 	UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
 	[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
 	UIImage *buttonImagePressed = [UIImage imageNamed:@"augmentedpoiselect.png"];
-	[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
-	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDown];
-	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDragInside];
-	
-	aButton.center = center;
-	
-	UIImageView *needleAndShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"needleandshadow.png"]];
-	[needleAndShadow setFrame:CGRectMake(5, 5, needleAndShadow.frame.size.width, needleAndShadow.frame.size.height)];
-	[aButton addSubview:needleAndShadow];
-	[aButton sendSubviewToBack:needleAndShadow];
-	[needleAndShadow release];
-	
-	[poiOverlay addSubview:aButton];
-	[ar_poiViews addObject:aButton];
-	[aButton release];
-	
-}
-
--(void)addHQView{
-	CGPoint center = {OFFSCREEN_SQUARE_SIZE/2.0, OFFSCREEN_SQUARE_SIZE/2.0};
-	
-	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-	aButton.exclusiveTouch = NO;
-	aButton.frame = CGRectMake(0.0, 0.0, POI_BUTTON_SIZE/1.5, POI_BUTTON_SIZE/1.5);
-	aButton.backgroundColor = [UIColor clearColor];
-	UIImage *buttonImageNormal = [UIImage imageNamed:@"home.png"];
-	[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
-	UIImage *buttonImagePressed = [UIImage imageNamed:@"home.png"];
 	[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
 	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDown];
 	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDragInside];

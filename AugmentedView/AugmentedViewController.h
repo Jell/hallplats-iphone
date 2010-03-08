@@ -56,6 +56,4 @@
 /** Add a POI view to the Poi overlay */
 -(void)addPoiView;
 
--(void)addHQView;
-
 @end

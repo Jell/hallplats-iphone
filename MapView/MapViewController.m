@@ -133,13 +133,7 @@
 			[view setCanShowCallout:YES];
 			[view setAnimatesDrop:YES];
 			
-			UIImageView *busImage;
-			if([[annotation title] isEqual:@"ICE House AB"]){
-				busImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"home.png"]];
-			}else {
-				busImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
-			}
-
+			UIImageView *busImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
 			busImage.layer.frame = CGRectMake(-3, -3, 20, 20);
 			[view addSubview:busImage];
 			[busImage release];

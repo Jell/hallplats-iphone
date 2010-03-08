@@ -93,12 +93,6 @@
 		}
 	}
 
-	CLLocationCoordinate2D location = {57.7119, 11.9683};
-	VTAnnotation *anAnnotation = [[VTAnnotation alloc] initWithCoordinate:location];
-	
-	[anAnnotation setTitle:@"ICE House AB" subtitle:@""];
-	[annotationList addObject:anAnnotation];
-
 	NSArray *result = [[NSArray alloc] initWithArray:annotationList];
 	[annotationList release];
 	[toBeParsed release];

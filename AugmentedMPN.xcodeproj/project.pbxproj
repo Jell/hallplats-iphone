@@ -56,7 +56,6 @@
 		F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4DE711104AF900C312F4 /* MapKit.framework */; };
 		F43B4E871110725E00C312F4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4E861110725E00C312F4 /* QuartzCore.framework */; };
 		F43D8A4611452C5800DF4EE9 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = F43D8A4511452C5800DF4EE9 /* iTunesArtwork */; };
-		F43D8A641145330900DF4EE9 /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = F43D8A631145330900DF4EE9 /* home.png */; };
 		F441738C110F232600CBFE29 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F441738B110F232600CBFE29 /* MainViewController.m */; };
 		F44173DA110F252C00CBFE29 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44173D9110F252C00CBFE29 /* FlipsideViewController.m */; };
 		F44F3A9E11185CF800AA2B22 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */; };
@@ -141,7 +140,6 @@
 		F43B4DE711104AF900C312F4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		F43B4E861110725E00C312F4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F43D8A4511452C5800DF4EE9 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
-		F43D8A631145330900DF4EE9 /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = home.png; path = Images/home.png; sourceTree = "<group>"; };
 		F441738A110F232600CBFE29 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Classes/MainViewController.h; sourceTree = "<group>"; };
 		F441738B110F232600CBFE29 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Classes/MainViewController.m; sourceTree = "<group>"; };
 		F44173D8110F252C00CBFE29 /* FlipsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlipsideViewController.h; path = Classes/FlipsideViewController.h; sourceTree = "<group>"; };
@@ -304,7 +302,6 @@
 		F425E990111B208A00D2FC2A /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				F43D8A631145330900DF4EE9 /* home.png */,
 				F41D7B00114157720011145A /* coolbuttonmask.png */,
 				F452E008114000C7001DBB87 /* needleandshadow.png */,
 				F4253E96113EA08A0089952F /* handicap.gif */,
@@ -457,7 +454,6 @@
 				F41D7AA711411A5F0011145A /* icon.png in Resources */,
 				F41D7B01114157720011145A /* coolbuttonmask.png in Resources */,
 				F43D8A4611452C5800DF4EE9 /* iTunesArtwork in Resources */,
-				F43D8A641145330900DF4EE9 /* home.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
