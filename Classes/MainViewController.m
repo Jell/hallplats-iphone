@@ -249,7 +249,7 @@
 - (void)loadAugmentedView{
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
-	[applicationLoadViewIn setType:kCATransitionReveal];
+	[applicationLoadViewIn setType:kCATransitionPush];
 	
 	switch (mInterfaceOrientation) {
 		case UIInterfaceOrientationPortrait:
