@@ -46,6 +46,7 @@
 	region.center = location;
 	region.span = span;
 	//Set MapView
+	[arrowView removeFromSuperview];
 	mMapView.region = [mMapView regionThatFits:region];
 	mMapView.mapType=MKMapTypeStandard;
 	mMapView.zoomEnabled=TRUE;
@@ -168,7 +169,7 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
-	[self rotateMapWithTeta: -3.14 * newHeading.trueHeading / 180.0];
+	[self rotateMapWithTeta: -M_PI * newHeading.trueHeading / 180.0];
 }
 
 - (void)rotateMapWithTeta:(float)teta{
@@ -179,7 +180,7 @@
 	for(VTAnnotation *annotation in mMapView.annotations){
 		CALayer *annotationLayer = [mMapView viewForAnnotation: annotation].layer;
 		annotationLayer.transform = annotationRotation;
-		annotationLayer.zPosition = cos(phase-teta)*annotationLayer.position.y - sin(phase-teta)*annotationLayer.position.x;
+		annotationLayer.zPosition = 1000 + cos(phase-teta)*annotationLayer.position.y - sin(phase-teta)*annotationLayer.position.x;
 	}
 	
 	UIView *locationView = [mMapView viewForAnnotation:mMapView.userLocation];
@@ -216,13 +217,13 @@
 -(void)setOrientation:(UIInterfaceOrientation)orientation{
 	switch (orientation) {
 		case UIInterfaceOrientationPortrait:
-			phase = 3.14;
+			phase = M_PI;
 			break;
 		case UIInterfaceOrientationLandscapeLeft:
-			phase = -1.57;
+			phase = -M_PI/2;
 			break;
 		case UIInterfaceOrientationLandscapeRight:
-			phase = 1.57;
+			phase = M_PI/2;
 			break;
 		default:
 			phase = 0.0;
