@@ -87,26 +87,27 @@
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
-	if(!animated){
-		if(currentLocation){
+	if(currentLocation){
+		if(!animated){
 			if(mapView.region.center.latitude !=currentLocation.coordinate.latitude &&
 			   mapView.region.center.longitude !=currentLocation.coordinate.longitude){
 				recentering = YES;
 				[mapView setCenterCoordinate:currentLocation.coordinate animated:YES];
 			}
-		}
-	}else{
-		if(!recentering){
-			if(currentLocation){
+		}else{
+			if(!recentering){
 				if(mapView.region.center.latitude !=currentLocation.coordinate.latitude &&
 				   mapView.region.center.longitude !=currentLocation.coordinate.longitude){
 					recentering = YES;
 					[mapView setCenterCoordinate:currentLocation.coordinate animated:YES];
 				}
+			}else{
+				recentering = NO;
 			}
-		}else{
-			recentering = NO;
 		}
+		
+		CGPoint directionCenter = [mapView convertCoordinate:mapView.userLocation.coordinate toPointToView:self.view];
+		[arrowView setCenter:directionCenter];
 	}
 }
 
@@ -121,34 +122,42 @@
 	
 	MKPinAnnotationView *view = nil;
 	if(annotation != mapView.userLocation) {
+		
 		view = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:[annotation title]];
+		
 		if(nil == view) {
+			
 			view = [[[MKPinAnnotationView alloc]
 					 initWithAnnotation:annotation reuseIdentifier:[annotation title]]
 					autorelease];
+			
+			[view setPinColor:MKPinAnnotationColorPurple];
+			[view setCanShowCallout:YES];
+			[view setAnimatesDrop:YES];
+			
+			UIImageView *busImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
+			busImage.layer.frame = CGRectMake(-3, -3, 20, 20);
+			[view addSubview:busImage];
+			[busImage release];
+			
+			UIButton *infoButton = [[UIButton buttonWithType:UIButtonTypeDetailDisclosure] retain];
+			infoButton.exclusiveTouch = YES;
+			infoButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
+			[infoButton addTarget:delegate action:@selector(showInfo:) forControlEvents:UIControlEventTouchDown];
+			
+			[view setRightCalloutAccessoryView:infoButton];
+			
+			[infoButton release];			
 		}
-		[view setPinColor:MKPinAnnotationColorPurple];
-		[view setCanShowCallout:YES];
-		[view setAnimatesDrop:YES];
 		
-		UIImageView *busImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
-		busImage.layer.frame = CGRectMake(-3, -3, 20, 20);
-		[view addSubview:busImage];
-		[busImage release];
-		
-		UIButton *infoButton = [[UIButton buttonWithType:UIButtonTypeDetailDisclosure] retain];
-		infoButton.exclusiveTouch = YES;
-		infoButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
-		[infoButton addTarget:delegate action:@selector(showInfo:) forControlEvents:UIControlEventTouchDown];
-
-		[view setRightCalloutAccessoryView:infoButton];
-		
-		[infoButton release];
 	} else {
+		
 		CLLocation *location = [[CLLocation alloc] 
 								initWithLatitude:annotation.coordinate.latitude
 								longitude:annotation.coordinate.longitude];
 		[self setCurrentLocation:location];
+		[mapView.userLocation setTitle:@""];
+		
 	}
 	return view;
 }
@@ -158,10 +167,7 @@
 		   fromLocation:(CLLocation *)oldLocation
 {
 	if(!mMapView.showsUserLocation) mMapView.showsUserLocation = TRUE;
-	
-	currentLocation = newLocation;
-	
-	[mMapView setCenterCoordinate:newLocation.coordinate animated:TRUE];
+	[self setCurrentLocation:newLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
@@ -177,6 +183,10 @@
 		CALayer *annotationLayer = [mMapView viewForAnnotation: annotation].layer;
 		annotationLayer.transform = annotationRotation;
 		annotationLayer.zPosition = cos(phase-teta)*annotationLayer.position.y - sin(phase-teta)*annotationLayer.position.x;
+	}
+	if(currentLocation){
+		CGPoint directionCenter = [mMapView convertCoordinate:mMapView.userLocation.coordinate toPointToView:self.view];
+		[arrowView setCenter:directionCenter];
 	}
 }
 
@@ -218,7 +228,6 @@
 			break;
 	}
 	arrowView.layer.transform = CATransform3DMakeRotation(phase, 0.0, 0.0, 1.0);
-	
 }
 
 -(void)accelerationChangedX:(float)x y:(float)y z:(float)z
