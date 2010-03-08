@@ -29,8 +29,6 @@
 	NSMutableArray *ar_poiViews;					/**< List containing the POI views */
 	CLLocation *currentLocation;					/**< Current location of the user */
 	float angleXY;									/**< Angle at which the iPhone is held on the XY plane*/
-	float maxDistance;								/**< Distance to the furthest POI */
-	float minDistance;								/**< Distance to the closest POI */
 	id delegate;
 }
 
@@ -57,5 +55,7 @@
 
 /** Add a POI view to the Poi overlay */
 -(void)addPoiView;
+
+-(void)addHQView;
 
 @end
