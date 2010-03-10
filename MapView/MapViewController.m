@@ -46,6 +46,7 @@
 	region.center = location;
 	region.span = span;
 	//Set MapView
+	[arrowView removeFromSuperview];
 	mMapView.region = [mMapView regionThatFits:region];
 	mMapView.mapType=MKMapTypeStandard;
 	mMapView.zoomEnabled=TRUE;
@@ -87,25 +88,23 @@
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
-	if(!animated){
-		if(currentLocation){
+	if(currentLocation){
+		if(!animated){
 			if(mapView.region.center.latitude !=currentLocation.coordinate.latitude &&
 			   mapView.region.center.longitude !=currentLocation.coordinate.longitude){
 				recentering = YES;
 				[mapView setCenterCoordinate:currentLocation.coordinate animated:YES];
 			}
-		}
-	}else{
-		if(!recentering){
-			if(currentLocation){
+		}else{
+			if(!recentering){
 				if(mapView.region.center.latitude !=currentLocation.coordinate.latitude &&
 				   mapView.region.center.longitude !=currentLocation.coordinate.longitude){
 					recentering = YES;
 					[mapView setCenterCoordinate:currentLocation.coordinate animated:YES];
 				}
+			}else{
+				recentering = NO;
 			}
-		}else{
-			recentering = NO;
 		}
 	}
 }
@@ -121,34 +120,44 @@
 	
 	MKPinAnnotationView *view = nil;
 	if(annotation != mapView.userLocation) {
+		
 		view = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:[annotation title]];
+		
 		if(nil == view) {
+			
 			view = [[[MKPinAnnotationView alloc]
 					 initWithAnnotation:annotation reuseIdentifier:[annotation title]]
 					autorelease];
+			
+			[view setPinColor:MKPinAnnotationColorPurple];
+			[view setCanShowCallout:YES];
+			[view setAnimatesDrop:YES];
+			
+			UIImageView *busImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
+			busImage.layer.frame = CGRectMake(-3, -3, 20, 20);
+			[view addSubview:busImage];
+			[busImage release];
+			
+			if([(VTAnnotation *) annotation forecastList] != nil){
+			UIButton *infoButton = [[UIButton buttonWithType:UIButtonTypeDetailDisclosure] retain];
+			infoButton.exclusiveTouch = YES;
+			infoButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
+			[infoButton addTarget:delegate action:@selector(showInfo:) forControlEvents:UIControlEventTouchDown];
+			
+			[view setRightCalloutAccessoryView:infoButton];
+			
+			[infoButton release];
+			}
 		}
-		[view setPinColor:MKPinAnnotationColorPurple];
-		[view setCanShowCallout:YES];
-		[view setAnimatesDrop:YES];
 		
-		UIImageView *busImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
-		busImage.layer.frame = CGRectMake(-3, -3, 20, 20);
-		[view addSubview:busImage];
-		[busImage release];
-		
-		UIButton *infoButton = [[UIButton buttonWithType:UIButtonTypeDetailDisclosure] retain];
-		infoButton.exclusiveTouch = YES;
-		infoButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
-		[infoButton addTarget:delegate action:@selector(showInfo:) forControlEvents:UIControlEventTouchDown];
-
-		[view setRightCalloutAccessoryView:infoButton];
-		
-		[infoButton release];
 	} else {
+		
 		CLLocation *location = [[CLLocation alloc] 
 								initWithLatitude:annotation.coordinate.latitude
 								longitude:annotation.coordinate.longitude];
 		[self setCurrentLocation:location];
+		[mapView.userLocation setTitle:@""];
+		
 	}
 	return view;
 }
@@ -158,14 +167,11 @@
 		   fromLocation:(CLLocation *)oldLocation
 {
 	if(!mMapView.showsUserLocation) mMapView.showsUserLocation = TRUE;
-	
-	currentLocation = newLocation;
-	
-	[mMapView setCenterCoordinate:newLocation.coordinate animated:TRUE];
+	[self setCurrentLocation:newLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
-	[self rotateMapWithTeta: -3.14 * newHeading.trueHeading / 180.0];
+	[self rotateMapWithTeta: -M_PI * newHeading.trueHeading / 180.0];
 }
 
 - (void)rotateMapWithTeta:(float)teta{
@@ -176,7 +182,15 @@
 	for(VTAnnotation *annotation in mMapView.annotations){
 		CALayer *annotationLayer = [mMapView viewForAnnotation: annotation].layer;
 		annotationLayer.transform = annotationRotation;
-		annotationLayer.zPosition = cos(phase-teta)*annotationLayer.position.y - sin(phase-teta)*annotationLayer.position.x;
+		annotationLayer.zPosition = 1000 + cos(phase-teta)*annotationLayer.position.y - sin(phase-teta)*annotationLayer.position.x;
+	}
+	
+	UIView *locationView = [mMapView viewForAnnotation:mMapView.userLocation];
+	if(locationView != nil){
+		[arrowView removeFromSuperview];
+		CGPoint center = {12, 10};
+		[arrowView setCenter:center];
+		[locationView addSubview:arrowView];
 	}
 }
 
@@ -205,20 +219,19 @@
 -(void)setOrientation:(UIInterfaceOrientation)orientation{
 	switch (orientation) {
 		case UIInterfaceOrientationPortrait:
-			phase = 3.14;
+			phase = M_PI;
 			break;
 		case UIInterfaceOrientationLandscapeLeft:
-			phase = -1.57;
+			phase = -M_PI/2;
 			break;
 		case UIInterfaceOrientationLandscapeRight:
-			phase = 1.57;
+			phase = M_PI/2;
 			break;
 		default:
 			phase = 0.0;
 			break;
 	}
-	arrowView.layer.transform = CATransform3DMakeRotation(phase, 0.0, 0.0, 1.0);
-	
+	//arrowView.layer.transform = CATransform3DMakeRotation(phase, 0.0, 0.0, 1.0);
 }
 
 -(void)accelerationChangedX:(float)x y:(float)y z:(float)z

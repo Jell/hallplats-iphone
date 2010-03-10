@@ -55,6 +55,7 @@
 		F4274BC4112AA66D0018F77C /* AugmentedCalloutBubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4274BC2112AA66D0018F77C /* AugmentedCalloutBubbleView.xib */; };
 		F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4DE711104AF900C312F4 /* MapKit.framework */; };
 		F43B4E871110725E00C312F4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43B4E861110725E00C312F4 /* QuartzCore.framework */; };
+		F43D8A4611452C5800DF4EE9 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = F43D8A4511452C5800DF4EE9 /* iTunesArtwork */; };
 		F441738C110F232600CBFE29 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F441738B110F232600CBFE29 /* MainViewController.m */; };
 		F44173DA110F252C00CBFE29 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44173D9110F252C00CBFE29 /* FlipsideViewController.m */; };
 		F44F3A9E11185CF800AA2B22 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */; };
@@ -138,6 +139,7 @@
 		F434D9201121546E00DF67CE /* CoordinatesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoordinatesTests-Info.plist"; sourceTree = "<group>"; };
 		F43B4DE711104AF900C312F4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		F43B4E861110725E00C312F4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F43D8A4511452C5800DF4EE9 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		F441738A110F232600CBFE29 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Classes/MainViewController.h; sourceTree = "<group>"; };
 		F441738B110F232600CBFE29 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Classes/MainViewController.m; sourceTree = "<group>"; };
 		F44173D8110F252C00CBFE29 /* FlipsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlipsideViewController.h; path = Classes/FlipsideViewController.h; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				F41D7AA611411A5F0011145A /* icon.png */,
+				F43D8A4511452C5800DF4EE9 /* iTunesArtwork */,
 				F434D8FD1121534800DF67CE /* Tests */,
 				F425E990111B208A00D2FC2A /* Images */,
 				F421F50C112BDCD3003D46D8 /* Västtrafik */,
@@ -450,6 +453,7 @@
 				F452E009114000C7001DBB87 /* needleandshadow.png in Resources */,
 				F41D7AA711411A5F0011145A /* icon.png in Resources */,
 				F41D7B01114157720011145A /* coolbuttonmask.png in Resources */,
+				F43D8A4611452C5800DF4EE9 /* iTunesArtwork in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

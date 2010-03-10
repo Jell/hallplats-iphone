@@ -68,12 +68,9 @@
 {
 	currentLocation = newLocation;
 	[gridView setCenterCoordinate:newLocation.coordinate animated:YES];
-	maxDistance = 0.0;
-	minDistance = 999999.0;
+
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		[aPoi updateFrom:newLocation.coordinate];
-		if([aPoi distance] > maxDistance) maxDistance = [aPoi distance];
-		if([aPoi distance] < minDistance) minDistance = [aPoi distance];
 	}
 }
 
@@ -174,17 +171,15 @@
 		if(currentLocation){
 			origin = currentLocation.coordinate;
 		}
-		maxDistance = 0.0;
-		minDistance = 999999.0;
 		
 		int i = 0;
 		for(VTAnnotation *anAnnotation in newList){
 			AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
 			[ar_poiList addObject:aPoi];
-			if([aPoi distance] > maxDistance) maxDistance = [aPoi distance];
-			if([aPoi distance] < minDistance) minDistance = [aPoi distance];
+
 			[aPoi release];
 			[self addPoiView];
+
 			if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
 				[self setSelectedPoi:i];
 			}

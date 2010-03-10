@@ -91,8 +91,8 @@
 				}
 			}
 		}
-	}		
-	
+	}
+
 	NSArray *result = [[NSArray alloc] initWithArray:annotationList];
 	[annotationList release];
 	[toBeParsed release];
