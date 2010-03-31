@@ -59,7 +59,6 @@
 		F441738C110F232600CBFE29 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F441738B110F232600CBFE29 /* MainViewController.m */; };
 		F44173DA110F252C00CBFE29 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44173D9110F252C00CBFE29 /* FlipsideViewController.m */; };
 		F44F3A9E11185CF800AA2B22 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */; };
-		F44F3B4D11187ACE00AA2B22 /* PhotoLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3B4C11187ACE00AA2B22 /* PhotoLibrary.framework */; };
 		F452E009114000C7001DBB87 /* needleandshadow.png in Resources */ = {isa = PBXBuildFile; fileRef = F452E008114000C7001DBB87 /* needleandshadow.png */; };
 		F4FAB9FD1121698D0065CF90 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FAB9FC1121698D0065CF90 /* SenTestingKit.framework */; };
 		F4FABA9811216D650065CF90 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */; };
@@ -146,7 +145,6 @@
 		F44173D9110F252C00CBFE29 /* FlipsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlipsideViewController.m; path = Classes/FlipsideViewController.m; sourceTree = "<group>"; };
 		F4417439110F31FF00CBFE29 /* AugmentedMPN_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AugmentedMPN_Prefix.pch; sourceTree = "<group>"; };
 		F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		F44F3B4C11187ACE00AA2B22 /* PhotoLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotoLibrary.framework; path = System/Library/PrivateFrameworks/PhotoLibrary.framework; sourceTree = SDKROOT; };
 		F452E008114000C7001DBB87 /* needleandshadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = needleandshadow.png; path = Images/needleandshadow.png; sourceTree = "<group>"; };
 		F4FAB9FC1121698D0065CF90 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Developer/Library/Frameworks/SenTestingKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -162,7 +160,6 @@
 				F43B4DE811104AF900C312F4 /* MapKit.framework in Frameworks */,
 				F43B4E871110725E00C312F4 /* QuartzCore.framework in Frameworks */,
 				F44F3A9E11185CF800AA2B22 /* CoreLocation.framework in Frameworks */,
-				F44F3B4D11187ACE00AA2B22 /* PhotoLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,7 +268,6 @@
 			isa = PBXGroup;
 			children = (
 				F4FAB9FC1121698D0065CF90 /* SenTestingKit.framework */,
-				F44F3B4C11187ACE00AA2B22 /* PhotoLibrary.framework */,
 				F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */,
 				F43B4E861110725E00C312F4 /* QuartzCore.framework */,
 				F43B4DE711104AF900C312F4 /* MapKit.framework */,
