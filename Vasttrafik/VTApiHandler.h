@@ -10,11 +10,12 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "MPNAnnotation.h"
+//#import "MPNAnnotation.h"
 #import <CoreLocation/CoreLocation.h>
 #import "VTAnnotation.h"
 #import "VTForecast.h"
 #import <math.h>
+#import "JSON.h"
 
 @interface VTApiHandler : NSObject {
 
@@ -32,17 +33,10 @@ static const float deg_to_rad =  M_PI / 180.0;
 /** Fetch a VTAnnotation list from the given origin */
 -(NSArray *)getAnnotationsFromCoordinates:(CLLocationCoordinate2D) centerCoordinates;
 
-/** Request the list of stops close to the given origin */
--(NSString *)getXMLfromCoordinates:(CLLocationCoordinate2D) centerCoordinates;
-
-/** Fetch a VTForecast list from the given stop ID */
--(NSArray *)getForcastListForPoiId:(NSString *)poiId;
-
-/** Request the list of forecasts from the given stop ID */
--(NSString *)getXMLfromPoiId:(NSString *)poiId;
-
 /** Get the content of the given URL */
 - (NSString *)stringWithUrl:(NSURL *)url;
+
+- (id) objectWithUrl:(NSURL *)url;
 
 /** Convert RT90 coordinates to WGS84 coordinate system */
 - (CLLocationCoordinate2D) rt90_to_GPS:(CLLocationCoordinate2D)gpsCoordinates;

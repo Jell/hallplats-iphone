@@ -199,7 +199,8 @@
 {
 	[currentLocation release];
 	currentLocation = [newLocation copy];
-	
+	//currentLocation = [[CLLocation alloc] initWithLatitude:59.330917 longitude:18.060389];
+
 	if(firstLocationUpdate){
 		[self timerUpdate:nil];
 		firstLocationUpdate = NO;
