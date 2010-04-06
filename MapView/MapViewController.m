@@ -113,6 +113,7 @@
 	if(selectedPoi >=0){
 		[mMapView selectAnnotation:[annotationList objectAtIndex:selectedPoi] animated:NO];
 	}
+	[mapView resignFirstResponder];
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView 
@@ -236,6 +237,10 @@
 
 -(void)accelerationChangedX:(float)x y:(float)y z:(float)z
 {
+}
+
+-(BOOL)canBecomeFirstResponder {
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning {

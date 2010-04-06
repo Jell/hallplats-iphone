@@ -31,10 +31,8 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	[self becomeFirstResponder];
 	//mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
-	
 	mVTApiHandler = [[VTApiHandler alloc] init];
 	
 	currentLocation = nil;
@@ -64,9 +62,15 @@
 		zzArray[i] = 0;
 	}
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
-	[mAccelerometer setUpdateInterval:1.0f / (10.0f * (float) ACCELERATION_BUFFER_SIZE)];
+	[mAccelerometer setUpdateInterval:1.0f / (5.0f * (float) ACCELERATION_BUFFER_SIZE)];
 	[mAccelerometer setDelegate:self];
 }
+
+-(void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	[self becomeFirstResponder];
+}
+
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
     
@@ -127,12 +131,11 @@
 	
 	[annotationList release];
 	[self setAnnotationList:(NSArray *)response];
-	
+	[self becomeFirstResponder];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 	timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerUpdate:) userInfo:nil repeats:NO];
 }
  
-
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
 	
@@ -192,6 +195,13 @@
 	}
 }
 
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+	if (event.type == UIEventSubtypeMotionShake) {
+		[timer release];
+		[self resignFirstResponder];
+		[self timerUpdate:nil];
+	}
+}
 
 - (void)locationManager: (CLLocationManager *)manager
 	didUpdateToLocation: (CLLocation *)newLocation
@@ -213,6 +223,10 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
 	//Dispatch new Heading
 	[viewDisplayedController locationManager:manager didUpdateHeading:newHeading];
+}
+
+- (BOOL)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager{
+	return YES;
 }
 
 	
@@ -287,6 +301,10 @@
 		[viewDisplayedController setOrientation:mInterfaceOrientation];
 		[viewDisplayedController setSelectedPoi:selectedPoi];
 	}
+}
+
+-(BOOL)canBecomeFirstResponder {
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {
