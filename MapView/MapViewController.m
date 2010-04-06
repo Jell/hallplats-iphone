@@ -139,7 +139,7 @@
 			[view addSubview:busImage];
 			[busImage release];
 			
-			if([(VTAnnotation *) annotation forecastList] != nil){
+			if([[(VTAnnotation *) annotation forecastList] count] > 0){
 			UIButton *infoButton = [[UIButton buttonWithType:UIButtonTypeDetailDisclosure] retain];
 			infoButton.exclusiveTouch = YES;
 			infoButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
@@ -153,10 +153,10 @@
 		
 	} else {
 		
-		CLLocation *location = [[CLLocation alloc] 
+		/*CLLocation *location = [[CLLocation alloc] 
 								initWithLatitude:annotation.coordinate.latitude
 								longitude:annotation.coordinate.longitude];
-		[self setCurrentLocation:location];
+		[self setCurrentLocation:location];*/
 		[mapView.userLocation setTitle:@""];
 		
 	}

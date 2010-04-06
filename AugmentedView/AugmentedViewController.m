@@ -132,8 +132,8 @@
 		transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
 	}else{
 		if(transfomMatrix.m44 < 0.8){
-			transfomMatrix = CATransform3DScale(transfomMatrix,0.8, 0.8, 1.0);
-
+			transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
+			transfomMatrix = CATransform3DScale(transfomMatrix, 1.5, 1.5, 1.0);
 		}
 	}
 
