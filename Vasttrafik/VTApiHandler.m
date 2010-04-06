@@ -54,7 +54,7 @@
 			
 			[forecastList addObject:aForecast];
 		}
-		[forecastList sortUsingSelector:@selector(compareWith:)];
+		//[forecastList sortUsingSelector:@selector(compareWith:)];
 
 		anAnnotation.forecastList = forecastList;
 	

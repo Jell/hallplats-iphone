@@ -44,10 +44,10 @@
 	float zzAverage;												/**< Acceleration Average along z axis*/
 	int accelerationBufferIndex;
 	
-	NSTimer * timer;
+	//NSTimer * timer;
 }
 
-@property (nonatomic, retain) NSTimer * timer;
+//@property (nonatomic, retain) NSTimer * timer;
 @property (retain) CLLocation *currentLocation;
 @property (retain) CLLocationManager *mLocationManager;
 @property (retain) NSArray *annotationList;
@@ -66,10 +66,11 @@
 /** Generic function to load a view controller*/
 - (void)loadViewController:(UIViewController<ARViewDelegate> *)viewController withTransition:(CATransition *)transition;
 
-/** Start updating hte Annotation List*/
+/** Updates the Annotation List*/
 - (void) performUpdate:(id)object;
 
-- (void) timerUpdate:(id)object;
+/** Launches a thread that updates the Annotation List*/
+- (void) beginUdpate:(id)object;
 
 /** Update the system state according to the update that has been performed*/
 - (void) updatePerformed:(id)response;
