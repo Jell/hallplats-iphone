@@ -71,7 +71,7 @@
 	[gridView setCenterCoordinate:newLocation.coordinate animated:NO];
 
 	for (AugmentedPoi *aPoi in ar_poiList) {
-		[aPoi updateFrom:newLocation.coordinate];
+		[aPoi updateAngleFrom:newLocation.coordinate];
 	}
 }
 
@@ -267,7 +267,7 @@
 	currentLocation = location;
 	[gridView setCenterCoordinate:location.coordinate];
 	for (AugmentedPoi *aPoi in ar_poiList) {
-		[aPoi updateFrom:location.coordinate];
+		[aPoi updateAngleFrom:location.coordinate];
 	}
 }
 

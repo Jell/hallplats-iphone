@@ -24,7 +24,7 @@
 	UIViewController<ARViewDelegate> *viewDisplayedController;		/**< Pointer to current display type (Map or Augmented)*/
 	
 	MapViewController *mMapViewController;							/**< Map View Controller*/
-	AugmentedViewController *mAugmentedViewController;				/**< AUgmented View Controller*/
+	AugmentedViewController *mAugmentedViewController;				/**< Augmented View Controller*/
 	
 	CLLocationManager *mLocationManager;							/**< Responsible for dispatching location updates*/
 	UIAccelerometer *mAccelerometer;								/**< Responsible for dispatching acceleration updates*/

@@ -58,6 +58,8 @@
 
 		anAnnotation.forecastList = forecastList;
 	
+		[anAnnotation updateDistanceFrom:centerCoordinates];
+		
 		[annotationList addObject:anAnnotation];
 		NSLog(@"%@", dictionary);
 	}

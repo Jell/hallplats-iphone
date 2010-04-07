@@ -217,7 +217,9 @@
 		[self beginUdpate:nil];
 		firstLocationUpdate = NO;
 	}
-	
+	for (VTAnnotation *anAnnotation in annotationList) {
+		[anAnnotation updateDistanceFrom:newLocation.coordinate];
+	}
 	//Dispatch new Location
 	[viewDisplayedController locationManager:manager didUpdateToLocation:currentLocation fromLocation:oldLocation];
 }
