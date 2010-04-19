@@ -8,7 +8,7 @@
 
 #import "VTApiHandler.h"
 
-#define HALLPLATS_URL			@"http://hallplats.heroku.com/poi.json?lat=%f&lng=%f"
+#define HALLPLATS_URL			@"http://hallplats.mittpostnummer.se/index.yaws?lat=%f&lng=%f"
 
 #define VT_IDENTIFIER			@"3e383cd8-30fa-47dc-8379-7d4295dc9db2"
 #define VT_GETSTOPS_URL			@"http://www.vasttrafik.se/External_Services/TravelPlanner.asmx/GetStopListBasedOnCoordinate?identifier=%@&xCoord=%d&yCoord=%d"

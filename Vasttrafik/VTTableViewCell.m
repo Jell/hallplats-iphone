@@ -19,15 +19,24 @@
 		tramNumber.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
 		[self addSubview:tramNumber];
 		
-		destinationLabel = [[UILabel alloc ] initWithFrame:CGRectMake(55.0, 0.0, 240.0, 20.0)];
+		destinationLabel = [[UILabel alloc ] initWithFrame:CGRectMake(55.0, 0.0, 225.0, 20.0)];
 		destinationLabel.textAlignment =  UITextAlignmentLeft;
 		destinationLabel.lineBreakMode = UILineBreakModeClip;
 		destinationLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(14.0)];
 		destinationLabel.backgroundColor = [UIColor clearColor];
 		[self addSubview:destinationLabel];
 		
-		nastaLabel = [[UILabel alloc ] initWithFrame:CGRectMake(55.0, 20.0, 240.0, 20.0)];
-		nastaLabel.textAlignment =  UITextAlignmentLeft;
+		UILabel *nastaTitleLabel = [[UILabel alloc ] initWithFrame:CGRectMake(55.0, 20.0, 70.0, 20.0)];
+		nastaTitleLabel.textAlignment =  UITextAlignmentLeft;
+		nastaTitleLabel.lineBreakMode = UILineBreakModeClip;
+		nastaTitleLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(14.0)];
+		nastaTitleLabel.backgroundColor = [UIColor clearColor];
+		nastaTitleLabel.text = [NSString stringWithFormat:@"%@:", NSLocalizedString(@"Next", @"Next")];
+		[self addSubview:nastaTitleLabel];
+		[nastaTitleLabel release];
+		
+		nastaLabel = [[UILabel alloc ] initWithFrame:CGRectMake(125.0, 20.0, 80.0, 20.0)];
+		nastaLabel.textAlignment =  UITextAlignmentRight;
 		nastaLabel.lineBreakMode = UILineBreakModeClip;
 		nastaLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(14.0)];
 		nastaLabel.backgroundColor = [UIColor clearColor];
@@ -38,8 +47,8 @@
 		nastaHandicap.hidden = YES;
 		[self addSubview:nastaHandicap];
 		
-		darefterLabel = [[UILabel alloc ] initWithFrame:CGRectMake(220.0, 20.0, 240.0, 20.0)];
-		darefterLabel.textAlignment =  UITextAlignmentLeft;
+		darefterLabel = [[UILabel alloc ] initWithFrame:CGRectMake(210.0, 20.0, 70.0, 20.0)];
+		darefterLabel.textAlignment =  UITextAlignmentRight;
 		darefterLabel.lineBreakMode = UILineBreakModeClip;
 		darefterLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(14.0)];
 		darefterLabel.backgroundColor = [UIColor clearColor];
@@ -57,11 +66,16 @@
 	tramNumber.text = forecast.lineNumber;
 	tramNumber.textColor = forecast.foregroundColor;
 	tramNumber.backgroundColor = forecast.backgroundColor;
-	destinationLabel.text = [NSString stringWithFormat:@"Till: %@", forecast.destination];
-	nastaLabel.text = [NSString stringWithFormat:@"Nästa:       %@min", forecast.nastaTime];
+	destinationLabel.text = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"To", @"To"), forecast.destination];
+	if(![forecast.nastaTime isEqual:@"0"]){
+		nastaLabel.text = [NSString stringWithFormat:@"%@ %@", forecast.nastaTime, NSLocalizedString(@"min", @"min")];
+	}else {
+		nastaLabel.text = [NSString stringWithFormat:@"%@", NSLocalizedString(@"Now", @"Now")];
+	}
+
 	nastaHandicap.hidden = !forecast.nastaHandicap;
 	if(![forecast.darefterTime isEqual:@""]){
-		darefterLabel.text = [NSString stringWithFormat:@"%@min", forecast.darefterTime];
+		darefterLabel.text = [NSString stringWithFormat:@"%@ %@", forecast.darefterTime, NSLocalizedString(@"min", @"min")];
 		darefterHandicap.hidden = !forecast.darefterHandicap;
 	}
 }
