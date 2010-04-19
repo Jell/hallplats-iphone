@@ -14,14 +14,15 @@
 #import "VTForecast.h"
 
 @interface VTTableViewCell : UITableViewCell {
-	UILabel *tramNumber;
-	UILabel *destinationLabel;
-	UILabel *nastaLabel;
-	UIImage *nastaHandicapImage;
-	UILabel *darefterLabel;
-	UIImage *darefterHandicapImage;
-	UIImageView *nastaHandicap;
-	UIImageView *darefterHandicap;
+	IBOutlet UILabel *tramNumber;
+	IBOutlet UILabel *destinationLabel;
+	IBOutlet UILabel *nastaLabel;
+	IBOutlet UILabel *darefterLabel;
+	IBOutlet UIImageView *nastaHandicap;
+	IBOutlet UIImageView *nastaLowFloor;
+	IBOutlet UIImageView *darefterHandicap;
+	IBOutlet UIImageView *darefterLowFloor;
+	IBOutlet UILabel *nastaTitleLabel;
 	
 }
 

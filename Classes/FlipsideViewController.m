@@ -13,6 +13,7 @@
 
 @synthesize delegate;
 @synthesize annotationDisplayed;
+@synthesize tmpCell;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -101,7 +102,10 @@
 		
 	VTTableViewCell *cell = (VTTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
-		cell = [[[VTTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+		[[NSBundle mainBundle] loadNibNamed:@"VTTableViewCell" owner:self options:nil];
+		cell = (VTTableViewCell *)tmpCell;
+        self.tmpCell = nil;
+		//[[[VTTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
 	}
 
 	// Set up the cell...

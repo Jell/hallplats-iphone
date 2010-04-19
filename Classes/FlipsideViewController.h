@@ -23,8 +23,10 @@
 	IBOutlet UIButton *footerText;
 	NSArray *lineList;								/**< List of VTLineInfo*/
 	int lineNumber;									/**< Number of lines in the lineList*/
+	IBOutlet UITableViewCell *tmpCell;
 }
 
+@property (assign) UITableViewCell *tmpCell;
 @property (assign) id <FlipsideViewControllerDelegate> delegate;
 @property (assign) VTAnnotation *annotationDisplayed;
 

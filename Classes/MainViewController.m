@@ -129,7 +129,6 @@
 	[mMapViewController setAnnotationList:(NSArray *)response];
 	[mAugmentedViewController setAnnotationList:(NSArray *)response];
 	
-	[annotationList release];
 	[self setAnnotationList:(NSArray *)response];
 	[self becomeFirstResponder];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
