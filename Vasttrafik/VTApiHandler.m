@@ -48,9 +48,11 @@
 			aForecast.backgroundColor	= [self stringToColor:[forecast_info valueForKey:@"background_color"]];
 			aForecast.destination		= [forecast_info valueForKey:@"destination"];
 			aForecast.nastaTime			= [forecast_info valueForKey:@"next_trip"];
-			aForecast.nastaHandicap		= NO;
+			aForecast.nastaHandicap		= [[forecast_info valueForKey:@"next_handicap"] boolValue];
+			aForecast.nastaLowFloor		= [[forecast_info valueForKey:@"next_low_floor"] boolValue];
 			aForecast.darefterTime		= [forecast_info valueForKey:@"next_next_trip"];
-			aForecast.darefterHandicap	= NO;
+			aForecast.darefterHandicap	= [[forecast_info valueForKey:@"next_next_handicap"] boolValue];
+			aForecast.darefterLowFloor	= [[forecast_info valueForKey:@"next_next_low_floor"] boolValue];
 			
 			[forecastList addObject:aForecast];
 		}
@@ -61,7 +63,7 @@
 		[anAnnotation updateDistanceFrom:centerCoordinates];
 		
 		[annotationList addObject:anAnnotation];
-		NSLog(@"%@", dictionary);
+		//NSLog(@"%@", dictionary);
 	}
 	
 	return (NSArray *)annotationList;

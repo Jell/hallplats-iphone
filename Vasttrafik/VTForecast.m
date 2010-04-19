@@ -12,6 +12,7 @@
 @implementation VTForecast
 
 @synthesize lineNumber, foregroundColor, backgroundColor, imageType, destination, nastaTime, nastaHandicap, darefterTime, darefterHandicap;
+@synthesize nastaLowFloor, darefterLowFloor;
 
 -(NSComparisonResult)compareWith:(VTForecast *)anotherForecast{
 	int value1 = [[self lineNumber] intValue];

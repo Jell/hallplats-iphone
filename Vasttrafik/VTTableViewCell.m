@@ -10,7 +10,7 @@
 
 
 @implementation VTTableViewCell
-
+/*
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         tramNumber = [[UILabel alloc ] initWithFrame:CGRectMake(15.0, 7.0, 30.0, 30.0)];
@@ -43,7 +43,7 @@
 		[self addSubview:nastaLabel];
 		
 		nastaHandicap = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"handicap.gif"]];
-		nastaHandicap.frame = CGRectMake(120, 23, 15, 15);
+		nastaHandicap.frame = CGRectMake(115, 23, 15, 15);
 		nastaHandicap.hidden = YES;
 		[self addSubview:nastaHandicap];
 		
@@ -55,18 +55,19 @@
 		[self addSubview:darefterLabel];
 		
 		darefterHandicap = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"handicap.gif"]];
-		darefterHandicap.frame = CGRectMake(200, 23, 15, 15);
+		darefterHandicap.frame = CGRectMake(205, 23, 15, 15);
 		darefterHandicap.hidden = YES;
 		[self addSubview:darefterHandicap];
     }
     return self;
 }
-
+*/
 -(void)setForecast:(VTForecast *)forecast{
 	tramNumber.text = forecast.lineNumber;
 	tramNumber.textColor = forecast.foregroundColor;
 	tramNumber.backgroundColor = forecast.backgroundColor;
 	destinationLabel.text = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"To", @"To"), forecast.destination];
+	nastaTitleLabel.text = [NSString stringWithFormat:@"%@:", NSLocalizedString(@"Next", @"Next")];
 	if(![forecast.nastaTime isEqual:@"0"]){
 		nastaLabel.text = [NSString stringWithFormat:@"%@ %@", forecast.nastaTime, NSLocalizedString(@"min", @"min")];
 	}else {
@@ -74,14 +75,16 @@
 	}
 
 	nastaHandicap.hidden = !forecast.nastaHandicap;
+	nastaLowFloor.hidden = !forecast.nastaLowFloor;
 	if(![forecast.darefterTime isEqual:@""]){
 		darefterLabel.text = [NSString stringWithFormat:@"%@ %@", forecast.darefterTime, NSLocalizedString(@"min", @"min")];
 		darefterHandicap.hidden = !forecast.darefterHandicap;
+		darefterLowFloor.hidden = !forecast.darefterLowFloor;
 	}
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
 
-    [super setSelected:selected animated:animated];
+    //[super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
 }

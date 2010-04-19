@@ -21,8 +21,10 @@
 	NSString *destination;
 	NSString *nastaTime;
 	BOOL nastaHandicap;
+	BOOL nastaLowFloor;
 	NSString *darefterTime;
 	BOOL darefterHandicap;
+	BOOL darefterLowFloor;
 }
 
 @property(retain) NSString *lineNumber;
@@ -32,8 +34,10 @@
 @property(retain) NSString *destination;
 @property(retain) NSString *nastaTime;
 @property BOOL nastaHandicap;
+@property BOOL nastaLowFloor;
 @property(retain) NSString *darefterTime;
 @property BOOL darefterHandicap;
+@property BOOL darefterLowFloor;
 
 -(NSComparisonResult)compareWith:(VTForecast *)anotherForecast;
 
