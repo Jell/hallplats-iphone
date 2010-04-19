@@ -16,15 +16,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.view.backgroundColor = [UIColor colorWithRed:52.0/255.0 green:48.0/255.0 blue:80.0/255.0 alpha:1.0];  
-	
-	NSString *text = [annotationDisplayed title];
+	self.view.backgroundColor = [UIColor colorWithRed:52.0/255.0 green:48.0/255.0 blue:80.0/255.0 alpha:1.0];
 	
 	if(annotationDisplayed){
-		titleLabel.text = [NSString stringWithFormat:@"%@", text];
+		[flipsideTitle setTitle:[NSString stringWithFormat:@"%@", [annotationDisplayed title]]];
 	}else{
-		titleLabel.text = @"";
+		[flipsideTitle setTitle:@" "];
 	}
+	
+	[footerText setTitle:NSLocalizedString(@"Flipside Footer", @"©2010 ICE House AB") forState:UIControlStateNormal];
 	[mTableView setDelegate:self];
 	[mTableView setDataSource:self];
 	[mTableView reloadData];
@@ -72,7 +72,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-	return [NSString stringWithFormat:@"Linje %@", [(VTLineInfo *)[lineList objectAtIndex:section] lineNumber]];
+	return [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"Line", @"Line"), [(VTLineInfo *)[lineList objectAtIndex:section] lineNumber]];
 }
 
 // Customize the number of rows in the table view.
@@ -124,6 +124,10 @@
 	[cell setForecast:forecast];
 	
 	return cell;
+}
+
+- (IBAction)linkToIceHouse{
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.icehouse.se/"]];
 }
 
 - (void)dealloc {

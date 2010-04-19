@@ -18,8 +18,9 @@
 @interface FlipsideViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>{
 	id <FlipsideViewControllerDelegate> delegate;	/**< */
 	VTAnnotation *annotationDisplayed;				/**< The Annotation being displayed*/
-	IBOutlet UILabel *titleLabel;					/**< Container for the Title of the annotation*/
+	IBOutlet UINavigationItem *flipsideTitle;
 	IBOutlet UITableView *mTableView;				/**< The Table view containing a list of items corresponing to the details of the annotation*/
+	IBOutlet UIButton *footerText;
 	NSArray *lineList;								/**< List of VTLineInfo*/
 	int lineNumber;									/**< Number of lines in the lineList*/
 }
@@ -29,6 +30,7 @@
 
 /** Called when the "Done" button is pressed*/
 - (IBAction)done;
+- (IBAction)linkToIceHouse;
 
 @end
 

@@ -60,6 +60,7 @@
 	gridView.scrollEnabled =FALSE;
 	gridView.showsUserLocation = FALSE;
 	gridView.delegate = self;
+	[gridView resignFirstResponder];
 } 
 
 - (void)locationManager: (CLLocationManager *)manager
@@ -67,10 +68,10 @@
 		   fromLocation:(CLLocation *)oldLocation
 {
 	currentLocation = newLocation;
-	[gridView setCenterCoordinate:newLocation.coordinate animated:YES];
+	[gridView setCenterCoordinate:newLocation.coordinate animated:NO];
 
 	for (AugmentedPoi *aPoi in ar_poiList) {
-		[aPoi updateFrom:newLocation.coordinate];
+		[aPoi updateAngleFrom:newLocation.coordinate];
 	}
 }
 
@@ -110,6 +111,16 @@
 	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, M_PI-teta, 0.0f, 1.0f, 0.0f);
 	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, M_PI / 2.0f, 1.0f, 0.0f, 0.0f);
 	rotationAndPerspectiveTransform = CATransform3DScale(rotationAndPerspectiveTransform, 3, 3, 0);
+/*
+	CABasicAnimation* grid_animation = [CABasicAnimation animation];
+	
+	grid_animation.keyPath		= @"transform";
+	grid_animation.fromValue	= [NSValue valueWithCATransform3D: gridView.layer.transform];
+	grid_animation.toValue		= [NSValue valueWithCATransform3D: rotationAndPerspectiveTransform];
+	grid_animation.duration		= 0.5;
+	[[gridView layer] addAnimation: grid_animation
+							  forKey: @"grid_animation"];
+*/	
 	gridView.layer.transform = rotationAndPerspectiveTransform;
 }
 
@@ -121,8 +132,8 @@
 		transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
 	}else{
 		if(transfomMatrix.m44 < 0.8){
-			transfomMatrix = CATransform3DScale(transfomMatrix,0.8, 0.8, 1.0);
-
+			transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
+			transfomMatrix = CATransform3DScale(transfomMatrix, 1.5, 1.5, 1.0);
 		}
 	}
 
@@ -134,9 +145,21 @@
 	// Get the current device angle
 	float phi = atan2(sqrt(y*y+x*x), z);
 	angleXY = atan2(-x, y);
-
-	poiOverlay.layer.transform = CATransform3DMakeRotation(M_PI-angleXY, 0.0, 0.0, 1.0);	
-	poiOverlay.layer.transform = CATransform3DTranslate(poiOverlay.layer.transform,0.0, (MAX_SCREEN_WIDTH/2.0) * sin(phi + (M_PI / 2.0))/ sin(CAMERA_ANGLE_Y * M_PI / 180), 0.0);
+	
+	CABasicAnimation* overlay_animation = [CABasicAnimation animation];
+	
+	CATransform3D final_transform = CATransform3DMakeRotation(M_PI-angleXY, 0.0, 0.0, 1.0);
+	final_transform = CATransform3DTranslate(final_transform,0.0, (MAX_SCREEN_WIDTH/3.0) * sin(phi + (M_PI / 2.0))/ sin(CAMERA_ANGLE_Y * M_PI / 180), 0.0);
+	
+	overlay_animation.keyPath		= @"transform";
+	overlay_animation.fromValue		= [NSValue valueWithCATransform3D: poiOverlay.layer.transform];
+	overlay_animation.toValue		= [NSValue valueWithCATransform3D: final_transform];
+	overlay_animation.duration		= 0.2;
+	[[poiOverlay layer] addAnimation: overlay_animation
+							  forKey: @"overlay_animation"];
+	poiOverlay.layer.transform = final_transform;
+	//poiOverlay.layer.transform = CATransform3DMakeRotation(M_PI-angleXY, 0.0, 0.0, 1.0);	
+	//poiOverlay.layer.transform = CATransform3DTranslate(poiOverlay.layer.transform,0.0, (MAX_SCREEN_WIDTH/2.0) * sin(phi + (M_PI / 2.0))/ sin(CAMERA_ANGLE_Y * M_PI / 180), 0.0);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -244,11 +267,15 @@
 	currentLocation = location;
 	[gridView setCenterCoordinate:location.coordinate];
 	for (AugmentedPoi *aPoi in ar_poiList) {
-		[aPoi updateFrom:location.coordinate];
+		[aPoi updateAngleFrom:location.coordinate];
 	}
 }
 
 -(void)setOrientation:(UIInterfaceOrientation)orientation{
+}
+
+-(BOOL)canBecomeFirstResponder {
+    return NO;
 }
 
 - (void)viewDidUnload {

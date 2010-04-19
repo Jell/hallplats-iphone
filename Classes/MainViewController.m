@@ -10,7 +10,7 @@
 #import "MainView.h"
 
 @implementation MainViewController
-@synthesize timer;
+//@synthesize timer;
 @synthesize mLocationManager;
 @synthesize mAccelerometer;
 @synthesize viewDisplayedController;
@@ -31,10 +31,8 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	[self becomeFirstResponder];
 	//mpnApiHandler = [[MPNApiHandler alloc] init];
 	opQueue = [[NSOperationQueue alloc] init];
-	
 	mVTApiHandler = [[VTApiHandler alloc] init];
 	
 	currentLocation = nil;
@@ -56,17 +54,23 @@
 	//Enable Accelerometer
 	xxAverage = 0;
 	yyAverage = 0;
-	zzAverage = 0;
+	zzAverage = -1.0;
 	accelerationBufferIndex = 0;
 	for (int i = 0; i < ACCELERATION_BUFFER_SIZE; i++) {
 		xxArray[i] = 0;
 		yyArray[i] = 0;
-		zzArray[i] = 0;
+		zzArray[i] = -1.0;
 	}
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
-	[mAccelerometer setUpdateInterval:1.0f / (10.0f * (float) ACCELERATION_BUFFER_SIZE)];
+	[mAccelerometer setUpdateInterval:1.0f / (5.0f * (float) ACCELERATION_BUFFER_SIZE)];
 	[mAccelerometer setDelegate:self];
 }
+
+-(void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	[self becomeFirstResponder];
+}
+
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
     
@@ -105,7 +109,7 @@
 		
 }
 
-- (void) timerUpdate:(id)object {
+- (void) beginUdpate:(id)object {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
 	[opQueue addOperation:request];
@@ -127,12 +131,11 @@
 	
 	[annotationList release];
 	[self setAnnotationList:(NSArray *)response];
-	
+	[self becomeFirstResponder];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-	timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerUpdate:) userInfo:nil repeats:NO];
+	//timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerUpdate:) userInfo:nil repeats:NO];
 }
  
-
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
 	
@@ -169,29 +172,38 @@
 		}
 	}
 
-	float angle = atan2(xx, yy);
-	if(angle < 0.785 && angle >-0.785){
-		mInterfaceOrientation = UIInterfaceOrientationPortrait;	
+	// if the phone is not in almost flat position, change the orientation
+	if(zz > -0.5 && zz < 0.5){
+		float angle = atan2(xx, yy);
+		if(angle < 0.785 && angle >-0.785){
+			mInterfaceOrientation = UIInterfaceOrientationPortrait;	
+		}
+		
+		if(angle < 2.355 && angle > 0.785){
+			mInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;	
+		}
+		
+		if(angle < -0.785 && angle >-2.355){
+			mInterfaceOrientation = UIInterfaceOrientationLandscapeRight;	
+		}
+		
+		if(angle > 2.355 || angle <-2.355){
+			mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;	
+		}
 	}
-	
-	if(angle < 2.355 && angle > 0.785){
-		mInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;	
-	}
-	
-	if(angle < -0.785 && angle >-2.355){
-		mInterfaceOrientation = UIInterfaceOrientationLandscapeRight;	
-	}
-	
-	if(angle > 2.355 || angle <-2.355){
-		mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;	
-	}
-	
 	// Dispatch acceleration
 	if(accelerationBufferIndex == 0){
 		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
 	}
 }
 
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+	if (event.type == UIEventSubtypeMotionShake) {
+		//[timer release];
+		[self resignFirstResponder];
+		[self beginUdpate:nil];
+	}
+}
 
 - (void)locationManager: (CLLocationManager *)manager
 	didUpdateToLocation: (CLLocation *)newLocation
@@ -199,12 +211,15 @@
 {
 	[currentLocation release];
 	currentLocation = [newLocation copy];
-	
+	//currentLocation = [[CLLocation alloc] initWithLatitude:59.330917 longitude:18.060389];
+
 	if(firstLocationUpdate){
-		[self timerUpdate:nil];
+		[self beginUdpate:nil];
 		firstLocationUpdate = NO;
 	}
-	
+	for (VTAnnotation *anAnnotation in annotationList) {
+		[anAnnotation updateDistanceFrom:newLocation.coordinate];
+	}
 	//Dispatch new Location
 	[viewDisplayedController locationManager:manager didUpdateToLocation:currentLocation fromLocation:oldLocation];
 }
@@ -212,6 +227,10 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
 	//Dispatch new Heading
 	[viewDisplayedController locationManager:manager didUpdateHeading:newHeading];
+}
+
+- (BOOL)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager{
+	return YES;
 }
 
 	
@@ -286,6 +305,10 @@
 		[viewDisplayedController setOrientation:mInterfaceOrientation];
 		[viewDisplayedController setSelectedPoi:selectedPoi];
 	}
+}
+
+-(BOOL)canBecomeFirstResponder {
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {
