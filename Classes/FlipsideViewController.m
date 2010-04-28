@@ -18,7 +18,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor colorWithRed:52.0/255.0 green:48.0/255.0 blue:80.0/255.0 alpha:1.0];
-	
 	if(annotationDisplayed){
 		[flipsideTitle setTitle:[NSString stringWithFormat:@"%@", [annotationDisplayed title]]];
 	}else{

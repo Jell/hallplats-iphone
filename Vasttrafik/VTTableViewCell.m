@@ -78,9 +78,11 @@
 	nastaLowFloor.hidden = !forecast.nastaLowFloor;
 	if(![forecast.darefterTime isEqual:@""]){
 		darefterLabel.text = [NSString stringWithFormat:@"%@ %@", forecast.darefterTime, NSLocalizedString(@"min", @"min")];
-		darefterHandicap.hidden = !forecast.darefterHandicap;
-		darefterLowFloor.hidden = !forecast.darefterLowFloor;
+	}else{
+		darefterLabel.hidden = YES;
 	}
+	darefterHandicap.hidden = !forecast.darefterHandicap;
+	darefterLowFloor.hidden = !forecast.darefterLowFloor;
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
 

@@ -239,6 +239,13 @@
 {
 }
 
+- (void)viewWillAppear{
+	mMapView.showsUserLocation = YES;
+}
+- (void)viewWillDisappear{
+	mMapView.showsUserLocation = NO;
+}
+
 -(BOOL)canBecomeFirstResponder {
     return NO;
 }
