@@ -76,11 +76,16 @@
     
 	[self dismissModalViewControllerAnimated:YES];
 	[mAccelerometer setDelegate:self];
+	[mAccelerometer setDelegate:nil];
+	[mLocationManager startUpdatingHeading];
+	[mLocationManager startUpdatingLocation];
 }
 
 - (void)showInfo:(id)sender {    
 	//Stop Updating:
 	[mAccelerometer setDelegate:nil];
+	[mLocationManager stopUpdatingHeading];
+	[mLocationManager stopUpdatingLocation];
 	//Launch flipside Modal View
 	FlipsideViewController *controller = [[FlipsideViewController alloc] initWithNibName:@"FlipsideView" bundle:nil];
 	controller.delegate = self;
@@ -211,8 +216,9 @@
 	[currentLocation release];
 	currentLocation = [newLocation copy];
 	//currentLocation = [[CLLocation alloc] initWithLatitude:59.330917 longitude:18.060389];
+	NSLog(@"%f", newLocation.horizontalAccuracy);
 
-	if(firstLocationUpdate){
+	if(firstLocationUpdate && newLocation.horizontalAccuracy >= 0  && newLocation.horizontalAccuracy < 200){
 		[self beginUdpate:nil];
 		firstLocationUpdate = NO;
 	}
