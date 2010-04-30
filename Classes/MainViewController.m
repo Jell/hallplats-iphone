@@ -48,6 +48,7 @@
 	mLocationManager = [[CLLocationManager alloc] init];
 	mLocationManager.delegate = self; // send loc updates to myself
 	firstLocationUpdate = YES;
+	secondLocationUpdate = NO;
 	[mLocationManager startUpdatingLocation];
 	[mLocationManager startUpdatingHeading];
 	
@@ -76,7 +77,6 @@
     
 	[self dismissModalViewControllerAnimated:YES];
 	[mAccelerometer setDelegate:self];
-	[mAccelerometer setDelegate:nil];
 	[mLocationManager startUpdatingHeading];
 	[mLocationManager startUpdatingLocation];
 }
@@ -218,10 +218,22 @@
 	//currentLocation = [[CLLocation alloc] initWithLatitude:59.330917 longitude:18.060389];
 	NSLog(@"%f", newLocation.horizontalAccuracy);
 
-	if(firstLocationUpdate && newLocation.horizontalAccuracy >= 0  && newLocation.horizontalAccuracy < 200){
+	if(secondLocationUpdate){
 		[self beginUdpate:nil];
+		secondLocationUpdate = NO;
+	}
+	
+	if(firstLocationUpdate){
+		if(newLocation.horizontalAccuracy >= 0  && newLocation.horizontalAccuracy < 500){
+			[self beginUdpate:nil];
+		}else{
+			secondLocationUpdate = YES;
+		}
 		firstLocationUpdate = NO;
 	}
+	
+
+	
 	for (VTAnnotation *anAnnotation in annotationList) {
 		[anAnnotation updateDistanceFrom:newLocation.coordinate];
 	}

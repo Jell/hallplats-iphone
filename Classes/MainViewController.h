@@ -32,6 +32,7 @@
 	
 	UIInterfaceOrientation mInterfaceOrientation;					/**< Current orientation of the device*/										
 	bool firstLocationUpdate;
+	bool secondLocationUpdate;
 	NSOperationQueue *opQueue;										/**< Operation Queue used for multithreading*/
 	CLLocation *currentLocation;									/**< Current User location*/
 	NSArray *annotationList;										/**< List of VTAnnotation*/
