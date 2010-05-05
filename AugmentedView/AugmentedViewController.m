@@ -149,7 +149,7 @@
 	CABasicAnimation* overlay_animation = [CABasicAnimation animation];
 	
 	CATransform3D final_transform = CATransform3DMakeRotation(M_PI-angleXY, 0.0, 0.0, 1.0);
-	final_transform = CATransform3DTranslate(final_transform,0.0, (MAX_SCREEN_WIDTH/3.0) * sin(phi + (M_PI / 2.0))/ sin(CAMERA_ANGLE_Y * M_PI / 180), 0.0);
+	final_transform = CATransform3DTranslate(final_transform,0.0, (MAX_SCREEN_WIDTH/3.0) * cos(phi)/ sin(CAMERA_ANGLE_Y * M_PI / 180), 0.0);
 	
 	overlay_animation.keyPath		= @"transform";
 	overlay_animation.fromValue		= [NSValue valueWithCATransform3D: poiOverlay.layer.transform];
