@@ -50,9 +50,7 @@
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MCAwIDAAA</bytes>
 								</object>
-								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
-								<float key="IBUIAlpha">5.000000e-01</float>
 								<int key="IBUIContentMode">4</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<bool key="IBMKZoomEnabled">NO</bool>
@@ -223,7 +221,7 @@
 					<string>AugmentedViewController</string>
 					<string>UIResponder</string>
 					<string>AugmentedView</string>
-					<string>{{494, 217}, {320, 480}}</string>
+					<string>{{574, 251}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
