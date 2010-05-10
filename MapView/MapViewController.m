@@ -132,7 +132,7 @@
 			
 			[view setPinColor:MKPinAnnotationColorPurple];
 			[view setCanShowCallout:YES];
-			[view setAnimatesDrop:YES];
+			[view setAnimatesDrop:NO];
 			
 			UIImageView *busImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
 			busImage.layer.frame = CGRectMake(-3, -3, 20, 20);

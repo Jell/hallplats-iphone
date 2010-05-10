@@ -142,7 +142,10 @@
 {
 	// Get the current device angle
 	[self setMBeta:M_PI - atan2(sqrt(y*y+x*x), z)];
-	[self setMAlpha:atan2(-x, y)];
+
+	if(x*x + y*y > 0.25){
+		[self setMAlpha:atan2(-x, y)];
+	}
 	
 	CABasicAnimation* overlay_animation = [CABasicAnimation animation];
 	

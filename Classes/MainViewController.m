@@ -162,20 +162,6 @@
 	float yy = yyAverage;
 	float zz = zzAverage;
 
-	// Check if we have to switch view
-	if(viewDisplayedController == mAugmentedViewController){
-		if(zz < -0.9 && (yy > -0.2 && yy <  0.2 && xx > -0.2 && xx <  0.2))
-		{
-			[self loadMapView];
-		}
-	}else{
-		if( (zz > -0.7 &&  zz <  0.0) &&
-			(yy < -0.8 || yy >  0.8 || xx < -0.8 || xx >  0.8)  )
-		{
-			[self loadAugmentedView];
-		}
-	}
-
 	// if the phone is not in almost flat position, change the orientation
 	if(zz > -0.5 && zz < 0.5){
 		float angle = atan2(xx, yy);
@@ -198,6 +184,20 @@
 	// Dispatch acceleration
 	if(accelerationBufferIndex == 0){
 		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
+	}
+	
+	// Check if we have to switch view
+	if(viewDisplayedController == mAugmentedViewController){
+		if(zz < -0.9 && (yy > -0.2 && yy <  0.2 && xx > -0.2 && xx <  0.2))
+		{
+			[self loadMapView];
+		}
+	}else{
+		if( (zz > -0.7 &&  zz <  0.0) &&
+		   (yy < -0.3 || yy >  0.3 || xx < -0.3 || xx >  0.3)  )
+		{
+			[self loadAugmentedView];
+		}
 	}
 }
 
@@ -285,8 +285,8 @@
 - (void)loadAugmentedView{
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
-	[applicationLoadViewIn setType:kCATransitionPush];
-	
+	[applicationLoadViewIn setType:kCATransitionFade];
+	/*
 	switch (mInterfaceOrientation) {
 		case UIInterfaceOrientationPortrait:
 			[applicationLoadViewIn setSubtype:kCATransitionFromTop];
@@ -300,7 +300,7 @@
 		default:
 			[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
 			break;
-	}
+	}*/
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	
 	[self loadViewController:mAugmentedViewController
