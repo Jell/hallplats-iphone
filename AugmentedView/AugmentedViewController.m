@@ -138,6 +138,19 @@
 	aView.layer.transform = transfomMatrix;
 }
 
+-(void)setBubbleMatrixForView:(UIView *)aview{
+	if(aview == nil){
+		calloutBubble.view.hidden = TRUE;
+		calloutBubble.view.layer.transform = CATransform3DMakeTranslation(200, 0, 0);
+	}else {
+		CATransform3D transfomMatrix = [[aview layer] transform];
+		transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
+		calloutBubble.view.layer.transform = transfomMatrix;
+		calloutBubble.view.hidden = FALSE;
+	}
+}
+
+
 -(void)accelerationChangedX:(float)x y:(float)y z:(float)z
 {
 	// Get the current device angle
@@ -241,11 +254,13 @@
 }
 
 -(IBAction) blankTouch:(id)view{
+	[self setBubbleMatrixForView:nil];
 	[self setSelectedPoi:-1];
 }
 
 -(void) poiSelected:(id) poiViewId{
 	[self setSelectedPoi:[ar_poiViews indexOfObject:poiViewId]];
+	[self setBubbleMatrixForView:poiViewId];
 }
 
 -(void) setSelectedPoi:(int)value{

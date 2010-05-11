@@ -53,6 +53,7 @@
 	mMapView.scrollEnabled =FALSE;
 	mMapView.showsUserLocation = FALSE;
 	mMapView.delegate = self;
+	mMapView.exclusiveTouch = NO;
 }
 
 -(void)setCurrentLocation:(CLLocation *)location{
@@ -133,6 +134,7 @@
 			[view setPinColor:MKPinAnnotationColorPurple];
 			[view setCanShowCallout:YES];
 			[view setAnimatesDrop:NO];
+			[view setExclusiveTouch:NO];
 			
 			UIImageView *busImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"augmentedpoi.png"]];
 			busImage.layer.frame = CGRectMake(-3, -3, 20, 20);
@@ -141,7 +143,7 @@
 			
 			if([[(VTAnnotation *) annotation forecastList] count] > 0){
 			UIButton *infoButton = [[UIButton buttonWithType:UIButtonTypeDetailDisclosure] retain];
-			infoButton.exclusiveTouch = YES;
+			infoButton.exclusiveTouch = NO;
 			infoButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
 			[infoButton addTarget:delegate action:@selector(showInfo:) forControlEvents:UIControlEventTouchDown];
 			

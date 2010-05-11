@@ -53,6 +53,8 @@
  @param scaleEnabled If set to YES, the view is scaled to perspective*/
 -(void)translateView:(UIView *)aView withTeta:(float)teta beta:(float)beta andDistance:(float)distance withScale:(BOOL)scaleEnabled;
 
+-(void)setBubbleMatrixForView:(UIView *)aview;
+
 -(IBAction) blankTouch:(id)view;
 
 /** Performed when a POI is selected */

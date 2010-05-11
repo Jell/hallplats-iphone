@@ -76,9 +76,11 @@
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
     
 	[self dismissModalViewControllerAnimated:YES];
-	[mAccelerometer setDelegate:self];
-	[mLocationManager startUpdatingHeading];
-	[mLocationManager startUpdatingLocation];
+	if(!lockButton.selected){
+		[mAccelerometer setDelegate:self];
+		[mLocationManager startUpdatingHeading];
+		[mLocationManager startUpdatingLocation];
+	}
 }
 
 - (void)showInfo:(id)sender {    
@@ -163,22 +165,67 @@
 	float zz = zzAverage;
 
 	// if the phone is not in almost flat position, change the orientation
-	if(zz > -0.5 && zz < 0.5){
+	if(zz > -0.7 && zz < 0.7){
 		float angle = atan2(xx, yy);
 		if(angle < 0.785 && angle >-0.785){
-			mInterfaceOrientation = UIInterfaceOrientationPortrait;	
+			if(mInterfaceOrientation != UIInterfaceOrientationPortrait){
+				mInterfaceOrientation = UIInterfaceOrientationPortrait;
+				
+				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
+				CATransform3D final_transform = CATransform3DMakeRotation(M_PI, 0.0, 0.0, 1.0);
+				rotate_lock.keyPath		= @"transform";
+				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
+				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
+				rotate_lock.duration	= 0.2;
+				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
+				lockButton.layer.transform = final_transform;
+			}
 		}
 		
 		if(angle < 2.355 && angle > 0.785){
-			mInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;	
+			if(mInterfaceOrientation != UIInterfaceOrientationLandscapeLeft){
+				mInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;
+				
+				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
+				CATransform3D final_transform = CATransform3DMakeTranslation(250.0, 0.0, 0.0);
+				final_transform = CATransform3DRotate(final_transform, -M_PI/2, 0.0, 0.0, 1.0);
+				rotate_lock.keyPath		= @"transform";
+				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
+				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
+				rotate_lock.duration	= 0.2;
+				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
+				lockButton.layer.transform = final_transform;
+			}
 		}
 		
 		if(angle < -0.785 && angle >-2.355){
-			mInterfaceOrientation = UIInterfaceOrientationLandscapeRight;	
+			if(mInterfaceOrientation != UIInterfaceOrientationLandscapeRight){
+				mInterfaceOrientation = UIInterfaceOrientationLandscapeRight;
+				
+				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
+				CATransform3D final_transform = CATransform3DMakeRotation(M_PI/2, 0.0, 0.0, 1.0);
+				rotate_lock.keyPath		= @"transform";
+				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
+				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
+				rotate_lock.duration	= 0.2;
+				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
+				lockButton.layer.transform = final_transform;
+			}
 		}
 		
 		if(angle > 2.355 || angle <-2.355){
-			mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;	
+			if(mInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown){
+				mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;
+				
+				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
+				CATransform3D final_transform = CATransform3DMakeRotation(0.0, 0.0, 0.0, 1.0);
+				rotate_lock.keyPath		= @"transform";
+				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
+				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
+				rotate_lock.duration	= 0.2;
+				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
+				lockButton.layer.transform = final_transform;
+			}
 		}
 	}
 	// Dispatch acceleration
@@ -322,6 +369,21 @@
 		[viewDisplayedController setOrientation:mInterfaceOrientation];
 		[viewDisplayedController setSelectedPoi:selectedPoi];
 	}
+}
+
+-(IBAction)lockPress{
+	if(lockButton.selected == NO){
+		[mAccelerometer setDelegate:nil];
+		[mLocationManager stopUpdatingHeading];
+		[mLocationManager stopUpdatingLocation];
+		lockButton.selected = YES;
+	}else{
+		[mAccelerometer setDelegate:self];
+		[mLocationManager startUpdatingHeading];
+		[mLocationManager startUpdatingLocation];
+		lockButton.selected = NO;
+	}
+
 }
 
 -(BOOL)canBecomeFirstResponder {
