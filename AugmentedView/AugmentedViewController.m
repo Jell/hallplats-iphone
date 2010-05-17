@@ -15,10 +15,10 @@
 #define OFFSCREEN_SQUARE_SIZE	520.0
 #define CAMERA_ANGLE_X			17.0
 #define CAMERA_ANGLE_Y			28.0
-#define POI_BUTTON_SIZE			40.0
 #define PERSPECTIVE_VERTICAL_OFFSET			50
 #define PERSPECTIVE_DEPTH_OFFSET			100
 #define PERSPECTIVE_INNER_CIRCLE_RADIUS		0
+#define PROJECTION_DEPTH					150
 
 @implementation AugmentedViewController
 @synthesize mAlpha;
@@ -116,29 +116,31 @@
 }
 
 -(void)translateGridWithTeta:(float)teta andBeta:(float)beta{
-	CATransform3D transformMatrix = CATransform3DMakeRotation(teta, 0.0, 0.0, 1.0);
-	transformMatrix.m34 = 1.0 / -500;
+	CATransform3D transformMatrix = CATransform3DMakeTranslation(0, PERSPECTIVE_VERTICAL_OFFSET * sin(beta), 0);
+	transformMatrix.m34 = 1.0 / -PROJECTION_DEPTH;
+	transformMatrix = CATransform3DRotate(transformMatrix, teta, 0.0, 0.0, 1.0);
 	transformMatrix = CATransform3DRotate(transformMatrix, beta, cos(teta), -sin(teta), 0.0f);
 	transformMatrix = CATransform3DTranslate(transformMatrix, 0.0, 0.0, - PERSPECTIVE_DEPTH_OFFSET);
-	transformMatrix = CATransform3DScale(transformMatrix, 3 * sin(beta), 3 * sin(beta), 0);
+	transformMatrix = CATransform3DScale(transformMatrix, 3 * sin(beta), 3 * sin(beta), 1.0);
 	
 	gridView.layer.transform = transformMatrix;
 }
 
 -(void)translateView:(UIView *)aView withTeta:(float)teta beta:(float)beta andDistance:(float)distance withScale:(BOOL)scaleEnabled{
 	CATransform3D transfomMatrix = CATransform3DIdentity;
-	transfomMatrix.m34 = 1.0 / -500;
+	transfomMatrix.m34 = 1.0 / -PROJECTION_DEPTH;
 	transfomMatrix = CATransform3DTranslate(transfomMatrix, distance * cos(teta),
-											  (PERSPECTIVE_DEPTH_OFFSET - POI_BUTTON_SIZE/2) * sin(beta) + distance * cos(beta) * sin(teta),
-											- (PERSPECTIVE_DEPTH_OFFSET - POI_BUTTON_SIZE/2) * cos(beta) + distance * sin(beta) * sin(teta));
-	if(!scaleEnabled){
+											  (PERSPECTIVE_DEPTH_OFFSET + PERSPECTIVE_VERTICAL_OFFSET) * sin(beta) + distance * cos(beta) * sin(teta),
+											- (PERSPECTIVE_DEPTH_OFFSET) * cos(beta) + distance * sin(beta) * sin(teta));
+	transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
+	/*if(!scaleEnabled){
 		transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
 	}else{
 		if(transfomMatrix.m44 < 0.8){
 			transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
 			transfomMatrix = CATransform3DScale(transfomMatrix, 1.5, 1.5, 1.0);
 		}
-	}
+	}*/
 
 	aView.layer.transform = transfomMatrix;
 }
@@ -149,7 +151,6 @@
 		calloutBubble.view.layer.transform = CATransform3DMakeTranslation(200, 0, 0);
 	}else {
 		CATransform3D transfomMatrix = [[aview layer] transform];
-		transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
 		calloutBubble.view.layer.transform = transfomMatrix;
 		calloutBubble.view.hidden = FALSE;
 	}
@@ -230,11 +231,11 @@
 }
 
 -(void)addPoiView{
-	CGPoint center = {OFFSCREEN_SQUARE_SIZE/2.0, OFFSCREEN_SQUARE_SIZE/2.0};
+	CGPoint center = {OFFSCREEN_SQUARE_SIZE/2.0, OFFSCREEN_SQUARE_SIZE/2.0 - POI_BUTTON_SIZE};
 	
 	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	aButton.exclusiveTouch = NO;
-	aButton.frame = CGRectMake(0.0, 0.0, POI_BUTTON_SIZE/1.5, POI_BUTTON_SIZE/1.5);
+	aButton.frame = CGRectMake(0.0, 0.0, POI_BUTTON_SIZE, POI_BUTTON_SIZE);
 	aButton.backgroundColor = [UIColor clearColor];
 	UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
 	[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
@@ -246,7 +247,7 @@
 	aButton.center = center;
 	
 	UIImageView *needleAndShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"needleandshadow.png"]];
-	[needleAndShadow setFrame:CGRectMake(5, 5, needleAndShadow.frame.size.width, needleAndShadow.frame.size.height)];
+	[needleAndShadow setFrame:CGRectMake(0, 0, POI_BUTTON_SIZE*2.3, POI_BUTTON_SIZE*1.5)];
 	[aButton addSubview:needleAndShadow];
 	[aButton sendSubviewToBack:needleAndShadow];
 	[needleAndShadow release];
