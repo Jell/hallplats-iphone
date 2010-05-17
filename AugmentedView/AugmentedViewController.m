@@ -18,12 +18,13 @@
 #define PERSPECTIVE_VERTICAL_OFFSET			50
 #define PERSPECTIVE_DEPTH_OFFSET			100
 #define PERSPECTIVE_INNER_CIRCLE_RADIUS		0
-#define PROJECTION_DEPTH					150
+#define PROJECTION_DEPTH					900
 
 @implementation AugmentedViewController
 @synthesize mAlpha;
 @synthesize mBeta;
 @synthesize mTeta;
+@synthesize mVerticalOffset;
 @synthesize currentLocation;
 @synthesize ar_poiList;
 @synthesize ar_poiViews;
@@ -116,7 +117,8 @@
 }
 
 -(void)translateGridWithTeta:(float)teta andBeta:(float)beta{
-	CATransform3D transformMatrix = CATransform3DMakeTranslation(0, PERSPECTIVE_VERTICAL_OFFSET * sin(beta), 0);
+
+	CATransform3D transformMatrix = CATransform3DMakeTranslation(0, [self mVerticalOffset] * sin(beta), 0);
 	transformMatrix.m34 = 1.0 / -PROJECTION_DEPTH;
 	transformMatrix = CATransform3DRotate(transformMatrix, teta, 0.0, 0.0, 1.0);
 	transformMatrix = CATransform3DRotate(transformMatrix, beta, cos(teta), -sin(teta), 0.0f);
@@ -130,17 +132,9 @@
 	CATransform3D transfomMatrix = CATransform3DIdentity;
 	transfomMatrix.m34 = 1.0 / -PROJECTION_DEPTH;
 	transfomMatrix = CATransform3DTranslate(transfomMatrix, distance * cos(teta),
-											  (PERSPECTIVE_DEPTH_OFFSET + PERSPECTIVE_VERTICAL_OFFSET) * sin(beta) + distance * cos(beta) * sin(teta),
+											  (PERSPECTIVE_DEPTH_OFFSET + [self mVerticalOffset]) * sin(beta) + distance * cos(beta) * sin(teta),
 											- (PERSPECTIVE_DEPTH_OFFSET) * cos(beta) + distance * sin(beta) * sin(teta));
 	transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
-	/*if(!scaleEnabled){
-		transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
-	}else{
-		if(transfomMatrix.m44 < 0.8){
-			transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
-			transfomMatrix = CATransform3DScale(transfomMatrix, 1.5, 1.5, 1.0);
-		}
-	}*/
 
 	aView.layer.transform = transfomMatrix;
 }
@@ -163,23 +157,24 @@
 	[self setMBeta:M_PI - atan2(sqrt(y*y+x*x), z)];
 
 	if(x*x + y*y > 0.25){
-		[self setMAlpha:atan2(-x, y)];
+		float alpha = atan2(-x, y);
+		[self setMAlpha:alpha];
+		[self setMVerticalOffset: MIN_SCREEN_WIDTH / 6.0 + abs((MAX_SCREEN_WIDTH - MIN_SCREEN_WIDTH) * cos(alpha)/3)];
+		
+		CABasicAnimation* overlay_animation = [CABasicAnimation animation];
+		
+		CATransform3D final_transform = CATransform3DMakeRotation(M_PI-alpha, 0.0, 0.0, 1.0);
+		//final_transform = CATransform3DTranslate(final_transform,0.0, (MAX_SCREEN_WIDTH/3.0) * cos([self beta])/ sin(CAMERA_ANGLE_Y * M_PI / 180), 0.0);
+		
+		overlay_animation.keyPath		= @"transform";
+		overlay_animation.fromValue		= [NSValue valueWithCATransform3D: poiOverlay.layer.transform];
+		overlay_animation.toValue		= [NSValue valueWithCATransform3D: final_transform];
+		overlay_animation.duration		= 0.2;
+		[[poiOverlay layer] addAnimation: overlay_animation
+								  forKey: @"overlay_animation"];
+		poiOverlay.layer.transform = final_transform;
+		
 	}
-	
-	CABasicAnimation* overlay_animation = [CABasicAnimation animation];
-	
-	CATransform3D final_transform = CATransform3DMakeRotation(M_PI-[self mAlpha], 0.0, 0.0, 1.0);
-	//final_transform = CATransform3DTranslate(final_transform,0.0, (MAX_SCREEN_WIDTH/3.0) * cos([self beta])/ sin(CAMERA_ANGLE_Y * M_PI / 180), 0.0);
-	
-	overlay_animation.keyPath		= @"transform";
-	overlay_animation.fromValue		= [NSValue valueWithCATransform3D: poiOverlay.layer.transform];
-	overlay_animation.toValue		= [NSValue valueWithCATransform3D: final_transform];
-	overlay_animation.duration		= 0.2;
-	[[poiOverlay layer] addAnimation: overlay_animation
-							  forKey: @"overlay_animation"];
-	poiOverlay.layer.transform = final_transform;
-	//poiOverlay.layer.transform = CATransform3DMakeRotation(M_PI-alpha, 0.0, 0.0, 1.0);	
-	//poiOverlay.layer.transform = CATransform3DTranslate(poiOverlay.layer.transform,0.0, (MAX_SCREEN_WIDTH/2.0) * sin(beta + (M_PI / 2.0))/ sin(CAMERA_ANGLE_Y * M_PI / 180), 0.0);
 }
 
 - (void)didReceiveMemoryWarning {

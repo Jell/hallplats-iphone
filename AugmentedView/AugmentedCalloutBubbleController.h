@@ -14,7 +14,7 @@
 #import <UIKit/UIKit.h>
 #import "VTLineInfo.h"
 
-#define POI_BUTTON_SIZE			22.0
+#define POI_BUTTON_SIZE			25.0
 
 @interface AugmentedCalloutBubbleController : UIViewController <UIScrollViewDelegate>{
 	IBOutlet UILabel *infoLabel;				/**<Title view */

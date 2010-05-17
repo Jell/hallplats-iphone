@@ -31,12 +31,14 @@
 	float mAlpha;
 	float mBeta;/**< Angle at which the iPhone is held on the XY plane*/
 	float mTeta;
+	float mVerticalOffset;
 	id delegate;
 }
 
 @property float mAlpha;
 @property float mBeta;
 @property float mTeta;
+@property float mVerticalOffset;
 @property(retain) NSMutableArray *ar_poiList;
 @property(retain) NSMutableArray *ar_poiViews;
 @property(assign)  CLLocation *currentLocation;
