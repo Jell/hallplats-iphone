@@ -30,15 +30,19 @@
 	CLLocation *currentLocation;					/**< Current location of the user */
 	float mAlpha;
 	float mBeta;/**< Angle at which the iPhone is held on the XY plane*/
+	float mTeta;
 	id delegate;
 }
 
 @property float mAlpha;
 @property float mBeta;
+@property float mTeta;
 @property(retain) NSMutableArray *ar_poiList;
 @property(retain) NSMutableArray *ar_poiViews;
 @property(assign)  CLLocation *currentLocation;
 @property(assign) id delegate;
+
+-(void)updateProjection;
 
 /** Moves the perspective grid according to the given orientation
  @param teta current azimuth of the user from -pi to pi 

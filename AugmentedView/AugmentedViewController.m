@@ -23,6 +23,7 @@
 @implementation AugmentedViewController
 @synthesize mAlpha;
 @synthesize mBeta;
+@synthesize mTeta;
 @synthesize currentLocation;
 @synthesize ar_poiList;
 @synthesize ar_poiViews;
@@ -79,17 +80,21 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
+	[self setMTeta:M_PI * newHeading.trueHeading / 180.0];
+	[self updateProjection];
+}
 
-	float headinAngle = M_PI * newHeading.trueHeading / 180.0;
-	float alpha = [self mAlpha] - headinAngle;
+-(void)updateProjection{
+	float alpha = [self mAlpha] - [self mTeta];
 	float beta = [self mBeta];
-	
 	int i = 0;
+	
 	calloutBubble.view.hidden = TRUE;
-	[self translateView:calloutBubble.view withTeta:M_PI/2 beta:M_PI andDistance:300 withScale:NO];
+	calloutBubble.view.layer.transform = CATransform3DMakeTranslation(200, 0, 0);
+	
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta = alpha - [aPoi azimuth];
-
+		
 		CLLocationCoordinate2D coordinateLocation = [[aPoi annotation] coordinate];
 		CGPoint pixelLocation = [gridView convertCoordinate:coordinateLocation toPointToView:gridView];
 		
@@ -184,45 +189,44 @@
 }
 
 -(void)setAnnotationList:(NSArray *)newList{
-	@synchronized(self){
-		for(UIView *aView in ar_poiViews){
-			[aView removeFromSuperview];
-		}
-		
-		NSString *selectedAnnotationTitle = nil;
-		
-		if(selectedPoi >= 0){
-			VTAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
-			selectedAnnotationTitle = [selectedAnnotation title];
-		}
-		
-		[self setSelectedPoi:-1];
-		
-		[ar_poiViews release];
-		[ar_poiList release];
-		
-		ar_poiList = [[NSMutableArray alloc] init];
-		ar_poiViews = [[NSMutableArray alloc] init];
-		
-		CLLocationCoordinate2D origin = {0,0};
-		if(currentLocation){
-			origin = currentLocation.coordinate;
-		}
-		
-		int i = 0;
-		for(VTAnnotation *anAnnotation in newList){
-			AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
-			[ar_poiList addObject:aPoi];
-
-			[aPoi release];
-			[self addPoiView];
-
-			if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
-				[self setSelectedPoi:i];
-			}
-			i++;
-		}
+	for(UIView *aView in ar_poiViews){
+		[aView removeFromSuperview];
 	}
+	
+	NSString *selectedAnnotationTitle = nil;
+	
+	if(selectedPoi >= 0){
+		VTAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
+		selectedAnnotationTitle = [selectedAnnotation title];
+	}
+	
+	[self setSelectedPoi:-1];
+	
+	[ar_poiViews release];
+	[ar_poiList release];
+	
+	ar_poiList = [[NSMutableArray alloc] init];
+	ar_poiViews = [[NSMutableArray alloc] init];
+	
+	CLLocationCoordinate2D origin = {0,0};
+	if(currentLocation){
+		origin = currentLocation.coordinate;
+	}
+	
+	int i = 0;
+	for(VTAnnotation *anAnnotation in newList){
+		AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
+		[ar_poiList addObject:aPoi];
+
+		[aPoi release];
+		[self addPoiView];
+
+		if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
+			[self setSelectedPoi:i];
+		}
+		i++;
+	}
+	[self updateProjection];
 }
 
 -(void)addPoiView{

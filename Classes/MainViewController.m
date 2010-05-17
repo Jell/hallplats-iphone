@@ -229,9 +229,9 @@
 		}
 	}
 	// Dispatch acceleration
-	if(accelerationBufferIndex == 0){
+	//if(accelerationBufferIndex == 0){
 		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
-	}
+	//}
 	
 	// Check if we have to switch view
 	if(viewDisplayedController == mAugmentedViewController){
