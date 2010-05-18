@@ -47,18 +47,27 @@
 
 -(void)updateProjection;
 
-/** Moves the perspective grid according to the given orientation
+/* Moves the perspective grid according to the given orientation
  @param teta current azimuth of the user from -pi to pi 
  @param beta current pitch of the user from -pi to pi */
--(void)translateGridWithTeta:(float)teta andBeta:(float)beta;
+-(void)translateGridWithTeta:(float)teta
+						beta:(float)beta
+					 sinBeta:(float)sinb
+			  verticalOffset:(float)verticalOffset;
 
-/** Position the given view according to its azimuth and distance to current location
+/* Position the given view according to its azimuth and distance to current location
  @param aView the view to position
  @param teta azimuth of the POI represented by the view, valued from -pi to pi
  @param beta current pitch of the user from -pi to pi
  @param distance distance of the POI represented by the view, must be greater than 0
  @param scaleEnabled If set to YES, the view is scaled to perspective*/
--(void)translateView:(UIView *)aView withTeta:(float)teta beta:(float)beta andDistance:(float)distance withScale:(BOOL)scaleEnabled;
+-(void)translateView:(UIView *)aView
+			withTeta:(float)teta
+				beta:(float)beta
+			 cosBeta:(float)cosb
+			 sinBeta:(float)sinb
+	  verticalOffset:(float)verticalOffset
+			distance:(float)distance;
 
 -(void)setBubbleMatrixForView:(UIView *)aview;
 

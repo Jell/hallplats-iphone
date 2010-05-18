@@ -85,7 +85,7 @@
 									<bytes key="NSWhite">MC41AA</bytes>
 								</object>
 							</object>
-							<object class="IBUIImageView" id="583748899">
+							<object class="IBUIImageView" id="560461975">
 								<reference key="NSNextResponder" ref="217094803"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{-456, -456}, {1432, 1432}}</string>
@@ -167,7 +167,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">mapMask</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="583748899"/>
+						<reference key="destination" ref="560461975"/>
 					</object>
 					<int key="connectionID">61</int>
 				</object>
@@ -211,7 +211,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="498369256"/>
 							<reference ref="252688722"/>
-							<reference ref="583748899"/>
+							<reference ref="560461975"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 					</object>
@@ -227,7 +227,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">60</int>
-						<reference key="object" ref="583748899"/>
+						<reference key="object" ref="560461975"/>
 						<reference key="parent" ref="217094803"/>
 					</object>
 				</object>
