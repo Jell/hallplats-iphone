@@ -99,7 +99,7 @@
 	int i = 0;
 	
 	calloutBubble.view.hidden = TRUE;
-	calloutBubble.view.layer.transform = CATransform3DMakeTranslation(200, 0, 0);
+	calloutBubble.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
 	
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta = alpha - [aPoi azimuth];
@@ -179,7 +179,11 @@
 -(void)accelerationChangedX:(float)x y:(float)y z:(float)z
 {
 	// Get the current device angle
-	[self setMBeta:M_PI - atan2(sqrt(y*y+x*x), z)];
+	float beta = M_PI - atan2(sqrt(y*y+x*x), z);
+	if(beta > M_PI /2){
+		beta = M_PI/2 + sqrt(beta - M_PI /2) * sqrt(M_PI) / 10;
+	}
+	[self setMBeta:beta];
 
 	if(x*x + y*y > 0.25){
 		float alpha = atan2(-x, y);
