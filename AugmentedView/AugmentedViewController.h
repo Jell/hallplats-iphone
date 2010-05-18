@@ -23,6 +23,7 @@
 	IBOutlet UIView *poiOverlay;					/**< View container for Poi display */
 	IBOutlet MKMapView *gridView;						/**< Perspective Grid View */
 	IBOutlet UIButton *backgroundButton;
+	IBOutlet UIImageView *mapMask;
 	AugmentedCalloutBubbleController *calloutBubble;	/**< Poi call out bubble controller */
 	int selectedPoi;								/**< Currently selected POI, -1 if none is selected */
 	NSMutableArray *ar_poiList;						/**< List containing the POI */

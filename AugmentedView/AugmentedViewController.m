@@ -65,7 +65,11 @@
 	gridView.scrollEnabled =FALSE;
 	gridView.showsUserLocation = FALSE;
 	gridView.delegate = self;
+	gridView.clipsToBounds = NO;
 	[gridView resignFirstResponder];
+	[mapMask removeFromSuperview];
+	[gridView addSubview:mapMask];
+	mapMask.center = CGPointMake(500, 500);
 } 
 
 - (void)locationManager: (CLLocationManager *)manager
