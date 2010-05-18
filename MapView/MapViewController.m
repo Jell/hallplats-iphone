@@ -15,6 +15,7 @@
 @synthesize currentLocation;
 @synthesize selectedPoi;
 @synthesize delegate;
+@synthesize mTeta;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -174,11 +175,12 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
-	[self rotateMapWithTeta: -M_PI * newHeading.trueHeading / 180.0];
+	[self setMTeta:-M_PI * newHeading.trueHeading / 180.0];
+	[self rotateMap];
 }
 
-- (void)rotateMapWithTeta:(float)teta{
-	
+- (void)rotateMap{
+	float teta = [self mTeta];
 	mMapView.layer.transform = CATransform3DMakeRotation(teta, 0., 0., 1.);
 	CATransform3D annotationRotation = CATransform3DMakeRotation(phase-teta, 0., 0., 1.);
 	//Set animation and rotation for the annotations
@@ -198,25 +200,24 @@
 }
 
 -(void)setAnnotationList:(NSArray *)newList{
-	@synchronized(self) {
-		NSString *selectedAnnotationTitle = nil;
-		int selectedPoiIndex = [self selectedPoi];
-		if(selectedPoiIndex >= 0){
-			VTAnnotation *selectedAnnotation = [annotationList objectAtIndex:selectedPoiIndex];
-			selectedAnnotationTitle = [selectedAnnotation title];
-		}
-		[mMapView removeAnnotations:annotationList];
-		annotationList = newList;
-		[mMapView addAnnotations:annotationList];
-		
-		int i = 0;
-		for(VTAnnotation *anAnnotation in newList){
-			if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
-				[self setSelectedPoi:i];
-			}
-			i++;
-		}
+	NSString *selectedAnnotationTitle = nil;
+	int selectedPoiIndex = [self selectedPoi];
+	if(selectedPoiIndex >= 0){
+		VTAnnotation *selectedAnnotation = [annotationList objectAtIndex:selectedPoiIndex];
+		selectedAnnotationTitle = [selectedAnnotation title];
 	}
+	[mMapView removeAnnotations:annotationList];
+	annotationList = newList;
+	[mMapView addAnnotations:annotationList];
+	
+	int i = 0;
+	for(VTAnnotation *anAnnotation in newList){
+		if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
+			[self setSelectedPoi:i];
+		}
+		i++;
+	}
+	[self rotateMap];
 }
 
 -(void)setOrientation:(UIInterfaceOrientation)orientation{
