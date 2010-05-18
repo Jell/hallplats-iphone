@@ -45,6 +45,7 @@
 	float zzAverage;												/**< Acceleration Average along z axis*/
 	int accelerationBufferIndex;
 	
+	IBOutlet UIButton *lockButton;
 	//NSTimer * timer;
 }
 
@@ -57,6 +58,8 @@
 @property (assign) UIViewController *viewDisplayedController;
 @property (retain) MapViewController *mMapViewController;
 @property (retain) AugmentedViewController *mAugmentedViewController;
+
+-(IBAction)lockPress;
 
 /** Load the Map View on screen*/
 - (void)loadMapView;

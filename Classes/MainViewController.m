@@ -76,9 +76,11 @@
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
     
 	[self dismissModalViewControllerAnimated:YES];
-	[mAccelerometer setDelegate:self];
-	[mLocationManager startUpdatingHeading];
-	[mLocationManager startUpdatingLocation];
+	if(!lockButton.selected){
+		[mAccelerometer setDelegate:self];
+		[mLocationManager startUpdatingHeading];
+		[mLocationManager startUpdatingLocation];
+	}
 }
 
 - (void)showInfo:(id)sender {    
@@ -162,6 +164,75 @@
 	float yy = yyAverage;
 	float zz = zzAverage;
 
+	// if the phone is not in almost flat position, change the orientation
+	if(zz > -0.7 && zz < 0.7){
+		float angle = atan2(xx, yy);
+		if(angle < 0.785 && angle >-0.785){
+			if(mInterfaceOrientation != UIInterfaceOrientationPortrait){
+				mInterfaceOrientation = UIInterfaceOrientationPortrait;
+				
+				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
+				CATransform3D final_transform = CATransform3DMakeRotation(M_PI, 0.0, 0.0, 1.0);
+				rotate_lock.keyPath		= @"transform";
+				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
+				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
+				rotate_lock.duration	= 0.2;
+				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
+				lockButton.layer.transform = final_transform;
+			}
+		}
+		
+		if(angle < 2.355 && angle > 0.785){
+			if(mInterfaceOrientation != UIInterfaceOrientationLandscapeLeft){
+				mInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;
+				
+				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
+				CATransform3D final_transform = CATransform3DMakeTranslation(250.0, 0.0, 0.0);
+				final_transform = CATransform3DRotate(final_transform, -M_PI/2, 0.0, 0.0, 1.0);
+				rotate_lock.keyPath		= @"transform";
+				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
+				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
+				rotate_lock.duration	= 0.2;
+				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
+				lockButton.layer.transform = final_transform;
+			}
+		}
+		
+		if(angle < -0.785 && angle >-2.355){
+			if(mInterfaceOrientation != UIInterfaceOrientationLandscapeRight){
+				mInterfaceOrientation = UIInterfaceOrientationLandscapeRight;
+				
+				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
+				CATransform3D final_transform = CATransform3DMakeRotation(M_PI/2, 0.0, 0.0, 1.0);
+				rotate_lock.keyPath		= @"transform";
+				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
+				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
+				rotate_lock.duration	= 0.2;
+				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
+				lockButton.layer.transform = final_transform;
+			}
+		}
+		
+		if(angle > 2.355 || angle <-2.355){
+			if(mInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown){
+				mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;
+				
+				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
+				CATransform3D final_transform = CATransform3DMakeRotation(0.0, 0.0, 0.0, 1.0);
+				rotate_lock.keyPath		= @"transform";
+				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
+				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
+				rotate_lock.duration	= 0.2;
+				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
+				lockButton.layer.transform = final_transform;
+			}
+		}
+	}
+	// Dispatch acceleration
+	//if(accelerationBufferIndex == 0){
+		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
+	//}
+	
 	// Check if we have to switch view
 	if(viewDisplayedController == mAugmentedViewController){
 		if(zz < -0.9 && (yy > -0.2 && yy <  0.2 && xx > -0.2 && xx <  0.2))
@@ -170,34 +241,10 @@
 		}
 	}else{
 		if( (zz > -0.7 &&  zz <  0.0) &&
-			(yy < -0.8 || yy >  0.8 || xx < -0.8 || xx >  0.8)  )
+		   (yy < -0.3 || yy >  0.3 || xx < -0.3 || xx >  0.3)  )
 		{
 			[self loadAugmentedView];
 		}
-	}
-
-	// if the phone is not in almost flat position, change the orientation
-	if(zz > -0.5 && zz < 0.5){
-		float angle = atan2(xx, yy);
-		if(angle < 0.785 && angle >-0.785){
-			mInterfaceOrientation = UIInterfaceOrientationPortrait;	
-		}
-		
-		if(angle < 2.355 && angle > 0.785){
-			mInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;	
-		}
-		
-		if(angle < -0.785 && angle >-2.355){
-			mInterfaceOrientation = UIInterfaceOrientationLandscapeRight;	
-		}
-		
-		if(angle > 2.355 || angle <-2.355){
-			mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;	
-		}
-	}
-	// Dispatch acceleration
-	if(accelerationBufferIndex == 0){
-		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
 	}
 }
 
@@ -216,7 +263,7 @@
 	[currentLocation release];
 	currentLocation = [newLocation copy];
 	//currentLocation = [[CLLocation alloc] initWithLatitude:59.330917 longitude:18.060389];
-	NSLog(@"%f", newLocation.horizontalAccuracy);
+	// NSLog(@"%f", newLocation.horizontalAccuracy);
 
 	if(secondLocationUpdate){
 		[self beginUdpate:nil];
@@ -285,8 +332,8 @@
 - (void)loadAugmentedView{
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
-	[applicationLoadViewIn setType:kCATransitionPush];
-	
+	[applicationLoadViewIn setType:kCATransitionFade];
+	/*
 	switch (mInterfaceOrientation) {
 		case UIInterfaceOrientationPortrait:
 			[applicationLoadViewIn setSubtype:kCATransitionFromTop];
@@ -300,7 +347,7 @@
 		default:
 			[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
 			break;
-	}
+	}*/
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	
 	[self loadViewController:mAugmentedViewController
@@ -322,6 +369,21 @@
 		[viewDisplayedController setOrientation:mInterfaceOrientation];
 		[viewDisplayedController setSelectedPoi:selectedPoi];
 	}
+}
+
+-(IBAction)lockPress{
+	if(lockButton.selected == NO){
+		[mAccelerometer setDelegate:nil];
+		[mLocationManager stopUpdatingHeading];
+		[mLocationManager stopUpdatingLocation];
+		lockButton.selected = YES;
+	}else{
+		[mAccelerometer setDelegate:self];
+		[mLocationManager startUpdatingHeading];
+		[mLocationManager startUpdatingLocation];
+		lockButton.selected = NO;
+	}
+
 }
 
 -(BOOL)canBecomeFirstResponder {

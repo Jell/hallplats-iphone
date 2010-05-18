@@ -27,7 +27,7 @@
 	UIView *myView = [self view];
 	//[myView setFrame:CGRectMake(15 -[myView frame].size.width / 2 , 5 -[myView frame].size.height , [myView frame].size.width, [myView frame].size.height)];
 	myView.exclusiveTouch = NO;
-	myView.center = CGPointMake(260.0, 200.0);
+	myView.center = CGPointMake(260.0, 200.0 - POI_BUTTON_SIZE);
 	
 	tramScroll.backgroundColor = [UIColor clearColor];
 	tramScroll.scrollEnabled = YES;
