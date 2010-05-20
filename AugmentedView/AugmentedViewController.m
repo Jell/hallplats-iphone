@@ -137,9 +137,25 @@
 			  verticalOffset:(float)verticalOffset
 {
 	CATransform3D transformMatrix = CATransform3DMakeTranslation(0, (PERSPECTIVE_DEPTH_OFFSET) * sinb + verticalOffset, - (PERSPECTIVE_DEPTH_OFFSET) * cosb);
-	transformMatrix.m34 = 1.0 / -PROJECTION_DEPTH;
-	transformMatrix = CATransform3DRotate(transformMatrix, teta, 0.0, 0.0, 1.0);
-	transformMatrix = CATransform3DRotate(transformMatrix, beta, cos(teta), -sin(teta), 0.0f);
+	transformMatrix.m34 = -1.0 / PROJECTION_DEPTH;
+	float cost = cos(teta);
+	float sint = sin(teta);
+	
+
+	transformMatrix.m11 = cost;
+	transformMatrix.m12 = sint * cosb;
+	transformMatrix.m13 = sint * sinb;
+	transformMatrix.m14 = - sint * sinb / PROJECTION_DEPTH;
+	transformMatrix.m21 = - sint;
+	transformMatrix.m22 = cost * cosb;
+	transformMatrix.m23 = cost * sinb;
+	transformMatrix.m24 = - cost * sinb / PROJECTION_DEPTH;
+	transformMatrix.m32 = -sinb;
+	transformMatrix.m33 = cosb;
+	transformMatrix.m34 = - cosb / PROJECTION_DEPTH;
+	
+	//transformMatrix = CATransform3DRotate(transformMatrix, M_PI/3, 0.0, 0.0, 1.0);
+	//transformMatrix = CATransform3DRotate(transformMatrix, M_PI/3, cos(M_PI/3), -sin(M_PI/3), 0.0f);
 	//transformMatrix = CATransform3DTranslate(transformMatrix, 0.0, 0.0, -PERSPECTIVE_DEPTH_OFFSET );
 	transformMatrix = CATransform3DScale(transformMatrix, 3 * sinb, 3 * sinb, 1.0);
 	
@@ -188,11 +204,10 @@
 	}
 	[self setMBeta:beta];
 
+	float alpha;
 	if(x*x + y*y > 0.25){
-		float alpha = atan2(-x, y);
+		alpha = atan2(-x, y);
 		[self setMAlpha:alpha];
-		[self setMVerticalOffset: MIN_SCREEN_WIDTH / 6.0 + abs((MAX_SCREEN_WIDTH - MIN_SCREEN_WIDTH) * cos(alpha)/3)];
-		
 		CABasicAnimation* overlay_animation = [CABasicAnimation animation];
 		
 		CATransform3D final_transform = CATransform3DMakeRotation(M_PI-alpha, 0.0, 0.0, 1.0);
@@ -207,6 +222,8 @@
 		poiOverlay.layer.transform = final_transform;
 		
 	}
+	[self setMVerticalOffset: sin(beta)*(MIN_SCREEN_WIDTH / 6.0 + abs((MAX_SCREEN_WIDTH - MIN_SCREEN_WIDTH) * cos([self mAlpha])/3))];
+
 }
 
 - (void)didReceiveMemoryWarning {
