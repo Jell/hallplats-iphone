@@ -52,6 +52,7 @@
  @param beta current pitch of the user from -pi to pi */
 -(void)translateGridWithTeta:(float)teta
 						beta:(float)beta
+					 cosBeta:(float)cosb
 					 sinBeta:(float)sinb
 			  verticalOffset:(float)verticalOffset;
 

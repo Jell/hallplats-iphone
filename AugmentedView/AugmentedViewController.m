@@ -111,7 +111,7 @@
 		
 		float fromcenterX = 500 - pixelLocation.x;
 		float fromcenterY = 500 - pixelLocation.y;
-		float dist = sqrt(fromcenterX*fromcenterX + fromcenterY*fromcenterY) * (1 + 2) * sin(beta);
+		float dist = sqrt(fromcenterX*fromcenterX + fromcenterY*fromcenterY)* 3 * sin(beta);
 		
 		[self translateView:[ar_poiViews objectAtIndex:i]
 				   withTeta:teta
@@ -127,19 +127,20 @@
 		i++;
 	}
 
-	[self translateGridWithTeta:M_PI + alpha beta:beta sinBeta:sinb verticalOffset:verticalOffset];
+	[self translateGridWithTeta:M_PI + alpha beta:beta cosBeta:cosb sinBeta:sinb verticalOffset:verticalOffset];
 }
 
 -(void)translateGridWithTeta:(float)teta
 						beta:(float)beta
+					 cosBeta:(float)cosb
 					 sinBeta:(float)sinb
 			  verticalOffset:(float)verticalOffset
 {
-	CATransform3D transformMatrix = CATransform3DMakeTranslation(0, verticalOffset * sinb, 0);
+	CATransform3D transformMatrix = CATransform3DMakeTranslation(0, (PERSPECTIVE_DEPTH_OFFSET) * sinb + verticalOffset, - (PERSPECTIVE_DEPTH_OFFSET) * cosb);
 	transformMatrix.m34 = 1.0 / -PROJECTION_DEPTH;
 	transformMatrix = CATransform3DRotate(transformMatrix, teta, 0.0, 0.0, 1.0);
 	transformMatrix = CATransform3DRotate(transformMatrix, beta, cos(teta), -sin(teta), 0.0f);
-	transformMatrix = CATransform3DTranslate(transformMatrix, 0.0, 0.0, - PERSPECTIVE_DEPTH_OFFSET);
+	//transformMatrix = CATransform3DTranslate(transformMatrix, 0.0, 0.0, -PERSPECTIVE_DEPTH_OFFSET );
 	transformMatrix = CATransform3DScale(transformMatrix, 3 * sinb, 3 * sinb, 1.0);
 	
 	gridView.layer.transform = transformMatrix;
@@ -156,10 +157,12 @@
 	float sint = sin(teta);
 	CATransform3D transfomMatrix = CATransform3DIdentity;
 	transfomMatrix.m34 = 1.0 / -PROJECTION_DEPTH;
+
 	transfomMatrix = CATransform3DTranslate(transfomMatrix, distance * cos(teta),
-											  (PERSPECTIVE_DEPTH_OFFSET + verticalOffset) * sinb + distance * cosb * sint,
+											  (PERSPECTIVE_DEPTH_OFFSET) * sinb + distance * cosb * sint + verticalOffset,
 											- (PERSPECTIVE_DEPTH_OFFSET) * cosb + distance * sinb * sint);
-	transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
+	
+	transfomMatrix.m11 = transfomMatrix.m22 = transfomMatrix.m44;
 
 	aView.layer.transform = transfomMatrix;
 }
