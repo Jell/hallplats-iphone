@@ -51,7 +51,6 @@
  @param teta current azimuth of the user from -pi to pi 
  @param beta current pitch of the user from -pi to pi */
 -(void)translateGridWithTeta:(float)teta
-						beta:(float)beta
 					 cosBeta:(float)cosb
 					 sinBeta:(float)sinb
 			  verticalOffset:(float)verticalOffset;
@@ -64,7 +63,6 @@
  @param scaleEnabled If set to YES, the view is scaled to perspective*/
 -(void)translateView:(UIView *)aView
 			withTeta:(float)teta
-				beta:(float)beta
 			 cosBeta:(float)cosb
 			 sinBeta:(float)sinb
 	  verticalOffset:(float)verticalOffset

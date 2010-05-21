@@ -115,7 +115,6 @@
 		
 		[self translateView:[ar_poiViews objectAtIndex:i]
 				   withTeta:teta
-					   beta:beta
 				    cosBeta:cosb
 					sinBeta:sinb
 			 verticalOffset:verticalOffset
@@ -127,58 +126,46 @@
 		i++;
 	}
 
-	[self translateGridWithTeta:M_PI + alpha beta:beta cosBeta:cosb sinBeta:sinb verticalOffset:verticalOffset];
+	[self translateGridWithTeta:M_PI + alpha cosBeta:cosb sinBeta:sinb verticalOffset:verticalOffset];
 }
 
 -(void)translateGridWithTeta:(float)teta
-						beta:(float)beta
 					 cosBeta:(float)cosb
 					 sinBeta:(float)sinb
 			  verticalOffset:(float)verticalOffset
 {
-	CATransform3D transformMatrix = CATransform3DMakeTranslation(0, (PERSPECTIVE_DEPTH_OFFSET) * sinb + verticalOffset, - (PERSPECTIVE_DEPTH_OFFSET) * cosb);
-	transformMatrix.m34 = -1.0 / PROJECTION_DEPTH;
 	float cost = cos(teta);
 	float sint = sin(teta);
 	
-
-	transformMatrix.m11 = cost;
-	transformMatrix.m12 = sint * cosb;
-	transformMatrix.m13 = sint * sinb;
-	transformMatrix.m14 = - sint * sinb / PROJECTION_DEPTH;
-	transformMatrix.m21 = - sint;
-	transformMatrix.m22 = cost * cosb;
-	transformMatrix.m23 = cost * sinb;
-	transformMatrix.m24 = - cost * sinb / PROJECTION_DEPTH;
-	transformMatrix.m32 = -sinb;
-	transformMatrix.m33 = cosb;
-	transformMatrix.m34 = - cosb / PROJECTION_DEPTH;
-	
-	//transformMatrix = CATransform3DRotate(transformMatrix, M_PI/3, 0.0, 0.0, 1.0);
-	//transformMatrix = CATransform3DRotate(transformMatrix, M_PI/3, cos(M_PI/3), -sin(M_PI/3), 0.0f);
-	//transformMatrix = CATransform3DTranslate(transformMatrix, 0.0, 0.0, -PERSPECTIVE_DEPTH_OFFSET );
-	transformMatrix = CATransform3DScale(transformMatrix, 3 * sinb, 3 * sinb, 1.0);
+	CATransform3D transformMatrix = {
+		cost * 3 * sinb,	sint * cosb * 3 * sinb,									sint * sinb * 3 * sinb,					-sint * sinb * 3 * sinb/ PROJECTION_DEPTH,
+		-sint * 3 * sinb,	cost * cosb * 3 * sinb,									cost * sinb * 3 * sinb,					-cost * sinb / PROJECTION_DEPTH * 3 * sinb,
+		0.0,				-sinb,													cosb,									-cosb / PROJECTION_DEPTH,
+		0.0,				(PERSPECTIVE_DEPTH_OFFSET) * sinb + verticalOffset,		-(PERSPECTIVE_DEPTH_OFFSET) * cosb,		1.0
+	};
 	
 	gridView.layer.transform = transformMatrix;
 }
 
 -(void)translateView:(UIView *)aView
 			withTeta:(float)teta
-				beta:(float)beta
 			 cosBeta:(float)cosb
 			 sinBeta:(float)sinb
 	  verticalOffset:(float)verticalOffset
 			distance:(float)distance
 {
 	float sint = sin(teta);
-	CATransform3D transfomMatrix = CATransform3DIdentity;
-	transfomMatrix.m34 = 1.0 / -PROJECTION_DEPTH;
-
-	transfomMatrix = CATransform3DTranslate(transfomMatrix, distance * cos(teta),
-											  (PERSPECTIVE_DEPTH_OFFSET) * sinb + distance * cosb * sint + verticalOffset,
-											- (PERSPECTIVE_DEPTH_OFFSET) * cosb + distance * sinb * sint);
+	float m34 = 1.0 / -PROJECTION_DEPTH;
+	float m43 = - (PERSPECTIVE_DEPTH_OFFSET) * cosb + distance * sinb * sint;
+	float m44 = 1 + m34 * m43;
 	
-	transfomMatrix.m11 = transfomMatrix.m22 = transfomMatrix.m44;
+	CATransform3D transfomMatrix =
+	{
+		m44,					0,																				0,		0,
+		0,						m44,																			0,		0,
+		0,						0,																				1,		m34,
+		distance * cos(teta),	(PERSPECTIVE_DEPTH_OFFSET) * sinb + distance * cosb * sint + verticalOffset,	m43,	m44
+	};
 
 	aView.layer.transform = transfomMatrix;
 }
@@ -221,8 +208,10 @@
 								  forKey: @"overlay_animation"];
 		poiOverlay.layer.transform = final_transform;
 		
+	}else{
+		alpha = [self mAlpha];
 	}
-	[self setMVerticalOffset: sin(beta)*(MIN_SCREEN_WIDTH / 6.0 + abs((MAX_SCREEN_WIDTH - MIN_SCREEN_WIDTH) * cos([self mAlpha])/3))];
+	[self setMVerticalOffset: sin(beta)*(MIN_SCREEN_WIDTH / 6.0 + abs((MAX_SCREEN_WIDTH - MIN_SCREEN_WIDTH) * cos(alpha)/3))];
 
 }
 
@@ -275,7 +264,7 @@
 }
 
 -(void)addPoiView{
-	CGPoint center = {OFFSCREEN_SQUARE_SIZE/2.0, OFFSCREEN_SQUARE_SIZE/2.0 - POI_BUTTON_SIZE};
+	CGPoint center = {OFFSCREEN_SQUARE_SIZE/2.0, OFFSCREEN_SQUARE_SIZE/2.0 - 1.5 * POI_BUTTON_SIZE/2};
 	
 	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	aButton.exclusiveTouch = NO;
