@@ -63,8 +63,8 @@
 		zzArray[i] = -1.0;
 	}
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
-	[mAccelerometer setUpdateInterval:1.0f / (5.0f * (float) ACCELERATION_BUFFER_SIZE)];
 	[mAccelerometer setDelegate:self];
+	[mAccelerometer setUpdateInterval:1.0f / 100.0];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -106,8 +106,8 @@
 - (void) performUpdate:(id)object{
 	//get the JSON
 	CLLocationCoordinate2D center = {57.7119, 11.9683};
-	if(currentLocation){
-		center = currentLocation.coordinate;
+	if([self currentLocation]){
+		center = [[self currentLocation] coordinate];
 	}
 	
 	id response = [mVTApiHandler getAnnotationsFromCoordinates:center];
@@ -124,11 +124,11 @@
 }
 
 - (void) updatePerformed:(id)response {
-	if(response == nil){
-		UIAlertView *myAlert = [[UIAlertView alloc] initWithTitle:@"Impossible to reach the servers" 
-														  message:@"The application couldn't reach the server. Verify that your device is connected to the Internet, and check again later."
+	if(response == nil || [response count] == 0){
+		UIAlertView *myAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+														  message:NSLocalizedString(@"ErrorReachServer", @"The application couldn't reach the servers")
 														 delegate:nil
-												cancelButtonTitle:@"Ok"
+												cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 												otherButtonTitles:nil];
 		[myAlert show];
 		[myAlert release];
@@ -144,7 +144,6 @@
  
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
-	
 	xxAverage -= (xxArray[accelerationBufferIndex] / (float) ACCELERATION_BUFFER_SIZE);
 	yyAverage -= (yyArray[accelerationBufferIndex] / (float) ACCELERATION_BUFFER_SIZE);
 	zzAverage -= (zzArray[accelerationBufferIndex] / (float) ACCELERATION_BUFFER_SIZE);
@@ -229,9 +228,9 @@
 		}
 	}
 	// Dispatch acceleration
-	//if(accelerationBufferIndex == 0){
+	if(accelerationBufferIndex & 1){
 		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
-	//}
+	}
 	
 	// Check if we have to switch view
 	if(viewDisplayedController == mAugmentedViewController){
@@ -260,10 +259,9 @@
 	didUpdateToLocation: (CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
 {
-	[currentLocation release];
-	currentLocation = [newLocation copy];
+	[self setCurrentLocation:newLocation];
 	//currentLocation = [[CLLocation alloc] initWithLatitude:59.330917 longitude:18.060389];
-	// NSLog(@"%f", newLocation.horizontalAccuracy);
+	NSLog(@"%@", currentLocation);
 
 	if(secondLocationUpdate){
 		[self beginUdpate:nil];
@@ -279,13 +277,11 @@
 		firstLocationUpdate = NO;
 	}
 	
-
-	
 	for (VTAnnotation *anAnnotation in annotationList) {
 		[anAnnotation updateDistanceFrom:newLocation.coordinate];
 	}
 	//Dispatch new Location
-	[viewDisplayedController locationManager:manager didUpdateToLocation:currentLocation fromLocation:oldLocation];
+	[viewDisplayedController locationManager:manager didUpdateToLocation:[self currentLocation] fromLocation:oldLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
@@ -301,6 +297,13 @@
 - (void)locationManager: (CLLocationManager *)manager
 	   didFailWithError: (NSError *)error
 {
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+							   message:NSLocalizedString(@"ErrorNoGPS", @"The GPS is deactivated, please enable it and try again")
+							  delegate:nil
+					 cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+					 otherButtonTitles:nil];
+	[alert show];
+	[alert release];
 }
 
 - (void)loadMapView{

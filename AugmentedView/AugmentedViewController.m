@@ -91,7 +91,8 @@
 }
 
 -(void)updateProjection{
-	float alpha = [self mAlpha] - [self mTeta];
+	float teta = [self mTeta];
+	float alpha = [self mAlpha] - teta;
 	float beta = [self mBeta];
 	float sinb = sin(beta);
 	float cosb = cos(beta);
@@ -100,10 +101,9 @@
 	
 	calloutBubble.view.hidden = TRUE;
 	calloutBubble.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
-	
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta = alpha - [aPoi azimuth];
-		
+
 		CLLocationCoordinate2D coordinateLocation = [[aPoi annotation] coordinate];
 		CGPoint pixelLocation = [gridView convertCoordinate:coordinateLocation toPointToView:gridView];
 		
@@ -111,11 +111,10 @@
 		
 		float fromcenterX = 500 - pixelLocation.x;
 		float fromcenterY = 500 - pixelLocation.y;
-		float dist = sqrt(fromcenterX*fromcenterX + fromcenterY*fromcenterY) * (1 + 2) * sin(beta);
+		float dist = sqrt(fromcenterX*fromcenterX + fromcenterY*fromcenterY)* 3 * sin(beta);
 		
 		[self translateView:[ar_poiViews objectAtIndex:i]
 				   withTeta:teta
-					   beta:beta
 				    cosBeta:cosb
 					sinBeta:sinb
 			 verticalOffset:verticalOffset
@@ -126,40 +125,46 @@
 		}
 		i++;
 	}
-
-	[self translateGridWithTeta:M_PI + alpha beta:beta sinBeta:sinb verticalOffset:verticalOffset];
+	[self translateGridWithTeta:M_PI + alpha cosBeta:cosb sinBeta:sinb verticalOffset:verticalOffset];
 }
 
 -(void)translateGridWithTeta:(float)teta
-						beta:(float)beta
+					 cosBeta:(float)cosb
 					 sinBeta:(float)sinb
 			  verticalOffset:(float)verticalOffset
 {
-	CATransform3D transformMatrix = CATransform3DMakeTranslation(0, verticalOffset * sinb, 0);
-	transformMatrix.m34 = 1.0 / -PROJECTION_DEPTH;
-	transformMatrix = CATransform3DRotate(transformMatrix, teta, 0.0, 0.0, 1.0);
-	transformMatrix = CATransform3DRotate(transformMatrix, beta, cos(teta), -sin(teta), 0.0f);
-	transformMatrix = CATransform3DTranslate(transformMatrix, 0.0, 0.0, - PERSPECTIVE_DEPTH_OFFSET);
-	transformMatrix = CATransform3DScale(transformMatrix, 3 * sinb, 3 * sinb, 1.0);
+	float cost = cos(teta);
+	float sint = sin(teta);
+	
+	CATransform3D transformMatrix = {
+		cost * 3 * sinb,	sint * cosb * 3 * sinb,									sint * sinb * 3 * sinb,					-sint * sinb * 3 * sinb/ PROJECTION_DEPTH,
+		-sint * 3 * sinb,	cost * cosb * 3 * sinb,									cost * sinb * 3 * sinb,					-cost * sinb / PROJECTION_DEPTH * 3 * sinb,
+		0.0,				-sinb,													cosb,									-cosb / PROJECTION_DEPTH,
+		0.0,				(PERSPECTIVE_DEPTH_OFFSET) * sinb + verticalOffset,		-(PERSPECTIVE_DEPTH_OFFSET) * cosb,		1.0
+	};
 	
 	gridView.layer.transform = transformMatrix;
 }
 
 -(void)translateView:(UIView *)aView
 			withTeta:(float)teta
-				beta:(float)beta
 			 cosBeta:(float)cosb
 			 sinBeta:(float)sinb
 	  verticalOffset:(float)verticalOffset
 			distance:(float)distance
 {
 	float sint = sin(teta);
-	CATransform3D transfomMatrix = CATransform3DIdentity;
-	transfomMatrix.m34 = 1.0 / -PROJECTION_DEPTH;
-	transfomMatrix = CATransform3DTranslate(transfomMatrix, distance * cos(teta),
-											  (PERSPECTIVE_DEPTH_OFFSET + verticalOffset) * sinb + distance * cosb * sint,
-											- (PERSPECTIVE_DEPTH_OFFSET) * cosb + distance * sinb * sint);
-	transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
+	float m34 = 1.0 / -PROJECTION_DEPTH;
+	float m43 = - (PERSPECTIVE_DEPTH_OFFSET) * cosb + distance * sinb * sint;
+	float m44 = 1 + m34 * m43;
+	
+	CATransform3D transfomMatrix =
+	{
+		m44,					0,																				0,		0,
+		0,						m44,																			0,		0,
+		0,						0,																				1,		m34,
+		distance * cos(teta),	(PERSPECTIVE_DEPTH_OFFSET) * sinb + distance * cosb * sint + verticalOffset,	m43,	m44
+	};
 
 	aView.layer.transform = transfomMatrix;
 }
@@ -185,11 +190,10 @@
 	}
 	[self setMBeta:beta];
 
+	float alpha;
 	if(x*x + y*y > 0.25){
-		float alpha = atan2(-x, y);
+		alpha = atan2(-x, y);
 		[self setMAlpha:alpha];
-		[self setMVerticalOffset: MIN_SCREEN_WIDTH / 6.0 + abs((MAX_SCREEN_WIDTH - MIN_SCREEN_WIDTH) * cos(alpha)/3)];
-		
 		CABasicAnimation* overlay_animation = [CABasicAnimation animation];
 		
 		CATransform3D final_transform = CATransform3DMakeRotation(M_PI-alpha, 0.0, 0.0, 1.0);
@@ -203,7 +207,11 @@
 								  forKey: @"overlay_animation"];
 		poiOverlay.layer.transform = final_transform;
 		
+	}else{
+		alpha = [self mAlpha];
 	}
+	[self setMVerticalOffset: sin(beta)*(MIN_SCREEN_WIDTH / 6.0 + abs((MAX_SCREEN_WIDTH - MIN_SCREEN_WIDTH) * cos(alpha)/3))];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -255,7 +263,7 @@
 }
 
 -(void)addPoiView{
-	CGPoint center = {OFFSCREEN_SQUARE_SIZE/2.0, OFFSCREEN_SQUARE_SIZE/2.0 - POI_BUTTON_SIZE};
+	CGPoint center = {OFFSCREEN_SQUARE_SIZE/2.0, OFFSCREEN_SQUARE_SIZE/2.0 - 1.5 * POI_BUTTON_SIZE/2};
 	
 	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	aButton.exclusiveTouch = NO;

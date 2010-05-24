@@ -5,3 +5,7 @@
 "Now"			= "Immédiat";
 "Next Departures"	= "Prochains Départs";
 "Flipside Footer"	= "©2010 ICE House AB";
+"Error"					= "Une erreur s'est produite";
+"ErrorReachServer"		= "Le serveur est injoignable, veuillez réessayer plus tard";
+"ErrorNoGPS"			= "Le GPS est désactivé, veuillez l'activer puis réessayez";
+"OK"					= "OK";

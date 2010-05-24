@@ -242,8 +242,10 @@
 {
 }
 
-- (void)viewWillAppear{
+-(void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
 	mMapView.showsUserLocation = YES;
+	[self resignFirstResponder];
 }
 - (void)viewWillDisappear{
 	mMapView.showsUserLocation = NO;

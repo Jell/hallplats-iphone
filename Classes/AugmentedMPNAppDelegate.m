@@ -39,8 +39,13 @@
 	[window makeKeyAndVisible];
 }
 
+- (void)applicationDidBecomeActive:(UIApplication *)application{
+	[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(timerUpdate:) userInfo:nil repeats:NO];
+}
 
-
+- (void)timerUpdate:(id)sender{
+	[mainViewController becomeFirstResponder];
+}
 
 - (void)dealloc {
     [mainViewController release];

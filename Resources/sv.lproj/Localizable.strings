@@ -5,3 +5,7 @@
 "Now"			= "Nu";
 "Next Departures"	= "Nästa Tur";
 "Flipside Footer"	= "©2010 ICE House AB";
+"Error"					= "Fel";
+"ErrorReachServer"		= "Ansökan kunde inte nå servrarna, försöka igen senare";
+"ErrorNoGPS"			= "GPS-funktionen är inaktiverad";
+"OK"					= "Okej";

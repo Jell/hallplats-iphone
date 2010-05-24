@@ -5,3 +5,7 @@
 "Now"			= "Now";
 "Next Departures"		= "Next Departures";
 "Flipside Footer"		= "©2010 ICE House AB";
+"Error"					= "Error";
+"ErrorReachServer"		= "The application couldn't reach the servers";
+"ErrorNoGPS"			= "The GPS is deactivated, please enable it and try again";
+"OK"					= "OK";
