@@ -5,3 +5,7 @@
 "Now"			= "已进站";
 "Next Departures"	= "下一辆";
 "Flipside Footer"	= "©2010 ICE House AB";
+"Error"					= "问题";
+"ErrorReachServer"		= "这个应用不可以到达服务器";
+"ErrorNoGPS"			= "没有GPS";
+"OK"					= "好";

@@ -91,7 +91,8 @@
 }
 
 -(void)updateProjection{
-	float alpha = [self mAlpha] - [self mTeta];
+	float teta = [self mTeta];
+	float alpha = [self mAlpha] - teta;
 	float beta = [self mBeta];
 	float sinb = sin(beta);
 	float cosb = cos(beta);
@@ -100,10 +101,9 @@
 	
 	calloutBubble.view.hidden = TRUE;
 	calloutBubble.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
-	
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta = alpha - [aPoi azimuth];
-		
+
 		CLLocationCoordinate2D coordinateLocation = [[aPoi annotation] coordinate];
 		CGPoint pixelLocation = [gridView convertCoordinate:coordinateLocation toPointToView:gridView];
 		
@@ -125,7 +125,6 @@
 		}
 		i++;
 	}
-
 	[self translateGridWithTeta:M_PI + alpha cosBeta:cosb sinBeta:sinb verticalOffset:verticalOffset];
 }
 

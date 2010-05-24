@@ -20,7 +20,6 @@
 		F40BEF73116CB0D5007D8CF3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F40BEF71116CB0D5007D8CF3 /* Localizable.strings */; };
 		F40BEF74116CB0D5007D8CF3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F40BEF71116CB0D5007D8CF3 /* Localizable.strings */; };
 		F41B825B11259890003B438C /* augmentedpoi.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B825211259890003B438C /* augmentedpoi.png */; };
-		F41B826111259890003B438C /* horizontal_grid.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B825811259890003B438C /* horizontal_grid.png */; };
 		F41B826211259890003B438C /* direction.png in Resources */ = {isa = PBXBuildFile; fileRef = F41B825911259890003B438C /* direction.png */; };
 		F41B8283112598BA003B438C /* AugmentedPoi.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B827C112598BA003B438C /* AugmentedPoi.m */; };
 		F41B8285112598BA003B438C /* AugmentedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F41B8280112598BA003B438C /* AugmentedView.m */; };
@@ -109,7 +108,6 @@
 		F40BEF8D116CB6FF007D8CF3 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Resources/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F41B824F11259884003B438C /* CoordinatesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoordinatesTests.m; path = Tests/CoordinatesTests.m; sourceTree = "<group>"; };
 		F41B825211259890003B438C /* augmentedpoi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = augmentedpoi.png; path = Images/augmentedpoi.png; sourceTree = "<group>"; };
-		F41B825811259890003B438C /* horizontal_grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = horizontal_grid.png; path = Images/horizontal_grid.png; sourceTree = "<group>"; };
 		F41B825911259890003B438C /* direction.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = direction.png; path = Images/direction.png; sourceTree = "<group>"; };
 		F41B8275112598AD003B438C /* MPNApiHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPNApiHandler.m; path = MPN/MPNApiHandler.m; sourceTree = "<group>"; };
 		F41B8276112598AD003B438C /* MPNAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPNAnnotation.h; path = MPN/MPNAnnotation.h; sourceTree = "<group>"; };
@@ -341,7 +339,6 @@
 				F4253E96113EA08A0089952F /* handicap.gif */,
 				F400709A112E8D2200982525 /* coolbutton.png */,
 				F41B825211259890003B438C /* augmentedpoi.png */,
-				F41B825811259890003B438C /* horizontal_grid.png */,
 				F41B825911259890003B438C /* direction.png */,
 			);
 			name = Images;
@@ -487,7 +484,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F41B825B11259890003B438C /* augmentedpoi.png in Resources */,
-				F41B826111259890003B438C /* horizontal_grid.png in Resources */,
 				F41B826211259890003B438C /* direction.png in Resources */,
 				F41B8293112598DD003B438C /* AugmentedView.xib in Resources */,
 				F41B8294112598DD003B438C /* FlipsideView.xib in Resources */,
