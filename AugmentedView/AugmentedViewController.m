@@ -78,7 +78,7 @@
 		   fromLocation:(CLLocation *)oldLocation
 {
 	currentLocation = newLocation;
-	[gridView setCenterCoordinate:newLocation.coordinate animated:NO];
+	[gridView setCenterCoordinate:newLocation.coordinate animated:YES];
 
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		[aPoi updateAngleFrom:newLocation.coordinate];
