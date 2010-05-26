@@ -12,6 +12,7 @@
 @implementation AugmentedPoi
 @synthesize azimuth;
 @synthesize annotation;
+@synthesize pixelDist;
 
 -(id)initWithAnnotation:(VTAnnotation *) anAnnotation fromOrigin:(CLLocationCoordinate2D)origin
 {

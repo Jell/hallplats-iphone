@@ -64,7 +64,7 @@
 	}
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
 	[mAccelerometer setDelegate:self];
-	[mAccelerometer setUpdateInterval:1.0f / 100.0];
+	[mAccelerometer setUpdateInterval:1.0f / 50];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -228,7 +228,7 @@
 		}
 	}
 	// Dispatch acceleration
-	if(accelerationBufferIndex & 1){
+	if(!(accelerationBufferIndex & 1)){
 		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
 	}
 	

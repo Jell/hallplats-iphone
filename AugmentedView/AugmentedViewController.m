@@ -36,7 +36,7 @@
 	
 	calloutBubble = [[AugmentedCalloutBubbleController alloc] initWithNibName:@"AugmentedCalloutBubbleView" bundle:nil];
 	calloutBubble.delegate = self.delegate;
-	calloutBubble.view.hidden = TRUE;
+	calloutBubble.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
 	
 	[poiOverlay addSubview:calloutBubble.view];
 	//[poiOverlay addTarget:self action:@selector(blankTouch:) forControlEvents:UIControlEventTouchDown];
@@ -76,9 +76,29 @@
 {
 	currentLocation = newLocation;
 	[gridView setCenterCoordinate:newLocation.coordinate animated:YES];
+	[self updatePoisLocations];
+	
+}
 
+-(void)updatePoisLocations{
+	int i = 0;
 	for (AugmentedPoi *aPoi in ar_poiList) {
-		[aPoi updateAngleFrom:newLocation.coordinate];
+		
+		[aPoi updateAngleFrom:[[self currentLocation] coordinate]];
+		
+		CGPoint pixelLocation = [gridView convertCoordinate:[[aPoi annotation] coordinate] toPointToView:gridView];
+		float fromcenterX = MAP_SIZE/2 - pixelLocation.x;
+		float fromcenterY = MAP_SIZE/2 - pixelLocation.y;
+		
+		float pixelDist = sqrt(fromcenterX*fromcenterX + fromcenterY*fromcenterY);
+		if(pixelDist > MAP_SIZE / 2){
+			[[[[ar_poiViews objectAtIndex:i] subviews] objectAtIndex:1] setHidden:TRUE];
+			pixelDist = MAP_SIZE / 2;
+		}else {
+			[[[[ar_poiViews objectAtIndex:i] subviews] objectAtIndex:1] setHidden:FALSE];
+		}
+		[aPoi setPixelDist:pixelDist];
+		i++;
 	}
 }
 
@@ -96,19 +116,11 @@
 	float verticalOffset = [self mVerticalOffset];
 	int i = 0;
 	
-	calloutBubble.view.hidden = TRUE;
 	calloutBubble.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta = alpha - [aPoi azimuth];
-
-		CLLocationCoordinate2D coordinateLocation = [[aPoi annotation] coordinate];
-		CGPoint pixelLocation = [gridView convertCoordinate:coordinateLocation toPointToView:gridView];
-		
-		//float dist = GRID_HEIGHT * ([aPoi distance] - minDistance)/ (maxDistance - minDistance);
-		
-		float fromcenterX = MAP_SIZE/2 - pixelLocation.x;
-		float fromcenterY = MAP_SIZE/2 - pixelLocation.y;
-		float dist = sqrt(fromcenterX*fromcenterX + fromcenterY*fromcenterY)* MAX_ZOOM * sin(beta);
+		float pixelDist = [aPoi pixelDist];
+		float dist = pixelDist * MAX_ZOOM * sin(beta);
 		
 		[self translateView:[ar_poiViews objectAtIndex:i]
 				   withTeta:teta
@@ -256,6 +268,7 @@
 		}
 		i++;
 	}
+	[self updatePoisLocations];
 	[self updateProjection];
 }
 
@@ -316,9 +329,7 @@
 -(void)setCurrentLocation:(CLLocation *)location{
 	currentLocation = location;
 	[gridView setCenterCoordinate:location.coordinate];
-	for (AugmentedPoi *aPoi in ar_poiList) {
-		[aPoi updateAngleFrom:location.coordinate];
-	}
+	[self updatePoisLocations];
 }
 
 -(void)setOrientation:(UIInterfaceOrientation)orientation{

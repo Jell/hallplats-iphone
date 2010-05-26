@@ -18,7 +18,6 @@
 #import "AugmentedCalloutBubbleController.h"
 #import "VTAnnotation.h"
 
-#define HEADING_BUFFER_SIZE 1
 @interface AugmentedViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
 	IBOutlet UIView *poiOverlay;					/**< View container for Poi display */
 	IBOutlet MKMapView *gridView;						/**< Perspective Grid View */
@@ -44,7 +43,7 @@
 @property(retain) NSMutableArray *ar_poiViews;
 @property(assign)  CLLocation *currentLocation;
 @property(assign) id delegate;
-
+-(void)updatePoisLocations;
 -(void)updateProjection;
 
 /* Moves the perspective grid according to the given orientation
