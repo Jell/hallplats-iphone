@@ -8,17 +8,14 @@
 
 #import "AugmentedViewController.h"
 #import "AugmentedView.h"
-#define GRID_HEIGHT				400.0
-#define GRID_SQUARE_WIDTH		120.0
 #define MIN_SCREEN_WIDTH		320.0
 #define MAX_SCREEN_WIDTH		480.0
 #define OFFSCREEN_SQUARE_SIZE	520.0
-#define CAMERA_ANGLE_X			17.0
-#define CAMERA_ANGLE_Y			28.0
+#define MAP_SIZE				520.0
 #define PERSPECTIVE_VERTICAL_OFFSET			50
 #define PERSPECTIVE_DEPTH_OFFSET			100
-#define PERSPECTIVE_INNER_CIRCLE_RADIUS		0
-#define PROJECTION_DEPTH					900
+#define PROJECTION_DEPTH		900
+#define MAX_ZOOM				5
 
 @implementation AugmentedViewController
 @synthesize mAlpha;
@@ -53,8 +50,8 @@
 	location.longitude = 11.9683;
 	//starting span (=zoom)
 	MKCoordinateSpan span;
-	span.latitudeDelta = 0.02;
-	span.longitudeDelta = 0.02;
+	span.latitudeDelta = 0.01;
+	span.longitudeDelta = 0.01;
 	MKCoordinateRegion region;
 	region.center = location;
 	region.span = span;
@@ -70,7 +67,7 @@
 	[gridView resignFirstResponder];
 	[mapMask removeFromSuperview];
 	[gridView addSubview:mapMask];
-	mapMask.center = CGPointMake(500, 500);
+	mapMask.center = CGPointMake(MAP_SIZE/2, MAP_SIZE/2);
 } 
 
 - (void)locationManager: (CLLocationManager *)manager
@@ -109,9 +106,9 @@
 		
 		//float dist = GRID_HEIGHT * ([aPoi distance] - minDistance)/ (maxDistance - minDistance);
 		
-		float fromcenterX = 500 - pixelLocation.x;
-		float fromcenterY = 500 - pixelLocation.y;
-		float dist = sqrt(fromcenterX*fromcenterX + fromcenterY*fromcenterY)* 3 * sin(beta);
+		float fromcenterX = MAP_SIZE/2 - pixelLocation.x;
+		float fromcenterY = MAP_SIZE/2 - pixelLocation.y;
+		float dist = sqrt(fromcenterX*fromcenterX + fromcenterY*fromcenterY)* MAX_ZOOM * sin(beta);
 		
 		[self translateView:[ar_poiViews objectAtIndex:i]
 				   withTeta:teta
@@ -137,10 +134,10 @@
 	float sint = sin(teta);
 	
 	CATransform3D transformMatrix = {
-		cost * 3 * sinb,	sint * cosb * 3 * sinb,									sint * sinb * 3 * sinb,					-sint * sinb * 3 * sinb/ PROJECTION_DEPTH,
-		-sint * 3 * sinb,	cost * cosb * 3 * sinb,									cost * sinb * 3 * sinb,					-cost * sinb / PROJECTION_DEPTH * 3 * sinb,
-		0.0,				-sinb,													cosb,									-cosb / PROJECTION_DEPTH,
-		0.0,				(PERSPECTIVE_DEPTH_OFFSET) * sinb + verticalOffset,		-(PERSPECTIVE_DEPTH_OFFSET) * cosb,		1.0
+		cost * MAX_ZOOM * sinb,		sint * cosb * MAX_ZOOM * sinb,							sint * sinb * MAX_ZOOM * sinb,			-sint * sinb * MAX_ZOOM * sinb/ PROJECTION_DEPTH,
+		-sint * MAX_ZOOM * sinb,	cost * cosb * MAX_ZOOM * sinb,							cost * sinb * MAX_ZOOM * sinb,			-cost * sinb / PROJECTION_DEPTH * MAX_ZOOM * sinb,
+		0.0,						-sinb,													cosb,									-cosb / PROJECTION_DEPTH,
+		0.0,						(PERSPECTIVE_DEPTH_OFFSET) * sinb + verticalOffset,		-(PERSPECTIVE_DEPTH_OFFSET) * cosb,		1.0
 	};
 	
 	gridView.layer.transform = transformMatrix;

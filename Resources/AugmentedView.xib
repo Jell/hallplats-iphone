@@ -44,7 +44,7 @@
 							<object class="IBMKMapView" id="498369256">
 								<reference key="NSNextResponder" ref="217094803"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{-240, -240}, {1000, 1000}}</string>
+								<string key="NSFrameSize">{520, 520}</string>
 								<reference key="NSSuperview" ref="217094803"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
@@ -88,7 +88,7 @@
 							<object class="IBUIImageView" id="560461975">
 								<reference key="NSNextResponder" ref="217094803"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{-456, -456}, {1432, 1432}}</string>
+								<string key="NSFrame">{{-112, -112}, {744, 744}}</string>
 								<reference key="NSSuperview" ref="217094803"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">1</int>
