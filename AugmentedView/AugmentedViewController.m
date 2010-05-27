@@ -12,10 +12,9 @@
 #define MAX_SCREEN_WIDTH		480.0
 #define OFFSCREEN_SQUARE_SIZE	520.0
 #define MAP_SIZE				520.0
-#define PERSPECTIVE_VERTICAL_OFFSET			50
 #define PERSPECTIVE_DEPTH_OFFSET			100
 #define PROJECTION_DEPTH		900
-#define MAX_ZOOM				5
+#define MAX_ZOOM				4
 
 @implementation AugmentedViewController
 @synthesize mAlpha;
@@ -63,20 +62,29 @@
 	gridView.showsUserLocation = FALSE;
 	gridView.delegate = self;
 	gridView.clipsToBounds = NO;
-	[gridView setAlpha:0.6];
+	[gridView setAlpha:0.5];
 	[gridView resignFirstResponder];
 	[mapMask removeFromSuperview];
 	[gridView addSubview:mapMask];
 	mapMask.center = CGPointMake(MAP_SIZE/2, MAP_SIZE/2);
-} 
+	
+	[NSTimer scheduledTimerWithTimeInterval:0.1
+									 target:self
+								   selector:@selector(updateProjection:)
+								   userInfo:nil
+									repeats:NO];
+	
+}
 
 - (void)locationManager: (CLLocationManager *)manager
 	didUpdateToLocation: (CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
 {
+	@synchronized(self){
 	currentLocation = newLocation;
 	[gridView setCenterCoordinate:newLocation.coordinate animated:YES];
 	[self updatePoisLocations];
+	}
 	
 }
 
@@ -89,7 +97,6 @@
 		CGPoint pixelLocation = [gridView convertCoordinate:[[aPoi annotation] coordinate] toPointToView:gridView];
 		float fromcenterX = MAP_SIZE/2 - pixelLocation.x;
 		float fromcenterY = MAP_SIZE/2 - pixelLocation.y;
-		
 		float pixelDist = sqrt(fromcenterX*fromcenterX + fromcenterY*fromcenterY);
 		if(pixelDist > MAP_SIZE / 2){
 			[[[[ar_poiViews objectAtIndex:i] subviews] objectAtIndex:1] setHidden:TRUE];
@@ -103,11 +110,12 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
+	@synchronized(self){
 	[self setMTeta:M_PI * newHeading.trueHeading / 180.0];
-	[self updateProjection];
+	}
 }
 
--(void)updateProjection{
+-(void)updateProjection:(NSTimer *)theTimer{
 	float teta = [self mTeta];
 	float alpha = [self mAlpha] - teta;
 	float beta = [self mBeta];
@@ -122,26 +130,28 @@
 		float pixelDist = [aPoi pixelDist];
 		float dist = pixelDist * MAX_ZOOM * sin(beta);
 		
-		[self translateView:[ar_poiViews objectAtIndex:i]
-				   withTeta:teta
-				    cosBeta:cosb
-					sinBeta:sinb
-			 verticalOffset:verticalOffset
-				   distance:dist];
+		translateView([ar_poiViews objectAtIndex:i], teta, cosb, sinb, verticalOffset, dist);
 		
 		if(i == selectedPoi){
 			[self setBubbleMatrixForView:[ar_poiViews objectAtIndex:i]];
 		}
 		i++;
 	}
-	[self translateGridWithTeta:M_PI + alpha cosBeta:cosb sinBeta:sinb verticalOffset:verticalOffset];
+
+	translateGridWithTeta(gridView, M_PI + alpha, cosb, sinb, verticalOffset);
+	
+	CATransform3D final_transform = CATransform3DMakeRotation(M_PI-[self mAlpha], 0.0, 0.0, 1.0);
+	poiOverlay.layer.transform = final_transform;
+	
+	
+	[NSTimer scheduledTimerWithTimeInterval:0.08
+									 target:self
+								   selector:@selector(updateProjection:)
+								   userInfo:nil
+									repeats:NO];
 }
 
--(void)translateGridWithTeta:(float)teta
-					 cosBeta:(float)cosb
-					 sinBeta:(float)sinb
-			  verticalOffset:(float)verticalOffset
-{
+void translateGridWithTeta(UIView* aView, float teta, float cosb, float sinb, float verticalOffset){
 	float cost = cos(teta);
 	float sint = sin(teta);
 	
@@ -152,29 +162,22 @@
 		0.0,						(PERSPECTIVE_DEPTH_OFFSET) * sinb + verticalOffset,		-(PERSPECTIVE_DEPTH_OFFSET) * cosb,		1.0
 	};
 	
-	gridView.layer.transform = transformMatrix;
-}
+	aView.layer.transform = transformMatrix;
+};
 
--(void)translateView:(UIView *)aView
-			withTeta:(float)teta
-			 cosBeta:(float)cosb
-			 sinBeta:(float)sinb
-	  verticalOffset:(float)verticalOffset
-			distance:(float)distance
-{
+void translateView(UIView *aView, float teta, float cosb, float sinb, float verticalOffset, float distance){
 	float sint = sin(teta);
 	float m34 = 1.0 / -PROJECTION_DEPTH;
 	float m43 = - (PERSPECTIVE_DEPTH_OFFSET) * cosb + distance * sinb * sint;
 	float m44 = 1 + m34 * m43;
 	
-	CATransform3D transfomMatrix =
-	{
+	CATransform3D transfomMatrix = {
 		m44,					0,																				0,		0,
 		0,						m44,																			0,		0,
 		0,						0,																				1,		m34,
 		distance * cos(teta),	(PERSPECTIVE_DEPTH_OFFSET) * sinb + distance * cosb * sint + verticalOffset,	m43,	m44
 	};
-
+	
 	aView.layer.transform = transfomMatrix;
 }
 
@@ -202,25 +205,11 @@
 	float alpha;
 	if(x*x + y*y > 0.25){
 		alpha = atan2(-x, y);
-		[self setMAlpha:alpha];
-		CABasicAnimation* overlay_animation = [CABasicAnimation animation];
-		
-		CATransform3D final_transform = CATransform3DMakeRotation(M_PI-alpha, 0.0, 0.0, 1.0);
-		//final_transform = CATransform3DTranslate(final_transform,0.0, (MAX_SCREEN_WIDTH/3.0) * cos([self beta])/ sin(CAMERA_ANGLE_Y * M_PI / 180), 0.0);
-		
-		overlay_animation.keyPath		= @"transform";
-		overlay_animation.fromValue		= [NSValue valueWithCATransform3D: poiOverlay.layer.transform];
-		overlay_animation.toValue		= [NSValue valueWithCATransform3D: final_transform];
-		overlay_animation.duration		= 0.2;
-		[[poiOverlay layer] addAnimation: overlay_animation
-								  forKey: @"overlay_animation"];
-		poiOverlay.layer.transform = final_transform;
-		
+		[self setMAlpha:alpha];		
 	}else{
 		alpha = [self mAlpha];
 	}
 	[self setMVerticalOffset: sin(beta)*(MIN_SCREEN_WIDTH / 6.0 + abs((MAX_SCREEN_WIDTH - MIN_SCREEN_WIDTH) * cos(alpha)/3))];
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -231,6 +220,7 @@
 }
 
 -(void)setAnnotationList:(NSArray *)newList{
+	@synchronized(self){
 	for(UIView *aView in ar_poiViews){
 		[aView removeFromSuperview];
 	}
@@ -269,7 +259,7 @@
 		i++;
 	}
 	[self updatePoisLocations];
-	[self updateProjection];
+	}
 }
 
 -(void)addPoiView{
@@ -327,9 +317,11 @@
 }
 
 -(void)setCurrentLocation:(CLLocation *)location{
+	@synchronized(self){
 	currentLocation = location;
 	[gridView setCenterCoordinate:location.coordinate];
 	[self updatePoisLocations];
+	}
 }
 
 -(void)setOrientation:(UIInterfaceOrientation)orientation{

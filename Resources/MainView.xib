@@ -45,6 +45,8 @@
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAgMAA</bytes>
 						</object>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIAutoresizesSubviews">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 					</object>
 					<object class="IBUIButton" id="336786636">
@@ -53,9 +55,9 @@
 						<string key="NSFrame">{{0, 390}, {70, 70}}</string>
 						<reference key="NSSuperview" ref="883825266"/>
 						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIAutoresizesSubviews">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<float key="IBUIAlpha">7.000000e-01</float>
-						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<object class="NSFont" key="IBUIFont">
@@ -95,6 +97,8 @@
 						<int key="NSID">2</int>
 					</object>
 				</object>
+				<bool key="IBUIOpaque">NO</bool>
+				<bool key="IBUIAutoresizesSubviews">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 			</object>
 		</object>

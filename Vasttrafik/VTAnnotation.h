@@ -30,11 +30,11 @@
 	NSArray *forecastList;
 }
 
-@property(retain) NSString *stop_name;
-@property float distance;
-@property(retain) NSString *stop_id;
-@property(retain) NSString *stop_type;
-@property(retain) NSArray *forecastList;
+@property(nonatomic, retain) NSString *stop_name;
+@property(nonatomic) float distance;
+@property(nonatomic, retain) NSString *stop_id;
+@property(nonatomic, retain) NSString *stop_type;
+@property(nonatomic, retain) NSArray *forecastList;
 
 -(void)setTitle:(NSString *)title subtitle:(NSString *)subtitle;
 -(void)setSubtitle:(NSString *)subtitle;

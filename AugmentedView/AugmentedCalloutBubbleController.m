@@ -67,12 +67,14 @@
 
 -(void)addTramLine:(NSString *)name backgroundColor:(UIColor *)backgroundColor foregroundColor:(UIColor *)foregroundColor{
 	UILabel *tramNumber = [[UILabel alloc ] initWithFrame:CGRectMake(0.0 + 33*tramLinesNumber, 40.0, 30.0, 30.0)];
+	tramNumber.opaque = YES;
 	tramNumber.textAlignment =  UITextAlignmentCenter;
 	tramNumber.lineBreakMode = UILineBreakModeClip;
 	tramNumber.textColor = foregroundColor;
 	tramNumber.backgroundColor = backgroundColor;
 	tramNumber.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
 	tramNumber.text = name;
+	tramNumber.clearsContextBeforeDrawing = NO;
 	[tramScroll addSubview:tramNumber];
 	[lineViews addObject:tramNumber];
 	[tramScroll setContentSize:CGSizeMake(30.0 + 33.0 * tramLinesNumber, 30.0)];
@@ -82,12 +84,6 @@
 	
 	infoButton.hidden = NO;
 }
-
--(void)viewDidAppear:(BOOL)animated{
-	[super viewDidAppear:animated];
-	[tramScroll flashScrollIndicators];
-}
-
 
 /*
 // Override to allow orientations other than the default portrait orientation.
@@ -99,9 +95,6 @@
 -(void)setTitle:(NSString *)title subtitle:(NSString *)subtitle{
 	[infoLabel setText:title];
 	[subtitleLabel setText:subtitle];
-}
--(void)setArrowLength:(float) length{
-	arrowImage.frame = CGRectMake(arrowImage.frame.origin.x, arrowImage.frame.origin.y, arrowImage.frame.size.width, 20 + length);
 }
 
 - (void)didReceiveMemoryWarning {

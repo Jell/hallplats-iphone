@@ -17,7 +17,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "VTApiHandler.h"
 
-#define ACCELERATION_BUFFER_SIZE 15
+#define ACCELERATION_BUFFER_SIZE 20
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate, CLLocationManagerDelegate> {
 	IBOutlet UIView *viewDisplayed;									/**< The view container in which the Map View or Augmented View are displayed*/

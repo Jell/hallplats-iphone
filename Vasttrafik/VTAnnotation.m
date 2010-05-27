@@ -14,15 +14,11 @@
 @synthesize distance, stop_name, stop_id,stop_type, forecastList;
 
 - (NSString *)subtitle{
-	@synchronized(self){
 		return [NSString stringWithFormat:@"%@", mSubTitle];
-	}
 }
 
 - (NSString *)title{
-	@synchronized(self){
 		return [NSString stringWithFormat:@"%@", mTitle];
-	}
 }
 
 -(id)initWithCoordinate:(CLLocationCoordinate2D) c{
@@ -32,7 +28,6 @@
 }
 
 -(void)setTitle:(NSString *)title subtitle:(NSString *)subtitle{
-	@synchronized(self){
 		[mTitle release];
 		mTitle = title;
 		[mTitle retain];
@@ -40,18 +35,14 @@
 		[mSubTitle release];
 		mSubTitle = subtitle;
 		[mSubTitle retain];
-	}
 }
 -(void)setSubtitle:(NSString *)subtitle{
-	@synchronized(self){
 		[mSubTitle release];
 		mSubTitle = subtitle;
 		[mSubTitle retain];
-	}
 }
 
 -(NSArray *)getLineList{
-	@synchronized(self){
 	NSMutableArray *lineNumbers = [[NSMutableArray alloc] init];
 	NSMutableArray *lineList = [[NSMutableArray alloc] init];
 	for(VTForecast *forecast in forecastList){
@@ -71,12 +62,10 @@
 	[lineList release];
 	[lineNumbers release];
 	return result;
-	}
 }
 
 -(void)updateDistanceFrom:(CLLocationCoordinate2D)origin
 {
-	@synchronized(self){
 	float lat1 = origin.latitude * 3.14 / 180.0;
 	float lon1 = origin.longitude * 3.14 / 180.0;
 	
@@ -86,7 +75,6 @@
 	const float R = 6371000.0; // m
 	distance = acos(sin(lat1)*sin(lat2) + cos(lat1)*cos(lat2) * cos(lon2-lon1)) * R;
 	[self setSubtitle:[NSString stringWithFormat:@"%dm", (int)distance]];
-	}
 }
 
 -(void)dealloc{

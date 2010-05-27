@@ -24,7 +24,6 @@
 
 -(void)updateAngleFrom:(CLLocationCoordinate2D)origin
 {
-	@synchronized(self){
 	float lat1 = origin.latitude * 3.14 / 180.0;
 	float lon1 = origin.longitude * 3.14 / 180.0;
 	
@@ -41,13 +40,10 @@
 		
 		azimuth = atan2(-x, -y);
 	}
-	}
 }
 
 -(float)distance{
-	@synchronized(self){
 	return annotation.distance;
-	}
 }
 
 - (void)dealloc {

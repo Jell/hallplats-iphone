@@ -41,7 +41,4 @@
 /** add a tram line to the View */
 -(void)addTramLine:(NSString *)name backgroundColor:(UIColor *)backgroundColor foregroundColor:(UIColor *)foregroundColor;
 
-/** Set the length of the pin arrow @deprecated*/
--(void)setArrowLength:(float) length;
-
 @end

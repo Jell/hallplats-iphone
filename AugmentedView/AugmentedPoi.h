@@ -20,10 +20,10 @@
 	VTAnnotation *annotation;
 }
 
-@property float azimuth;						/**<Azimuth of the POI from origin */
-@property (readonly) float distance;			/**<Distance of the POI from origin */
-@property float pixelDist;						/**<Distance of the POI from origin */
-@property(assign) VTAnnotation *annotation;		/**<Reference to the annotation */
+@property(nonatomic) float azimuth;						/**<Azimuth of the POI from origin */
+@property(nonatomic, readonly) float distance;			/**<Distance of the POI from origin */
+@property(nonatomic) float pixelDist;						/**<Distance of the POI from origin */
+@property(nonatomic, assign) VTAnnotation *annotation;		/**<Reference to the annotation */
 
 /** Initialize an Augmented Poi with an Annotation and an origin */
 -(id)initWithAnnotation:(VTAnnotation *) anAnnotation fromOrigin:(CLLocationCoordinate2D)origin;

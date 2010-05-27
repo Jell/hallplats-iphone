@@ -44,15 +44,12 @@
 @property(assign)  CLLocation *currentLocation;
 @property(assign) id delegate;
 -(void)updatePoisLocations;
--(void)updateProjection;
+-(void)updateProjection:(NSTimer *)theTimer;
 
 /* Moves the perspective grid according to the given orientation
  @param teta current azimuth of the user from -pi to pi 
  @param beta current pitch of the user from -pi to pi */
--(void)translateGridWithTeta:(float)teta
-					 cosBeta:(float)cosb
-					 sinBeta:(float)sinb
-			  verticalOffset:(float)verticalOffset;
+void translateGridWithTeta(UIView* aView, float teta, float cosb, float sinb, float verticalOffset);
 
 /* Position the given view according to its azimuth and distance to current location
  @param aView the view to position
@@ -60,12 +57,7 @@
  @param beta current pitch of the user from -pi to pi
  @param distance distance of the POI represented by the view, must be greater than 0
  @param scaleEnabled If set to YES, the view is scaled to perspective*/
--(void)translateView:(UIView *)aView
-			withTeta:(float)teta
-			 cosBeta:(float)cosb
-			 sinBeta:(float)sinb
-	  verticalOffset:(float)verticalOffset
-			distance:(float)distance;
+void translateView(UIView *aView, float teta, float cosb, float sinb, float verticalOffset, float distance);
 
 -(void)setBubbleMatrixForView:(UIView *)aview;
 

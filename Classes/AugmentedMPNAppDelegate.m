@@ -33,7 +33,7 @@
 	camera.wantsFullScreenLayout = YES;
 	
 	/* scale camera view to full screen */
-	camera.cameraViewTransform=CGAffineTransformScale(camera.cameraViewTransform, 1.09, 1.09); 
+	//camera.cameraViewTransform=CGAffineTransformScale(camera.cameraViewTransform, 1.09, 1.09); 
 	
 	[window addSubview:[camera view]];
 	[window makeKeyAndVisible];

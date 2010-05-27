@@ -46,6 +46,7 @@
 	
 	//Enable Location Manager
 	mLocationManager = [[CLLocationManager alloc] init];
+	[mLocationManager setDistanceFilter:5];
 	mLocationManager.delegate = self; // send loc updates to myself
 	firstLocationUpdate = YES;
 	secondLocationUpdate = NO;
@@ -64,7 +65,7 @@
 	}
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
 	[mAccelerometer setDelegate:self];
-	[mAccelerometer setUpdateInterval:1.0f / 50];
+	[mAccelerometer setUpdateInterval:1.0f / 100];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -228,7 +229,7 @@
 		}
 	}
 	// Dispatch acceleration
-	if(!(accelerationBufferIndex & 1)){
+	if(accelerationBufferIndex & 1){
 		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
 	}
 	
