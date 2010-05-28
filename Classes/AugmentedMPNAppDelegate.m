@@ -30,10 +30,10 @@
 	camera.showsCameraControls = NO;
 	camera.navigationBarHidden = YES;
 	camera.toolbarHidden = YES;
-	camera.wantsFullScreenLayout = YES;
+	//camera.wantsFullScreenLayout = YES;
 	
 	/* scale camera view to full screen */
-	//camera.cameraViewTransform=CGAffineTransformScale(camera.cameraViewTransform, 1.09, 1.09); 
+	camera.cameraViewTransform=CGAffineTransformScale(camera.cameraViewTransform, 1.09, 1.09); 
 	
 	[window addSubview:[camera view]];
 	[window makeKeyAndVisible];

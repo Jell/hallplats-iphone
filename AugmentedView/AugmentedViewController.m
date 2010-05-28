@@ -8,13 +8,13 @@
 
 #import "AugmentedViewController.h"
 #import "AugmentedView.h"
-#define MIN_SCREEN_WIDTH		320.0
-#define MAX_SCREEN_WIDTH		480.0
-#define OFFSCREEN_SQUARE_SIZE	520.0
-#define MAP_SIZE				520.0
-#define PERSPECTIVE_DEPTH_OFFSET			100
-#define PROJECTION_DEPTH		900
-#define MAX_ZOOM				4
+#define MIN_SCREEN_WIDTH			320.0
+#define MAX_SCREEN_WIDTH			480.0
+#define OFFSCREEN_SQUARE_SIZE		520.0
+#define MAP_SIZE					520.0
+#define PERSPECTIVE_DEPTH_OFFSET	100
+#define PROJECTION_DEPTH			900
+#define MAX_ZOOM					5
 
 @implementation AugmentedViewController
 @synthesize mAlpha;
@@ -110,27 +110,26 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
-	@synchronized(self){
 	[self setMTeta:M_PI * newHeading.trueHeading / 180.0];
-	}
 }
 
 -(void)updateProjection:(NSTimer *)theTimer{
-	float teta = [self mTeta];
-	float alpha = [self mAlpha] - teta;
+	float verticalOffset = [self mVerticalOffset];
+	float alpha = [self mAlpha];
+	float teta = alpha - [self mTeta];
 	float beta = [self mBeta];
 	float sinb = sin(beta);
 	float cosb = cos(beta);
-	float verticalOffset = [self mVerticalOffset];
+	
 	int i = 0;
 	
 	calloutBubble.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
 	for (AugmentedPoi *aPoi in ar_poiList) {
-		float teta = alpha - [aPoi azimuth];
+		float teta_r = teta - [aPoi azimuth];
 		float pixelDist = [aPoi pixelDist];
 		float dist = pixelDist * MAX_ZOOM * sin(beta);
 		
-		translateView([ar_poiViews objectAtIndex:i], teta, cosb, sinb, verticalOffset, dist);
+		translateView([ar_poiViews objectAtIndex:i], teta_r, cosb, sinb, verticalOffset, dist);
 		
 		if(i == selectedPoi){
 			[self setBubbleMatrixForView:[ar_poiViews objectAtIndex:i]];
@@ -138,47 +137,71 @@
 		i++;
 	}
 
-	translateGridWithTeta(gridView, M_PI + alpha, cosb, sinb, verticalOffset);
+	translateGridWithTeta(gridView, M_PI + teta, cosb, sinb, verticalOffset);
 	
-	CATransform3D final_transform = CATransform3DMakeRotation(M_PI-[self mAlpha], 0.0, 0.0, 1.0);
+	CATransform3D final_transform = CATransform3DMakeRotation(M_PI-alpha, 0.0, 0.0, 1.0);
 	poiOverlay.layer.transform = final_transform;
 	
-	
-	[NSTimer scheduledTimerWithTimeInterval:0.08
+	[NSTimer scheduledTimerWithTimeInterval:0.12
 									 target:self
 								   selector:@selector(updateProjection:)
 								   userInfo:nil
 									repeats:NO];
 }
 
-void translateGridWithTeta(UIView* aView, float teta, float cosb, float sinb, float verticalOffset){
+static inline void translateGridWithTeta(UIView* aView, float teta, float cosb, float sinb, float verticalOffset){
 	float cost = cos(teta);
 	float sint = sin(teta);
 	
+	float m11 = cost * MAX_ZOOM * sinb;
+	float m21 = -sint * MAX_ZOOM * sinb;
+	float m12 = sint * cosb * MAX_ZOOM * sinb;
+	float m22 = cost * cosb * MAX_ZOOM * sinb;
+	float m42 = (PERSPECTIVE_DEPTH_OFFSET) * sinb + verticalOffset;
+	float m13 = sint * sinb * MAX_ZOOM * sinb;
+	float m23 = cost * sinb * MAX_ZOOM * sinb;
+	float m43 = -(PERSPECTIVE_DEPTH_OFFSET) * cosb;
+	float m14 = -sint * sinb * MAX_ZOOM * sinb/ PROJECTION_DEPTH;
+	float m24 = -cost * sinb / PROJECTION_DEPTH * MAX_ZOOM * sinb;
+	float m34 = -cosb / PROJECTION_DEPTH;
+	
 	CATransform3D transformMatrix = {
-		cost * MAX_ZOOM * sinb,		sint * cosb * MAX_ZOOM * sinb,							sint * sinb * MAX_ZOOM * sinb,			-sint * sinb * MAX_ZOOM * sinb/ PROJECTION_DEPTH,
-		-sint * MAX_ZOOM * sinb,	cost * cosb * MAX_ZOOM * sinb,							cost * sinb * MAX_ZOOM * sinb,			-cost * sinb / PROJECTION_DEPTH * MAX_ZOOM * sinb,
-		0.0,						-sinb,													cosb,									-cosb / PROJECTION_DEPTH,
-		0.0,						(PERSPECTIVE_DEPTH_OFFSET) * sinb + verticalOffset,		-(PERSPECTIVE_DEPTH_OFFSET) * cosb,		1.0
+		m11,	m12,		m13,		m14,
+		m21,	m22,		m23,		m24,
+		0.0,	-sinb,		cosb,		m34,
+		0.0,	m42,		m43,		1.0
 	};
 	
 	aView.layer.transform = transformMatrix;
 };
 
-void translateView(UIView *aView, float teta, float cosb, float sinb, float verticalOffset, float distance){
+static inline void translateView(UIView *aView, float teta, float cosb, float sinb, float verticalOffset, float distance){
 	float sint = sin(teta);
+	float m41 = distance * cos(teta);
+	float m42 = (PERSPECTIVE_DEPTH_OFFSET) * sinb + distance * cosb * sint + verticalOffset;
 	float m34 = 1.0 / -PROJECTION_DEPTH;
 	float m43 = - (PERSPECTIVE_DEPTH_OFFSET) * cosb + distance * sinb * sint;
 	float m44 = 1 + m34 * m43;
 	
-	CATransform3D transfomMatrix = {
-		m44,					0,																				0,		0,
-		0,						m44,																			0,		0,
-		0,						0,																				1,		m34,
-		distance * cos(teta),	(PERSPECTIVE_DEPTH_OFFSET) * sinb + distance * cosb * sint + verticalOffset,	m43,	m44
-	};
 	
-	aView.layer.transform = transfomMatrix;
+	CATransform3D transformMatrix = CATransform3DIdentity;
+	
+	transformMatrix.m11 = m44;
+	transformMatrix.m22 = m44;
+	transformMatrix.m34 = m34;
+	transformMatrix.m41 = m41;
+	transformMatrix.m42 = m42;
+	transformMatrix.m43 = m43;
+	transformMatrix.m44 = m44;
+	
+	/*{
+		m44,	0,		0,		0,
+		0,		m44,	0,		0,
+		0,		0,		1,		m34,
+		m41,	m42,	m43,	m44
+	};*/
+	
+	aView.layer.transform = transformMatrix;
 }
 
 -(void)setBubbleMatrixForView:(UIView *)aview{
@@ -209,7 +232,7 @@ void translateView(UIView *aView, float teta, float cosb, float sinb, float vert
 	}else{
 		alpha = [self mAlpha];
 	}
-	[self setMVerticalOffset: sin(beta)*(MIN_SCREEN_WIDTH / 6.0 + abs((MAX_SCREEN_WIDTH - MIN_SCREEN_WIDTH) * cos(alpha)/3))];
+	[self setMVerticalOffset: sin(beta)*(MIN_SCREEN_WIDTH / 6.0 + abs(((MAX_SCREEN_WIDTH - MIN_SCREEN_WIDTH)/3) * cos(alpha)))];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -266,7 +289,8 @@ void translateView(UIView *aView, float teta, float cosb, float sinb, float vert
 	CGPoint center = {OFFSCREEN_SQUARE_SIZE/2.0, OFFSCREEN_SQUARE_SIZE/2.0 - 1.5 * POI_BUTTON_SIZE/2};
 	
 	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-	aButton.exclusiveTouch = NO;
+	//aButton.exclusiveTouch = NO;
+	aButton.clearsContextBeforeDrawing = NO;
 	aButton.frame = CGRectMake(0.0, 0.0, POI_BUTTON_SIZE, POI_BUTTON_SIZE);
 	aButton.backgroundColor = [UIColor clearColor];
 	UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
@@ -274,7 +298,7 @@ void translateView(UIView *aView, float teta, float cosb, float sinb, float vert
 	UIImage *buttonImagePressed = [UIImage imageNamed:@"augmentedpoiselect.png"];
 	[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
 	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDown];
-	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDragInside];
+	//[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDragInside];
 	
 	aButton.center = center;
 	

@@ -35,21 +35,21 @@
 	id delegate;
 }
 
-@property float mAlpha;
-@property float mBeta;
-@property float mTeta;
-@property float mVerticalOffset;
-@property(retain) NSMutableArray *ar_poiList;
-@property(retain) NSMutableArray *ar_poiViews;
-@property(assign)  CLLocation *currentLocation;
-@property(assign) id delegate;
+@property(nonatomic) float mAlpha;
+@property(nonatomic) float mBeta;
+@property(nonatomic) float mTeta;
+@property(nonatomic) float mVerticalOffset;
+@property(nonatomic, retain) NSMutableArray *ar_poiList;
+@property(nonatomic, retain) NSMutableArray *ar_poiViews;
+@property(nonatomic, assign)  CLLocation *currentLocation;
+@property(nonatomic, assign) id delegate;
 -(void)updatePoisLocations;
 -(void)updateProjection:(NSTimer *)theTimer;
 
 /* Moves the perspective grid according to the given orientation
  @param teta current azimuth of the user from -pi to pi 
  @param beta current pitch of the user from -pi to pi */
-void translateGridWithTeta(UIView* aView, float teta, float cosb, float sinb, float verticalOffset);
+static inline void translateGridWithTeta(UIView* aView, float teta, float cosb, float sinb, float verticalOffset);
 
 /* Position the given view according to its azimuth and distance to current location
  @param aView the view to position
@@ -57,7 +57,7 @@ void translateGridWithTeta(UIView* aView, float teta, float cosb, float sinb, fl
  @param beta current pitch of the user from -pi to pi
  @param distance distance of the POI represented by the view, must be greater than 0
  @param scaleEnabled If set to YES, the view is scaled to perspective*/
-void translateView(UIView *aView, float teta, float cosb, float sinb, float verticalOffset, float distance);
+static inline void translateView(UIView *aView, float teta, float cosb, float sinb, float verticalOffset, float distance);
 
 -(void)setBubbleMatrixForView:(UIView *)aview;
 

@@ -27,17 +27,12 @@
 	UIView *myView = [self view];
 	//[myView setFrame:CGRectMake(15 -[myView frame].size.width / 2 , 5 -[myView frame].size.height , [myView frame].size.width, [myView frame].size.height)];
 	myView.exclusiveTouch = NO;
-	myView.center = CGPointMake(260.0, 200.0 - POI_BUTTON_SIZE);
-	
-	tramScroll.backgroundColor = [UIColor clearColor];
-	tramScroll.scrollEnabled = YES;
-	tramScroll.clipsToBounds = NO;
-	[tramScroll setDelegate:self];
+	myView.center = CGPointMake(260.0, 205.0 - POI_BUTTON_SIZE);
 	
 	tramLinesNumber = 0;
 	lineViews = [[NSMutableArray alloc] init];
 	
-	[tramScroll flashScrollIndicators];
+	//tramScroll.hidden = YES;
 	infoButton.hidden = YES;
 	[infoButton addTarget:delegate action:@selector(showInfo:) forControlEvents:UIControlEventTouchDown];
 
@@ -67,14 +62,14 @@
 
 -(void)addTramLine:(NSString *)name backgroundColor:(UIColor *)backgroundColor foregroundColor:(UIColor *)foregroundColor{
 	UILabel *tramNumber = [[UILabel alloc ] initWithFrame:CGRectMake(0.0 + 33*tramLinesNumber, 40.0, 30.0, 30.0)];
-	tramNumber.opaque = YES;
+	tramNumber.clearsContextBeforeDrawing = NO;
 	tramNumber.textAlignment =  UITextAlignmentCenter;
 	tramNumber.lineBreakMode = UILineBreakModeClip;
 	tramNumber.textColor = foregroundColor;
 	tramNumber.backgroundColor = backgroundColor;
 	tramNumber.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(12.0)];
 	tramNumber.text = name;
-	tramNumber.clearsContextBeforeDrawing = NO;
+	
 	[tramScroll addSubview:tramNumber];
 	[lineViews addObject:tramNumber];
 	[tramScroll setContentSize:CGSizeMake(30.0 + 33.0 * tramLinesNumber, 30.0)];

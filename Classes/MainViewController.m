@@ -65,7 +65,7 @@
 	}
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
 	[mAccelerometer setDelegate:self];
-	[mAccelerometer setUpdateInterval:1.0f / 100];
+	[mAccelerometer setUpdateInterval:1.0f / 25];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -229,9 +229,7 @@
 		}
 	}
 	// Dispatch acceleration
-	if(accelerationBufferIndex & 1){
-		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
-	}
+	[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
 	
 	// Check if we have to switch view
 	if(viewDisplayedController == mAugmentedViewController){

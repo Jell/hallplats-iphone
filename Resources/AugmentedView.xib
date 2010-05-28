@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
+			<integer value="60"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -90,7 +90,7 @@
 							<object class="IBUIImageView" id="560461975">
 								<reference key="NSNextResponder" ref="217094803"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{-112, -112}, {744, 744}}</string>
+								<string key="NSFrame">{{-5, -5}, {530, 530}}</string>
 								<reference key="NSSuperview" ref="217094803"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
