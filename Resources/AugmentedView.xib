@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="50"/>
+			<integer value="60"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -44,15 +44,16 @@
 							<object class="IBMKMapView" id="498369256">
 								<reference key="NSNextResponder" ref="217094803"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{-240, -240}, {1000, 1000}}</string>
+								<string key="NSFrameSize">{520, 520}</string>
 								<reference key="NSSuperview" ref="217094803"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MCAwIDAAA</bytes>
+									<bytes key="NSRGB">MC4zODI2NTMwNiAwLjM4MjY1MzA2IDAuMzgyNjUzMDYAA</bytes>
 								</object>
 								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIClipsSubviews">YES</bool>
-								<float key="IBUIAlpha">5.000000e-01</float>
+								<bool key="IBUIAutoresizesSubviews">NO</bool>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+								<float key="IBUIAlpha">6.000000e-01</float>
 								<int key="IBUIContentMode">4</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<bool key="IBMKZoomEnabled">NO</bool>
@@ -64,6 +65,7 @@
 								<string key="NSFrameSize">{520, 520}</string>
 								<reference key="NSSuperview" ref="217094803"/>
 								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIAutoresizesSubviews">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
@@ -85,6 +87,21 @@
 									<bytes key="NSWhite">MC41AA</bytes>
 								</object>
 							</object>
+							<object class="IBUIImageView" id="560461975">
+								<reference key="NSNextResponder" ref="217094803"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{-5, -5}, {530, 530}}</string>
+								<reference key="NSSuperview" ref="217094803"/>
+								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIAutoresizesSubviews">NO</bool>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+								<int key="IBUIContentMode">1</int>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">map_mask.png</string>
+								</object>
+							</object>
 						</object>
 						<string key="NSFrame">{{-100, -20}, {520, 520}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
@@ -101,9 +118,9 @@
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MC4zNjQxMzA0NCAwLjM2NDEzMDQ0IDAuMzY0MTMwNDQgMC4wMDk5OTk5OTk4AA</bytes>
 				</object>
-				<bool key="IBUIClipsSubviews">YES</bool>
+				<bool key="IBUIOpaque">NO</bool>
+				<bool key="IBUIAutoresizesSubviews">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-				<bool key="IBUIMultipleTouchEnabled">YES</bool>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -150,6 +167,14 @@
 					</object>
 					<int key="connectionID">54</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">mapMask</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="560461975"/>
+					</object>
+					<int key="connectionID">61</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -189,6 +214,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="498369256"/>
+							<reference ref="560461975"/>
 							<reference ref="252688722"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
@@ -201,6 +227,11 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">48</int>
 						<reference key="object" ref="252688722"/>
+						<reference key="parent" ref="217094803"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">60</int>
+						<reference key="object" ref="560461975"/>
 						<reference key="parent" ref="217094803"/>
 					</object>
 				</object>
@@ -217,13 +248,15 @@
 					<string>48.IBPluginDependency</string>
 					<string>50.IBPluginDependency</string>
 					<string>52.IBPluginDependency</string>
+					<string>60.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>AugmentedViewController</string>
 					<string>UIResponder</string>
 					<string>AugmentedView</string>
-					<string>{{494, 217}, {320, 480}}</string>
+					<string>{{534, 266}, {320, 480}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -250,7 +283,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">57</int>
+			<int key="maxID">64</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -277,6 +310,7 @@
 							<string>backgroundButton</string>
 							<string>delegate</string>
 							<string>gridView</string>
+							<string>mapMask</string>
 							<string>poiOverlay</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -284,6 +318,7 @@
 							<string>UIButton</string>
 							<string>id</string>
 							<string>MKMapView</string>
+							<string>UIImageView</string>
 							<string>UIView</string>
 						</object>
 					</object>

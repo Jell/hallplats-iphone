@@ -25,15 +25,17 @@
 	CLLocation *currentLocation;			/**< Current user's Location */
 	NSArray *annotationList;				/**< Annotation List */
 	float phase;							/**< Orientation Phase */
+	float mTeta;
 	bool recentering;						/**< Boolean indicating if the map is beeing centered */
 	id delegate;
 }
 
+@property float mTeta;
 @property (assign) id delegate;
 @property (assign) CLLocation *currentLocation;
 @property (assign) NSArray *annotationList;
 
 /** Rotate the map view at a given angle */
-- (void)rotateMapWithTeta:(float)teta;
+- (void)rotateMap;
 
 @end

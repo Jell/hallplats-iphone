@@ -3,7 +3,7 @@
 //  AugmentedMPN
 //
 //  Created by Jean-Louis on 2010-01-26.
-//  Copyright __MyCompanyName__ 2010. All rights reserved.
+//  Copyright ICE House 2010. All rights reserved.
 //
 
 #import "MainViewController.h"
@@ -46,6 +46,7 @@
 	
 	//Enable Location Manager
 	mLocationManager = [[CLLocationManager alloc] init];
+	[mLocationManager setDistanceFilter:5];
 	mLocationManager.delegate = self; // send loc updates to myself
 	firstLocationUpdate = YES;
 	secondLocationUpdate = NO;
@@ -63,8 +64,8 @@
 		zzArray[i] = -1.0;
 	}
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
-	[mAccelerometer setUpdateInterval:1.0f / (5.0f * (float) ACCELERATION_BUFFER_SIZE)];
 	[mAccelerometer setDelegate:self];
+	[mAccelerometer setUpdateInterval:1.0f / 25];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -76,9 +77,11 @@
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
     
 	[self dismissModalViewControllerAnimated:YES];
-	[mAccelerometer setDelegate:self];
-	[mLocationManager startUpdatingHeading];
-	[mLocationManager startUpdatingLocation];
+	if(!lockButton.selected){
+		[mAccelerometer setDelegate:self];
+		[mLocationManager startUpdatingHeading];
+		[mLocationManager startUpdatingLocation];
+	}
 }
 
 - (void)showInfo:(id)sender {    
@@ -104,8 +107,8 @@
 - (void) performUpdate:(id)object{
 	//get the JSON
 	CLLocationCoordinate2D center = {57.7119, 11.9683};
-	if(currentLocation){
-		center = currentLocation.coordinate;
+	if([self currentLocation]){
+		center = [[self currentLocation] coordinate];
 	}
 	
 	id response = [mVTApiHandler getAnnotationsFromCoordinates:center];
@@ -122,11 +125,11 @@
 }
 
 - (void) updatePerformed:(id)response {
-	if(response == nil){
-		UIAlertView *myAlert = [[UIAlertView alloc] initWithTitle:@"Impossible to reach the servers" 
-														  message:@"The application couldn't reach the server. Verify that your device is connected to the Internet, and check again later."
+	if(response == nil || [response count] == 0){
+		UIAlertView *myAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+														  message:NSLocalizedString(@"ErrorReachServer", @"The application couldn't reach the servers")
 														 delegate:nil
-												cancelButtonTitle:@"Ok"
+												cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 												otherButtonTitles:nil];
 		[myAlert show];
 		[myAlert release];
@@ -142,7 +145,6 @@
  
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
-	
 	xxAverage -= (xxArray[accelerationBufferIndex] / (float) ACCELERATION_BUFFER_SIZE);
 	yyAverage -= (yyArray[accelerationBufferIndex] / (float) ACCELERATION_BUFFER_SIZE);
 	zzAverage -= (zzArray[accelerationBufferIndex] / (float) ACCELERATION_BUFFER_SIZE);
@@ -162,6 +164,73 @@
 	float yy = yyAverage;
 	float zz = zzAverage;
 
+	// if the phone is not in almost flat position, change the orientation
+	if(zz > -0.7 && zz < 0.7){
+		float angle = atan2(xx, yy);
+		if(angle < 0.785 && angle >-0.785){
+			if(mInterfaceOrientation != UIInterfaceOrientationPortrait){
+				mInterfaceOrientation = UIInterfaceOrientationPortrait;
+				
+				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
+				CATransform3D final_transform = CATransform3DMakeRotation(M_PI, 0.0, 0.0, 1.0);
+				rotate_lock.keyPath		= @"transform";
+				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
+				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
+				rotate_lock.duration	= 0.2;
+				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
+				lockButton.layer.transform = final_transform;
+			}
+		}
+		
+		if(angle < 2.355 && angle > 0.785){
+			if(mInterfaceOrientation != UIInterfaceOrientationLandscapeLeft){
+				mInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;
+				
+				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
+				CATransform3D final_transform = CATransform3DMakeTranslation(250.0, 0.0, 0.0);
+				final_transform = CATransform3DRotate(final_transform, -M_PI/2, 0.0, 0.0, 1.0);
+				rotate_lock.keyPath		= @"transform";
+				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
+				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
+				rotate_lock.duration	= 0.2;
+				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
+				lockButton.layer.transform = final_transform;
+			}
+		}
+		
+		if(angle < -0.785 && angle >-2.355){
+			if(mInterfaceOrientation != UIInterfaceOrientationLandscapeRight){
+				mInterfaceOrientation = UIInterfaceOrientationLandscapeRight;
+				
+				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
+				CATransform3D final_transform = CATransform3DMakeRotation(M_PI/2, 0.0, 0.0, 1.0);
+				rotate_lock.keyPath		= @"transform";
+				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
+				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
+				rotate_lock.duration	= 0.2;
+				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
+				lockButton.layer.transform = final_transform;
+			}
+		}
+		
+		if(angle > 2.355 || angle <-2.355){
+			if(mInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown){
+				mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;
+				
+				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
+				CATransform3D final_transform = CATransform3DMakeRotation(0.0, 0.0, 0.0, 1.0);
+				rotate_lock.keyPath		= @"transform";
+				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
+				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
+				rotate_lock.duration	= 0.2;
+				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
+				lockButton.layer.transform = final_transform;
+			}
+		}
+	}
+	// Dispatch acceleration
+	[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
+	
 	// Check if we have to switch view
 	if(viewDisplayedController == mAugmentedViewController){
 		if(zz < -0.9 && (yy > -0.2 && yy <  0.2 && xx > -0.2 && xx <  0.2))
@@ -170,34 +239,10 @@
 		}
 	}else{
 		if( (zz > -0.7 &&  zz <  0.0) &&
-			(yy < -0.8 || yy >  0.8 || xx < -0.8 || xx >  0.8)  )
+		   (yy < -0.3 || yy >  0.3 || xx < -0.3 || xx >  0.3)  )
 		{
 			[self loadAugmentedView];
 		}
-	}
-
-	// if the phone is not in almost flat position, change the orientation
-	if(zz > -0.5 && zz < 0.5){
-		float angle = atan2(xx, yy);
-		if(angle < 0.785 && angle >-0.785){
-			mInterfaceOrientation = UIInterfaceOrientationPortrait;	
-		}
-		
-		if(angle < 2.355 && angle > 0.785){
-			mInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;	
-		}
-		
-		if(angle < -0.785 && angle >-2.355){
-			mInterfaceOrientation = UIInterfaceOrientationLandscapeRight;	
-		}
-		
-		if(angle > 2.355 || angle <-2.355){
-			mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;	
-		}
-	}
-	// Dispatch acceleration
-	if(accelerationBufferIndex == 0){
-		[viewDisplayedController accelerationChangedX:xx y:yy z:zz];
 	}
 }
 
@@ -213,10 +258,9 @@
 	didUpdateToLocation: (CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
 {
-	[currentLocation release];
-	currentLocation = [newLocation copy];
+	[self setCurrentLocation:newLocation];
 	//currentLocation = [[CLLocation alloc] initWithLatitude:59.330917 longitude:18.060389];
-	NSLog(@"%f", newLocation.horizontalAccuracy);
+	NSLog(@"%@", currentLocation);
 
 	if(secondLocationUpdate){
 		[self beginUdpate:nil];
@@ -232,13 +276,11 @@
 		firstLocationUpdate = NO;
 	}
 	
-
-	
 	for (VTAnnotation *anAnnotation in annotationList) {
 		[anAnnotation updateDistanceFrom:newLocation.coordinate];
 	}
 	//Dispatch new Location
-	[viewDisplayedController locationManager:manager didUpdateToLocation:currentLocation fromLocation:oldLocation];
+	[viewDisplayedController locationManager:manager didUpdateToLocation:[self currentLocation] fromLocation:oldLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
@@ -254,6 +296,13 @@
 - (void)locationManager: (CLLocationManager *)manager
 	   didFailWithError: (NSError *)error
 {
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+							   message:NSLocalizedString(@"ErrorNoGPS", @"The GPS is deactivated, please enable it and try again")
+							  delegate:nil
+					 cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+					 otherButtonTitles:nil];
+	[alert show];
+	[alert release];
 }
 
 - (void)loadMapView{
@@ -285,8 +334,8 @@
 - (void)loadAugmentedView{
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
-	[applicationLoadViewIn setType:kCATransitionPush];
-	
+	[applicationLoadViewIn setType:kCATransitionFade];
+	/*
 	switch (mInterfaceOrientation) {
 		case UIInterfaceOrientationPortrait:
 			[applicationLoadViewIn setSubtype:kCATransitionFromTop];
@@ -300,7 +349,7 @@
 		default:
 			[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
 			break;
-	}
+	}*/
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	
 	[self loadViewController:mAugmentedViewController
@@ -322,6 +371,21 @@
 		[viewDisplayedController setOrientation:mInterfaceOrientation];
 		[viewDisplayedController setSelectedPoi:selectedPoi];
 	}
+}
+
+-(IBAction)lockPress{
+	if(lockButton.selected == NO){
+		[mAccelerometer setDelegate:nil];
+		[mLocationManager stopUpdatingHeading];
+		[mLocationManager stopUpdatingLocation];
+		lockButton.selected = YES;
+	}else{
+		[mAccelerometer setDelegate:self];
+		[mLocationManager startUpdatingHeading];
+		[mLocationManager startUpdatingLocation];
+		lockButton.selected = NO;
+	}
+
 }
 
 -(BOOL)canBecomeFirstResponder {

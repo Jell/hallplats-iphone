@@ -12,6 +12,7 @@
 @implementation AugmentedPoi
 @synthesize azimuth;
 @synthesize annotation;
+@synthesize pixelDist;
 
 -(id)initWithAnnotation:(VTAnnotation *) anAnnotation fromOrigin:(CLLocationCoordinate2D)origin
 {
@@ -23,7 +24,6 @@
 
 -(void)updateAngleFrom:(CLLocationCoordinate2D)origin
 {
-	
 	float lat1 = origin.latitude * 3.14 / 180.0;
 	float lon1 = origin.longitude * 3.14 / 180.0;
 	

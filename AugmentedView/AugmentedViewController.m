@@ -8,19 +8,19 @@
 
 #import "AugmentedViewController.h"
 #import "AugmentedView.h"
-#define GRID_HEIGHT				400.0
-#define GRID_SQUARE_WIDTH		120.0
-#define MIN_SCREEN_WIDTH		320.0
-#define MAX_SCREEN_WIDTH		480.0
-#define OFFSCREEN_SQUARE_SIZE	520.0
-#define CAMERA_ANGLE_X			17.0
-#define CAMERA_ANGLE_Y			28.0
-#define POI_BUTTON_SIZE			40.0
-#define PERSPECTIVE_VERTICAL_OFFSET			50
-#define PERSPECTIVE_DEPTH_OFFSET			400
-#define PERSPECTIVE_INNER_CIRCLE_RADIUS		0
+#define MIN_SCREEN_WIDTH			320.0
+#define MAX_SCREEN_WIDTH			480.0
+#define OFFSCREEN_SQUARE_SIZE		520.0
+#define MAP_SIZE					520.0
+#define PERSPECTIVE_DEPTH_OFFSET	100
+#define PROJECTION_DEPTH			900
+#define MAX_ZOOM					5
 
 @implementation AugmentedViewController
+@synthesize mAlpha;
+@synthesize mBeta;
+@synthesize mTeta;
+@synthesize mVerticalOffset;
 @synthesize currentLocation;
 @synthesize ar_poiList;
 @synthesize ar_poiViews;
@@ -35,6 +35,7 @@
 	
 	calloutBubble = [[AugmentedCalloutBubbleController alloc] initWithNibName:@"AugmentedCalloutBubbleView" bundle:nil];
 	calloutBubble.delegate = self.delegate;
+	calloutBubble.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
 	
 	[poiOverlay addSubview:calloutBubble.view];
 	//[poiOverlay addTarget:self action:@selector(blankTouch:) forControlEvents:UIControlEventTouchDown];
@@ -48,8 +49,8 @@
 	location.longitude = 11.9683;
 	//starting span (=zoom)
 	MKCoordinateSpan span;
-	span.latitudeDelta = 0.02;
-	span.longitudeDelta = 0.02;
+	span.latitudeDelta = 0.01;
+	span.longitudeDelta = 0.01;
 	MKCoordinateRegion region;
 	region.center = location;
 	region.span = span;
@@ -60,106 +61,178 @@
 	gridView.scrollEnabled =FALSE;
 	gridView.showsUserLocation = FALSE;
 	gridView.delegate = self;
+	gridView.clipsToBounds = NO;
+	[gridView setAlpha:0.5];
 	[gridView resignFirstResponder];
-} 
+	[mapMask removeFromSuperview];
+	[gridView addSubview:mapMask];
+	mapMask.center = CGPointMake(MAP_SIZE/2, MAP_SIZE/2);
+	
+	[NSTimer scheduledTimerWithTimeInterval:0.1
+									 target:self
+								   selector:@selector(updateProjection:)
+								   userInfo:nil
+									repeats:NO];
+	
+}
 
 - (void)locationManager: (CLLocationManager *)manager
 	didUpdateToLocation: (CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
 {
+	@synchronized(self){
 	currentLocation = newLocation;
-	[gridView setCenterCoordinate:newLocation.coordinate animated:NO];
+	[gridView setCenterCoordinate:newLocation.coordinate animated:YES];
+	[self updatePoisLocations];
+	}
+	
+}
 
+-(void)updatePoisLocations{
+	int i = 0;
 	for (AugmentedPoi *aPoi in ar_poiList) {
-		[aPoi updateAngleFrom:newLocation.coordinate];
+		
+		[aPoi updateAngleFrom:[[self currentLocation] coordinate]];
+		
+		CGPoint pixelLocation = [gridView convertCoordinate:[[aPoi annotation] coordinate] toPointToView:gridView];
+		float fromcenterX = MAP_SIZE/2 - pixelLocation.x;
+		float fromcenterY = MAP_SIZE/2 - pixelLocation.y;
+		float pixelDist = sqrt(fromcenterX*fromcenterX + fromcenterY*fromcenterY);
+		if(pixelDist > MAP_SIZE / 2){
+			[[[[ar_poiViews objectAtIndex:i] subviews] objectAtIndex:1] setHidden:TRUE];
+			pixelDist = MAP_SIZE / 2;
+		}else {
+			[[[[ar_poiViews objectAtIndex:i] subviews] objectAtIndex:1] setHidden:FALSE];
+		}
+		[aPoi setPixelDist:pixelDist];
+		i++;
 	}
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
+	[self setMTeta:M_PI * newHeading.trueHeading / 180.0];
+}
 
-	float headinAngle = M_PI * newHeading.trueHeading / 180.0;
-	float jitter = angleXY - headinAngle;
+-(void)updateProjection:(NSTimer *)theTimer{
+	float verticalOffset = [self mVerticalOffset];
+	float alpha = [self mAlpha];
+	float teta = alpha - [self mTeta];
+	float beta = [self mBeta];
+	float sinb = sin(beta);
+	float cosb = cos(beta);
 	
 	int i = 0;
-	[self translateView:calloutBubble.view withTeta:M_PI andDistance:200 withScale:NO];
+	
+	calloutBubble.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
 	for (AugmentedPoi *aPoi in ar_poiList) {
-		float teta = jitter - [aPoi azimuth];
-
-		CLLocationCoordinate2D coordinateLocation = [[aPoi annotation] coordinate];
-		CGPoint pixelLocation = [gridView convertCoordinate:coordinateLocation toPointToView:gridView];
+		float teta_r = teta - [aPoi azimuth];
+		float pixelDist = [aPoi pixelDist];
+		float dist = pixelDist * MAX_ZOOM * sin(beta);
 		
-		//float dist = GRID_HEIGHT * ([aPoi distance] - minDistance)/ (maxDistance - minDistance);
-		
-		float fromcenterX = 500 - pixelLocation.x;
-		float fromcenterY = 500 - pixelLocation.y;
-		float dist = 3*sqrt(fromcenterX*fromcenterX + fromcenterY*fromcenterY);
-		
-		[self translateView:[ar_poiViews objectAtIndex:i] withTeta:teta andDistance:dist withScale:YES];
+		translateView([ar_poiViews objectAtIndex:i], teta_r, cosb, sinb, verticalOffset, dist);
 		
 		if(i == selectedPoi){
-			[self translateView:calloutBubble.view withTeta:teta andDistance:dist withScale:NO];
+			[self setBubbleMatrixForView:[ar_poiViews objectAtIndex:i]];
 		}
 		i++;
 	}
-	[self translateGridWithTeta:jitter];
-}
 
--(void)translateGridWithTeta:(float)teta{
-	CATransform3D rotationAndPerspectiveTransform = CATransform3DMakeTranslation(0.0, PERSPECTIVE_VERTICAL_OFFSET + 40, 0.0);
-	rotationAndPerspectiveTransform.m34 = 1.0 / -500;
-	rotationAndPerspectiveTransform = CATransform3DTranslate(rotationAndPerspectiveTransform, 0.0, 0.0, PERSPECTIVE_DEPTH_OFFSET);
-	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, M_PI-teta, 0.0f, 1.0f, 0.0f);
-	rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, M_PI / 2.0f, 1.0f, 0.0f, 0.0f);
-	rotationAndPerspectiveTransform = CATransform3DScale(rotationAndPerspectiveTransform, 3, 3, 0);
-/*
-	CABasicAnimation* grid_animation = [CABasicAnimation animation];
+	translateGridWithTeta(gridView, M_PI + teta, cosb, sinb, verticalOffset);
 	
-	grid_animation.keyPath		= @"transform";
-	grid_animation.fromValue	= [NSValue valueWithCATransform3D: gridView.layer.transform];
-	grid_animation.toValue		= [NSValue valueWithCATransform3D: rotationAndPerspectiveTransform];
-	grid_animation.duration		= 0.5;
-	[[gridView layer] addAnimation: grid_animation
-							  forKey: @"grid_animation"];
-*/	
-	gridView.layer.transform = rotationAndPerspectiveTransform;
+	CATransform3D final_transform = CATransform3DMakeRotation(M_PI-alpha, 0.0, 0.0, 1.0);
+	poiOverlay.layer.transform = final_transform;
+	
+	[NSTimer scheduledTimerWithTimeInterval:0.12
+									 target:self
+								   selector:@selector(updateProjection:)
+								   userInfo:nil
+									repeats:NO];
 }
 
--(void)translateView:(UIView *)aView withTeta:(float)teta andDistance:(float)distance withScale:(BOOL)scaleEnabled{
-	CATransform3D transfomMatrix = CATransform3DIdentity;
-	transfomMatrix.m34 = 1.0 / -500;
-	transfomMatrix = CATransform3DTranslate(transfomMatrix, (distance+PERSPECTIVE_INNER_CIRCLE_RADIUS) * cos(teta), PERSPECTIVE_VERTICAL_OFFSET , (distance+PERSPECTIVE_INNER_CIRCLE_RADIUS) * sin(teta) + PERSPECTIVE_DEPTH_OFFSET);
-	if(!scaleEnabled){
-		transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
-	}else{
-		if(transfomMatrix.m44 < 0.8){
-			transfomMatrix = CATransform3DScale(transfomMatrix, transfomMatrix.m44, transfomMatrix.m44, 1.0);
-			transfomMatrix = CATransform3DScale(transfomMatrix, 1.5, 1.5, 1.0);
-		}
+static inline void translateGridWithTeta(UIView* aView, float teta, float cosb, float sinb, float verticalOffset){
+	float cost = cos(teta);
+	float sint = sin(teta);
+	
+	float m11 = cost * MAX_ZOOM * sinb;
+	float m21 = -sint * MAX_ZOOM * sinb;
+	float m12 = sint * cosb * MAX_ZOOM * sinb;
+	float m22 = cost * cosb * MAX_ZOOM * sinb;
+	float m42 = (PERSPECTIVE_DEPTH_OFFSET) * sinb + verticalOffset;
+	float m13 = sint * sinb * MAX_ZOOM * sinb;
+	float m23 = cost * sinb * MAX_ZOOM * sinb;
+	float m43 = -(PERSPECTIVE_DEPTH_OFFSET) * cosb;
+	float m14 = -sint * sinb * MAX_ZOOM * sinb/ PROJECTION_DEPTH;
+	float m24 = -cost * sinb / PROJECTION_DEPTH * MAX_ZOOM * sinb;
+	float m34 = -cosb / PROJECTION_DEPTH;
+	
+	CATransform3D transformMatrix = {
+		m11,	m12,		m13,		m14,
+		m21,	m22,		m23,		m24,
+		0.0,	-sinb,		cosb,		m34,
+		0.0,	m42,		m43,		1.0
+	};
+	
+	aView.layer.transform = transformMatrix;
+};
+
+static inline void translateView(UIView *aView, float teta, float cosb, float sinb, float verticalOffset, float distance){
+	float sint = sin(teta);
+	float m41 = distance * cos(teta);
+	float m42 = (PERSPECTIVE_DEPTH_OFFSET) * sinb + distance * cosb * sint + verticalOffset;
+	float m34 = 1.0 / -PROJECTION_DEPTH;
+	float m43 = - (PERSPECTIVE_DEPTH_OFFSET) * cosb + distance * sinb * sint;
+	float m44 = 1 + m34 * m43;
+	
+	
+	CATransform3D transformMatrix = CATransform3DIdentity;
+	
+	transformMatrix.m11 = m44;
+	transformMatrix.m22 = m44;
+	transformMatrix.m34 = m34;
+	transformMatrix.m41 = m41;
+	transformMatrix.m42 = m42;
+	transformMatrix.m43 = m43;
+	transformMatrix.m44 = m44;
+	
+	/*{
+		m44,	0,		0,		0,
+		0,		m44,	0,		0,
+		0,		0,		1,		m34,
+		m41,	m42,	m43,	m44
+	};*/
+	
+	aView.layer.transform = transformMatrix;
+}
+
+-(void)setBubbleMatrixForView:(UIView *)aview{
+	if(aview == nil){
+		calloutBubble.view.hidden = TRUE;
+		calloutBubble.view.layer.transform = CATransform3DMakeTranslation(200, 0, 0);
+	}else {
+		CATransform3D transfomMatrix = [[aview layer] transform];
+		calloutBubble.view.layer.transform = transfomMatrix;
+		calloutBubble.view.hidden = FALSE;
 	}
-
-	aView.layer.transform = transfomMatrix;
 }
+
 
 -(void)accelerationChangedX:(float)x y:(float)y z:(float)z
 {
 	// Get the current device angle
-	float phi = atan2(sqrt(y*y+x*x), z);
-	angleXY = atan2(-x, y);
-	
-	CABasicAnimation* overlay_animation = [CABasicAnimation animation];
-	
-	CATransform3D final_transform = CATransform3DMakeRotation(M_PI-angleXY, 0.0, 0.0, 1.0);
-	final_transform = CATransform3DTranslate(final_transform,0.0, (MAX_SCREEN_WIDTH/3.0) * cos(phi)/ sin(CAMERA_ANGLE_Y * M_PI / 180), 0.0);
-	
-	overlay_animation.keyPath		= @"transform";
-	overlay_animation.fromValue		= [NSValue valueWithCATransform3D: poiOverlay.layer.transform];
-	overlay_animation.toValue		= [NSValue valueWithCATransform3D: final_transform];
-	overlay_animation.duration		= 0.2;
-	[[poiOverlay layer] addAnimation: overlay_animation
-							  forKey: @"overlay_animation"];
-	poiOverlay.layer.transform = final_transform;
-	//poiOverlay.layer.transform = CATransform3DMakeRotation(M_PI-angleXY, 0.0, 0.0, 1.0);	
-	//poiOverlay.layer.transform = CATransform3DTranslate(poiOverlay.layer.transform,0.0, (MAX_SCREEN_WIDTH/2.0) * sin(phi + (M_PI / 2.0))/ sin(CAMERA_ANGLE_Y * M_PI / 180), 0.0);
+	float beta = M_PI - atan2(sqrt(y*y+x*x), z);
+	if(beta > M_PI /2){
+		beta = M_PI/2 + sqrt(beta - M_PI /2) * sqrt(M_PI) / 10;
+	}
+	[self setMBeta:beta];
+
+	float alpha;
+	if(x*x + y*y > 0.25){
+		alpha = atan2(-x, y);
+		[self setMAlpha:alpha];		
+	}else{
+		alpha = [self mAlpha];
+	}
+	[self setMVerticalOffset: sin(beta)*(MIN_SCREEN_WIDTH / 6.0 + abs(((MAX_SCREEN_WIDTH - MIN_SCREEN_WIDTH)/3) * cos(alpha)))];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -171,64 +244,66 @@
 
 -(void)setAnnotationList:(NSArray *)newList{
 	@synchronized(self){
-		for(UIView *aView in ar_poiViews){
-			[aView removeFromSuperview];
-		}
-		
-		NSString *selectedAnnotationTitle = nil;
-		
-		if(selectedPoi >= 0){
-			VTAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
-			selectedAnnotationTitle = [selectedAnnotation title];
-		}
-		
-		[self setSelectedPoi:-1];
-		
-		[ar_poiViews release];
-		[ar_poiList release];
-		
-		ar_poiList = [[NSMutableArray alloc] init];
-		ar_poiViews = [[NSMutableArray alloc] init];
-		
-		CLLocationCoordinate2D origin = {0,0};
-		if(currentLocation){
-			origin = currentLocation.coordinate;
-		}
-		
-		int i = 0;
-		for(VTAnnotation *anAnnotation in newList){
-			AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
-			[ar_poiList addObject:aPoi];
+	for(UIView *aView in ar_poiViews){
+		[aView removeFromSuperview];
+	}
+	
+	NSString *selectedAnnotationTitle = nil;
+	
+	if(selectedPoi >= 0){
+		VTAnnotation *selectedAnnotation = [[ar_poiList objectAtIndex:selectedPoi] annotation];
+		selectedAnnotationTitle = [selectedAnnotation title];
+	}
+	
+	[self setSelectedPoi:-1];
+	
+	[ar_poiViews release];
+	[ar_poiList release];
+	
+	ar_poiList = [[NSMutableArray alloc] init];
+	ar_poiViews = [[NSMutableArray alloc] init];
+	
+	CLLocationCoordinate2D origin = {0,0};
+	if(currentLocation){
+		origin = currentLocation.coordinate;
+	}
+	
+	int i = 0;
+	for(VTAnnotation *anAnnotation in newList){
+		AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
+		[ar_poiList addObject:aPoi];
 
-			[aPoi release];
-			[self addPoiView];
+		[aPoi release];
+		[self addPoiView];
 
-			if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
-				[self setSelectedPoi:i];
-			}
-			i++;
+		if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
+			[self setSelectedPoi:i];
 		}
+		i++;
+	}
+	[self updatePoisLocations];
 	}
 }
 
 -(void)addPoiView{
-	CGPoint center = {OFFSCREEN_SQUARE_SIZE/2.0, OFFSCREEN_SQUARE_SIZE/2.0};
+	CGPoint center = {OFFSCREEN_SQUARE_SIZE/2.0, OFFSCREEN_SQUARE_SIZE/2.0 - 1.5 * POI_BUTTON_SIZE/2};
 	
 	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-	aButton.exclusiveTouch = NO;
-	aButton.frame = CGRectMake(0.0, 0.0, POI_BUTTON_SIZE/1.5, POI_BUTTON_SIZE/1.5);
+	//aButton.exclusiveTouch = NO;
+	aButton.clearsContextBeforeDrawing = NO;
+	aButton.frame = CGRectMake(0.0, 0.0, POI_BUTTON_SIZE, POI_BUTTON_SIZE);
 	aButton.backgroundColor = [UIColor clearColor];
 	UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
 	[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
 	UIImage *buttonImagePressed = [UIImage imageNamed:@"augmentedpoiselect.png"];
 	[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
 	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDown];
-	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDragInside];
+	//[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDragInside];
 	
 	aButton.center = center;
 	
 	UIImageView *needleAndShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"needleandshadow.png"]];
-	[needleAndShadow setFrame:CGRectMake(5, 5, needleAndShadow.frame.size.width, needleAndShadow.frame.size.height)];
+	[needleAndShadow setFrame:CGRectMake(0, 0, POI_BUTTON_SIZE*2.3, POI_BUTTON_SIZE*1.5)];
 	[aButton addSubview:needleAndShadow];
 	[aButton sendSubviewToBack:needleAndShadow];
 	[needleAndShadow release];
@@ -240,11 +315,13 @@
 }
 
 -(IBAction) blankTouch:(id)view{
+	[self setBubbleMatrixForView:nil];
 	[self setSelectedPoi:-1];
 }
 
 -(void) poiSelected:(id) poiViewId{
 	[self setSelectedPoi:[ar_poiViews indexOfObject:poiViewId]];
+	[self setBubbleMatrixForView:poiViewId];
 }
 
 -(void) setSelectedPoi:(int)value{
@@ -264,10 +341,10 @@
 }
 
 -(void)setCurrentLocation:(CLLocation *)location{
+	@synchronized(self){
 	currentLocation = location;
 	[gridView setCenterCoordinate:location.coordinate];
-	for (AugmentedPoi *aPoi in ar_poiList) {
-		[aPoi updateAngleFrom:location.coordinate];
+	[self updatePoisLocations];
 	}
 }
 

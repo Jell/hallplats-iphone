@@ -30,7 +30,7 @@
 	camera.showsCameraControls = NO;
 	camera.navigationBarHidden = YES;
 	camera.toolbarHidden = YES;
-	camera.wantsFullScreenLayout = YES;
+	//camera.wantsFullScreenLayout = YES;
 	
 	/* scale camera view to full screen */
 	camera.cameraViewTransform=CGAffineTransformScale(camera.cameraViewTransform, 1.09, 1.09); 
@@ -39,8 +39,13 @@
 	[window makeKeyAndVisible];
 }
 
+- (void)applicationDidBecomeActive:(UIApplication *)application{
+	[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(timerUpdate:) userInfo:nil repeats:NO];
+}
 
-
+- (void)timerUpdate:(id)sender{
+	[mainViewController becomeFirstResponder];
+}
 
 - (void)dealloc {
     [mainViewController release];

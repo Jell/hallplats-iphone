@@ -14,32 +14,32 @@
 @synthesize distance, stop_name, stop_id,stop_type, forecastList;
 
 - (NSString *)subtitle{
-	return [NSString stringWithFormat:@"%@", mSubTitle];
+		return [NSString stringWithFormat:@"%@", mSubTitle];
 }
 
 - (NSString *)title{
-	return [NSString stringWithFormat:@"%@", mTitle];
+		return [NSString stringWithFormat:@"%@", mTitle];
 }
 
 -(id)initWithCoordinate:(CLLocationCoordinate2D) c{
 	coordinate=c;
-	NSLog(@"%f,%f",c.latitude,c.longitude);
+	// NSLog(@"%f,%f",c.latitude,c.longitude);
 	return self;
 }
 
 -(void)setTitle:(NSString *)title subtitle:(NSString *)subtitle{
-	[mTitle release];
-	mTitle = title;
-	[mTitle retain];
-	
-	[mSubTitle release];
-	mSubTitle = subtitle;
-	[mSubTitle retain];
+		[mTitle release];
+		mTitle = title;
+		[mTitle retain];
+		
+		[mSubTitle release];
+		mSubTitle = subtitle;
+		[mSubTitle retain];
 }
 -(void)setSubtitle:(NSString *)subtitle{
-	[mSubTitle release];
-	mSubTitle = subtitle;
-	[mSubTitle retain];
+		[mSubTitle release];
+		mSubTitle = subtitle;
+		[mSubTitle retain];
 }
 
 -(NSArray *)getLineList{

@@ -17,7 +17,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "VTApiHandler.h"
 
-#define ACCELERATION_BUFFER_SIZE 20
+#define ACCELERATION_BUFFER_SIZE 10
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate, CLLocationManagerDelegate> {
 	IBOutlet UIView *viewDisplayed;									/**< The view container in which the Map View or Augmented View are displayed*/
@@ -45,6 +45,7 @@
 	float zzAverage;												/**< Acceleration Average along z axis*/
 	int accelerationBufferIndex;
 	
+	IBOutlet UIButton *lockButton;
 	//NSTimer * timer;
 }
 
@@ -57,6 +58,8 @@
 @property (assign) UIViewController *viewDisplayedController;
 @property (retain) MapViewController *mMapViewController;
 @property (retain) AugmentedViewController *mAugmentedViewController;
+
+-(IBAction)lockPress;
 
 /** Load the Map View on screen*/
 - (void)loadMapView;

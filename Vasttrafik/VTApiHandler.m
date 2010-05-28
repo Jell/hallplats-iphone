@@ -26,7 +26,6 @@
 	
 	NSMutableArray *annotationList = [NSMutableArray arrayWithCapacity:tobeparsed.count];
 	for(NSDictionary *dictionary in tobeparsed){
-		
 		[dictionary retain];
 		CLLocationCoordinate2D location = {[[dictionary valueForKey:@"lat"] floatValue], [[dictionary valueForKey:@"lng"] floatValue]};
 		VTAnnotation *anAnnotation = [[[VTAnnotation alloc] initWithCoordinate:location] retain];

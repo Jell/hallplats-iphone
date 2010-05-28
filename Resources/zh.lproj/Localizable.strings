@@ -5,3 +5,7 @@
 "Now"			= "已进站";
 "Next Departures"	= "下一辆";
 "Flipside Footer"	= "©2010 ICE House AB";
+"Error"					= "错误";
+"ErrorReachServer"		= "该应用无法与服务器连接";
+"ErrorNoGPS"			= "GPS功能未启用，请开启后重试";
+"OK"					= "确定";

@@ -14,6 +14,8 @@
 #import <UIKit/UIKit.h>
 #import "VTLineInfo.h"
 
+#define POI_BUTTON_SIZE			25.0
+
 @interface AugmentedCalloutBubbleController : UIViewController <UIScrollViewDelegate>{
 	IBOutlet UILabel *infoLabel;				/**<Title view */
 	IBOutlet UILabel *subtitleLabel;			/**<Subtitle view */
@@ -38,8 +40,5 @@
 
 /** add a tram line to the View */
 -(void)addTramLine:(NSString *)name backgroundColor:(UIColor *)backgroundColor foregroundColor:(UIColor *)foregroundColor;
-
-/** Set the length of the pin arrow @deprecated*/
--(void)setArrowLength:(float) length;
 
 @end
