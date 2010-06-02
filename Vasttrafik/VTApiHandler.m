@@ -26,19 +26,19 @@
 	
 	NSMutableArray *annotationList = [NSMutableArray arrayWithCapacity:tobeparsed.count];
 	for(NSDictionary *dictionary in tobeparsed){
-		[dictionary retain];
+		//[dictionary retain];
 		CLLocationCoordinate2D location = {[[dictionary valueForKey:@"lat"] floatValue], [[dictionary valueForKey:@"lng"] floatValue]};
-		VTAnnotation *anAnnotation = [[[VTAnnotation alloc] initWithCoordinate:location] retain];
+		VTAnnotation *anAnnotation = [[VTAnnotation alloc] initWithCoordinate:location];
 	
 		[anAnnotation setTitle:[dictionary valueForKey:@"name"] subtitle:@" "];
 	
 		anAnnotation.stop_name = [dictionary valueForKey:@"name"];
 		
 		NSArray *forecast_json = [dictionary valueForKey:@"forecast"];
-		NSMutableArray *forecastList = [[NSMutableArray arrayWithCapacity:forecast_json.count] retain];
+		NSMutableArray *forecastList = [NSMutableArray arrayWithCapacity:forecast_json.count];
 	
 		for(NSArray *forecast_bundle in forecast_json){
-			VTForecast *aForecast = [[[VTForecast alloc] init] retain];
+			VTForecast *aForecast = [[VTForecast alloc] init];
 			
 			NSDictionary *forecast_info = [forecast_bundle objectAtIndex:1];
 			

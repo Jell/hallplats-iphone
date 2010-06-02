@@ -134,10 +134,15 @@
 		[myAlert show];
 		[myAlert release];
 	}
-	[mMapViewController setAnnotationList:(NSArray *)response];
-	[mAugmentedViewController setAnnotationList:(NSArray *)response];
 	
-	[self setAnnotationList:(NSArray *)response];
+	NSArray *newList = [(NSArray *)response retain];
+	//[self setAnnotationList:(NSArray *)response];
+	//[viewDisplayedController setAnnotationList:[self annotationList]];
+	[mMapViewController setAnnotationList:newList];
+	[mAugmentedViewController setAnnotationList:newList];
+	[self setAnnotationList:newList];
+	[newList release];
+	
 	[self becomeFirstResponder];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 	//timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerUpdate:) userInfo:nil repeats:NO];
