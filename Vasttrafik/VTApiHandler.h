@@ -46,10 +46,10 @@ static const float deg_to_rad =  M_PI / 180.0;
 
 /** Retrieve the decimal value from a hexadecimal value represented by a single Char
  @param charValue should be 1~9 or A~F */
--(int)charHexToInt:(unichar)charValue;
+int charHexToInt(unichar charValue);
 
 /** Convert a String to a UIColor
  @param stringColor should be \#RRGGBB */
--(UIColor *)stringToColor:(NSString *)stringColor;
+UIColor * stringToColor(NSString *stringColor);
 
 @end

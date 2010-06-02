@@ -43,8 +43,8 @@
 			NSDictionary *forecast_info = [forecast_bundle objectAtIndex:1];
 			
 			aForecast.lineNumber		= [forecast_bundle objectAtIndex:0];
-			aForecast.foregroundColor	= [self stringToColor:[forecast_info valueForKey:@"color"]];
-			aForecast.backgroundColor	= [self stringToColor:[forecast_info valueForKey:@"background_color"]];
+			aForecast.foregroundColor	= stringToColor([forecast_info valueForKey:@"color"]);
+			aForecast.backgroundColor	= stringToColor([forecast_info valueForKey:@"background_color"]);
 			aForecast.destination		= [forecast_info valueForKey:@"destination"];
 			aForecast.nastaTime			= [forecast_info valueForKey:@"next_trip"];
 			aForecast.nastaHandicap		= [[forecast_info valueForKey:@"next_handicap"] boolValue];
@@ -199,7 +199,7 @@
 	return result;
 }
 
--(int)charHexToInt:(unichar)charValue{
+int charHexToInt(unichar charValue){
 	int result = charValue - 48;
 	if(result>9){
 		result -= 7;
@@ -211,14 +211,17 @@
 	}
 }
 
--(UIColor *)stringToColor:(NSString *)stringColor{
+UIColor * stringToColor(NSString *stringColor){
 	NSString *capitalLetters = [stringColor uppercaseString];
-	float red = [self charHexToInt:[capitalLetters characterAtIndex:1]]*16 +
-				[self charHexToInt:[capitalLetters characterAtIndex:2]];
-	float green = [self charHexToInt:[capitalLetters characterAtIndex:3]]*16 +
-				[self charHexToInt:[capitalLetters characterAtIndex:4]];
-	float blue = [self charHexToInt:[capitalLetters characterAtIndex:5]]*16 +
-				[self charHexToInt:[capitalLetters characterAtIndex:6]];
+	
+	float red =		charHexToInt([capitalLetters characterAtIndex:1])*16 +
+					charHexToInt([capitalLetters characterAtIndex:2]);
+	
+	float green =	charHexToInt([capitalLetters characterAtIndex:3])*16 +
+					charHexToInt([capitalLetters characterAtIndex:4]);
+	
+	float blue =	charHexToInt([capitalLetters characterAtIndex:5])*16 +
+					charHexToInt([capitalLetters characterAtIndex:6]);
 	
 	return [UIColor colorWithRed:red/255.0 green:green/255.0 blue:blue/255.0 alpha:1.0];
 }

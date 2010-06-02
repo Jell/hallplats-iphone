@@ -35,7 +35,8 @@
 	
 	calloutBubble = [[AugmentedCalloutBubbleController alloc] initWithNibName:@"AugmentedCalloutBubbleView" bundle:nil];
 	calloutBubble.delegate = self.delegate;
-	calloutBubble.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
+	//calloutBubble.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
+	[calloutBubble.view setCenter:CGPointMake(0,-50)];
 	
 	[poiOverlay addSubview:calloutBubble.view];
 	//[poiOverlay addTarget:self action:@selector(blankTouch:) forControlEvents:UIControlEventTouchDown];
@@ -123,7 +124,8 @@
 	
 	int i = 0;
 	
-	calloutBubble.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
+	//calloutBubble.view.layer.transform = CATransform3DMakeTranslation(400, 0, 0);
+	[calloutBubble.view setCenter:CGPointMake(0,-50)];
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		float teta_r = teta - [aPoi azimuth];
 		float pixelDist = [aPoi pixelDist];
@@ -207,10 +209,11 @@ static inline void translateView(UIView *aView, float teta, float cosb, float si
 -(void)setBubbleMatrixForView:(UIView *)aview{
 	if(aview == nil){
 		calloutBubble.view.hidden = TRUE;
-		calloutBubble.view.layer.transform = CATransform3DMakeTranslation(200, 0, 0);
+		//calloutBubble.view.layer.transform = CATransform3DMakeTranslation(200, 0, 0);
+		[calloutBubble.view setCenter:CGPointMake(0,-50)];
 	}else {
-		CATransform3D transfomMatrix = [[aview layer] transform];
-		calloutBubble.view.layer.transform = transfomMatrix;
+		CGAffineTransform t = CATransform3DGetAffineTransform([[aview layer] transform]);
+		[calloutBubble setCenter:CGPointMake(t.tx/t.a, t.ty/t.d)];
 		calloutBubble.view.hidden = FALSE;
 	}
 }
