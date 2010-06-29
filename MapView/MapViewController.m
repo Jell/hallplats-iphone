@@ -17,7 +17,7 @@
 @synthesize delegate;
 @synthesize mTeta;
 
-/*
+
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -25,7 +25,7 @@
     }
     return self;
 }
-*/
+
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -34,7 +34,7 @@
 	//Initialise map
 	//start location
 	phase = 0.0;
-	selectedPoi = -1;
+	mSelectedPoi = -1;
 	recentering = NO;
 	CLLocationCoordinate2D location;
 	location.latitude = 57.7119;
@@ -49,10 +49,6 @@
 	//Set MapView
 	[arrowView removeFromSuperview];
 	mMapView.region = [mMapView regionThatFits:region];
-	mMapView.mapType=MKMapTypeStandard;
-	mMapView.zoomEnabled=TRUE;
-	mMapView.scrollEnabled =FALSE;
-	mMapView.showsUserLocation = FALSE;
 	mMapView.delegate = self;
 	mMapView.exclusiveTouch = NO;
 }
@@ -80,12 +76,12 @@
 }
 
 -(void)setSelectedPoi:(int)poiId{
-	if(selectedPoi >=0){
-		[mMapView deselectAnnotation:[annotationList objectAtIndex:selectedPoi] animated:NO];
+	if(mSelectedPoi >=0){
+		[mMapView deselectAnnotation:[annotationList objectAtIndex:mSelectedPoi] animated:NO];
 	}
-	selectedPoi = poiId;
-	if(selectedPoi >=0){
-		[mMapView selectAnnotation:[annotationList objectAtIndex:selectedPoi] animated:NO];
+	mSelectedPoi = poiId;
+	if(mSelectedPoi >=0){
+		[mMapView selectAnnotation:[annotationList objectAtIndex:mSelectedPoi] animated:NO];
 	}
 }
 
@@ -111,11 +107,15 @@
 	}
 }
 
-- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView{
-	if(selectedPoi >=0){
-		[mMapView selectAnnotation:[annotationList objectAtIndex:selectedPoi] animated:NO];
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
+{
+	if(mSelectedPoi >=0){
+		[mMapView selectAnnotation:[annotationList objectAtIndex:mSelectedPoi] animated:NO];
 	}
-	[mapView resignFirstResponder];
+	if(mSelectedPoi >=0){
+		[mMapView selectAnnotation:[annotationList objectAtIndex:mSelectedPoi] animated:NO];
+	}
+	[self rotateMap];
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView 
@@ -181,7 +181,7 @@
 
 - (void)rotateMap{
 	float teta = [self mTeta];
-	mMapView.layer.transform = CATransform3DMakeRotation(teta, 0., 0., 1.);
+	mMapView.layer.transform = CATransform3DScale(CATransform3DMakeRotation(teta, 0., 0., 1.), 1.1, 1.1, 1);
 	CATransform3D annotationRotation = CATransform3DMakeRotation(phase-teta, 0., 0., 1.);
 	//Set animation and rotation for the annotations
 	for(VTAnnotation *annotation in mMapView.annotations){
@@ -201,9 +201,9 @@
 
 -(void)setAnnotationList:(NSArray *)newList{
 	NSString *selectedAnnotationTitle = nil;
-	int selectedPoiIndex = [self selectedPoi];
-	if(selectedPoiIndex >= 0){
-		VTAnnotation *selectedAnnotation = [annotationList objectAtIndex:selectedPoiIndex];
+	mSelectedPoi = [self selectedPoi];
+	if(mSelectedPoi >= 0){
+		VTAnnotation *selectedAnnotation = [annotationList objectAtIndex:mSelectedPoi];
 		selectedAnnotationTitle = [selectedAnnotation title];
 	}
 	[mMapView removeAnnotations:annotationList];
@@ -217,7 +217,6 @@
 		}
 		i++;
 	}
-	[self rotateMap];
 }
 
 -(void)setOrientation:(UIInterfaceOrientation)orientation{
@@ -265,10 +264,12 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
+	/*
 	[mMapView removeFromSuperview];
 	[mMapView release];
 	[arrowView removeFromSuperview];
 	[arrowView release];
+	 */
 }
 
 - (void)dealloc {

@@ -83,8 +83,9 @@
 		urlData = [NSURLConnection sendSynchronousRequest:urlRequest
 										returningResponse:&response
 													error:&error];
+
 		// Construct a String around the Data from the response
-		if(!error){
+		if(urlData){
 			return [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
 		}
 	}

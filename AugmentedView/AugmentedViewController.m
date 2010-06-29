@@ -10,11 +10,12 @@
 #import "AugmentedView.h"
 #define MIN_SCREEN_WIDTH			320.0
 #define MAX_SCREEN_WIDTH			480.0
-#define OFFSCREEN_SQUARE_SIZE		520.0
-#define MAP_SIZE					520.0
-#define PERSPECTIVE_DEPTH_OFFSET	100
+#define OFFSCREEN_SQUARE_SIZE		510.0
+#define MAP_SIZE					510.0
+#define PERSPECTIVE_DEPTH_OFFSET	115
 #define PROJECTION_DEPTH			900
 #define MAX_ZOOM					5
+#define SHADOW_TAG					42
 
 @implementation AugmentedViewController
 @synthesize mAlpha;
@@ -56,18 +57,27 @@
 	region.center = location;
 	region.span = span;
 	//Set MapView
-	gridView.region = [gridView regionThatFits:region];
-	gridView.mapType=MKMapTypeStandard;
-	gridView.zoomEnabled=FALSE;
-	gridView.scrollEnabled =FALSE;
-	gridView.showsUserLocation = FALSE;
-	gridView.delegate = self;
-	gridView.clipsToBounds = NO;
-	[gridView setAlpha:0.5];
-	[gridView resignFirstResponder];
+	groundView.region = [groundView regionThatFits:region];
+	groundView.mapType=MKMapTypeStandard;
+	groundView.zoomEnabled=FALSE;
+	groundView.scrollEnabled =FALSE;
+	groundView.showsUserLocation = YES;
+	groundView.userInteractionEnabled = FALSE;
+	groundView.delegate = self;
+	groundView.clipsToBounds = NO;
+	[groundView setAlpha:0.5];
+	[groundView resignFirstResponder];
+	[groundView setNeedsDisplay];
+	
 	[mapMask removeFromSuperview];
-	[gridView addSubview:mapMask];
+	[groundView addSubview:mapMask];
 	mapMask.center = CGPointMake(MAP_SIZE/2, MAP_SIZE/2);
+	
+	[locationBubble removeFromSuperview];
+	[groundView addSubview:locationBubble];
+	locationBubble.center = CGPointMake(MAP_SIZE/2, MAP_SIZE/2);
+	
+	groundView.layer.shouldRasterize = YES;
 	
 	[NSTimer scheduledTimerWithTimeInterval:0.1
 									 target:self
@@ -83,27 +93,27 @@
 {
 	@synchronized(self){
 	currentLocation = newLocation;
-	[gridView setCenterCoordinate:newLocation.coordinate animated:YES];
-	[self updatePoisLocations];
+	[groundView setCenterCoordinate:newLocation.coordinate animated:YES];
+	[self updatePOILocations];
 	}
 	
 }
 
--(void)updatePoisLocations{
+-(void)updatePOILocations{
 	int i = 0;
 	for (AugmentedPoi *aPoi in ar_poiList) {
 		
 		[aPoi updateAngleFrom:[[self currentLocation] coordinate]];
 		
-		CGPoint pixelLocation = [gridView convertCoordinate:[[aPoi annotation] coordinate] toPointToView:gridView];
+		CGPoint pixelLocation = [groundView convertCoordinate:[[aPoi annotation] coordinate] toPointToView:groundView];
 		float fromcenterX = MAP_SIZE/2 - pixelLocation.x;
 		float fromcenterY = MAP_SIZE/2 - pixelLocation.y;
 		float pixelDist = sqrt(fromcenterX*fromcenterX + fromcenterY*fromcenterY);
 		if(pixelDist > MAP_SIZE / 2){
-			[[[[ar_poiViews objectAtIndex:i] subviews] objectAtIndex:1] setHidden:TRUE];
-			pixelDist = MAP_SIZE / 2;
+			[[[ar_poiViews objectAtIndex:i] viewWithTag:SHADOW_TAG] setHidden:TRUE];
+			pixelDist = MAP_SIZE / 1.7;
 		}else {
-			[[[[ar_poiViews objectAtIndex:i] subviews] objectAtIndex:1] setHidden:FALSE];
+			[[[ar_poiViews objectAtIndex:i] viewWithTag:SHADOW_TAG] setHidden:FALSE];
 		}
 		[aPoi setPixelDist:pixelDist];
 		i++;
@@ -131,18 +141,21 @@
 		float pixelDist = [aPoi pixelDist];
 		float dist = pixelDist * MAX_ZOOM * sin(beta);
 		
-		translateView([ar_poiViews objectAtIndex:i], teta_r, cosb, sinb, verticalOffset, dist);
+		setViewTransfrom([ar_poiViews objectAtIndex:i], teta_r, cosb, sinb, verticalOffset, dist);
 		
 		if(i == selectedPoi){
-			[self setBubbleMatrixForView:[ar_poiViews objectAtIndex:i]];
+			[self setBubbleTransfromForView:[ar_poiViews objectAtIndex:i]];
 		}
 		i++;
 	}
 
-	translateGridWithTeta(gridView, M_PI + teta, cosb, sinb, verticalOffset);
+	setGroundTransform(groundView, M_PI + teta, cosb, sinb, verticalOffset);	
+	
+	[locationBubble setTransform:CGAffineTransformMakeRotation(-M_PI - teta)];
 	
 	CATransform3D final_transform = CATransform3DMakeRotation(M_PI-alpha, 0.0, 0.0, 1.0);
 	poiOverlay.layer.transform = final_transform;
+	
 	
 	[NSTimer scheduledTimerWithTimeInterval:0.12
 									 target:self
@@ -151,7 +164,7 @@
 									repeats:NO];
 }
 
-static inline void translateGridWithTeta(UIView* aView, float teta, float cosb, float sinb, float verticalOffset){
+static inline void setGroundTransform(UIView* aView, float teta, float cosb, float sinb, float verticalOffset){
 	float cost = cos(teta);
 	float sint = sin(teta);
 	
@@ -174,10 +187,11 @@ static inline void translateGridWithTeta(UIView* aView, float teta, float cosb, 
 		0.0,	m42,		m43,		1.0
 	};
 	
+	//aView.layer.transform = CATransform3DIdentity;
 	aView.layer.transform = transformMatrix;
 };
 
-static inline void translateView(UIView *aView, float teta, float cosb, float sinb, float verticalOffset, float distance){
+static inline void setViewTransfrom(UIView *aView, float teta, float cosb, float sinb, float verticalOffset, float distance){
 	float sint = sin(teta);
 	float m41 = distance * cos(teta);
 	float m42 = (PERSPECTIVE_DEPTH_OFFSET) * sinb + distance * cosb * sint + verticalOffset;
@@ -206,7 +220,7 @@ static inline void translateView(UIView *aView, float teta, float cosb, float si
 	aView.layer.transform = transformMatrix;
 }
 
--(void)setBubbleMatrixForView:(UIView *)aview{
+-(void)setBubbleTransfromForView:(UIView *)aview{
 	if(aview == nil){
 		calloutBubble.view.hidden = TRUE;
 		//calloutBubble.view.layer.transform = CATransform3DMakeTranslation(200, 0, 0);
@@ -272,23 +286,24 @@ static inline void translateView(UIView *aView, float teta, float cosb, float si
 	}
 	
 	int i = 0;
+	UIImage *busImage = [UIImage imageNamed:@"augmentedpoi.png"];
 	for(VTAnnotation *anAnnotation in newList){
 		AugmentedPoi *aPoi = [[AugmentedPoi alloc] initWithAnnotation:anAnnotation fromOrigin:origin];
 		[ar_poiList addObject:aPoi];
 
 		[aPoi release];
-		[self addPoiView];
+		[self addPoiView:busImage];
 
 		if([[anAnnotation title] isEqual:selectedAnnotationTitle]){
 			[self setSelectedPoi:i];
 		}
 		i++;
 	}
-	[self updatePoisLocations];
+	[self updatePOILocations];
 	}
 }
 
--(void)addPoiView{
+-(void)addPoiView:(UIImage *)image{
 	CGPoint center = {OFFSCREEN_SQUARE_SIZE/2.0, OFFSCREEN_SQUARE_SIZE/2.0 - 1.5 * POI_BUTTON_SIZE/2};
 	
 	UIButton *aButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
@@ -296,10 +311,7 @@ static inline void translateView(UIView *aView, float teta, float cosb, float si
 	aButton.clearsContextBeforeDrawing = NO;
 	aButton.frame = CGRectMake(0.0, 0.0, POI_BUTTON_SIZE, POI_BUTTON_SIZE);
 	aButton.backgroundColor = [UIColor clearColor];
-	UIImage *buttonImageNormal = [UIImage imageNamed:@"augmentedpoi.png"];
-	[aButton setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
-	UIImage *buttonImagePressed = [UIImage imageNamed:@"augmentedpoiselect.png"];
-	[aButton setBackgroundImage:buttonImagePressed forState:UIControlStateHighlighted];
+	[aButton setBackgroundImage:image forState:UIControlStateNormal];
 	[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDown];
 	//[aButton addTarget:self action:@selector(poiSelected:) forControlEvents:UIControlEventTouchDragInside];
 	
@@ -310,6 +322,7 @@ static inline void translateView(UIView *aView, float teta, float cosb, float si
 	[aButton addSubview:needleAndShadow];
 	[aButton sendSubviewToBack:needleAndShadow];
 	[needleAndShadow release];
+	needleAndShadow.tag = SHADOW_TAG;
 	
 	[poiOverlay addSubview:aButton];
 	[ar_poiViews addObject:aButton];
@@ -318,13 +331,13 @@ static inline void translateView(UIView *aView, float teta, float cosb, float si
 }
 
 -(IBAction) blankTouch:(id)view{
-	[self setBubbleMatrixForView:nil];
+	[self setBubbleTransfromForView:nil];
 	[self setSelectedPoi:-1];
 }
 
 -(void) poiSelected:(id) poiViewId{
 	[self setSelectedPoi:[ar_poiViews indexOfObject:poiViewId]];
-	[self setBubbleMatrixForView:poiViewId];
+	[self setBubbleTransfromForView:poiViewId];
 }
 
 -(void) setSelectedPoi:(int)value{
@@ -346,8 +359,8 @@ static inline void translateView(UIView *aView, float teta, float cosb, float si
 -(void)setCurrentLocation:(CLLocation *)location{
 	@synchronized(self){
 	currentLocation = location;
-	[gridView setCenterCoordinate:location.coordinate];
-	[self updatePoisLocations];
+	[groundView setCenterCoordinate:location.coordinate];
+	[self updatePOILocations];
 	}
 }
 
@@ -359,13 +372,14 @@ static inline void translateView(UIView *aView, float teta, float cosb, float si
 }
 
 - (void)viewDidUnload {
+	/*
 	[calloutBubble release];
 	[ar_poiList release];
 	for(UIView *aView in ar_poiViews){
 		[aView removeFromSuperview];
 	}
 	[ar_poiViews release];
-	
+	*/
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
@@ -377,7 +391,6 @@ static inline void translateView(UIView *aView, float teta, float cosb, float si
 		[aView removeFromSuperview];
 	}
 	[ar_poiViews release];
-
     [super dealloc];
 }
 

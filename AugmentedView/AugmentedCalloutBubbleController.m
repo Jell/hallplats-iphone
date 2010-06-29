@@ -7,7 +7,7 @@
 //
 
 #import "AugmentedCalloutBubbleController.h"
-#define OFFSCREEN_SQUARE_SIZE		520
+#define OFFSCREEN_SQUARE_SIZE		510
 
 @implementation AugmentedCalloutBubbleController
 @synthesize delegate;

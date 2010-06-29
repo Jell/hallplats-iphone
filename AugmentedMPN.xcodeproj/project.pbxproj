@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -74,6 +74,8 @@
 		F452E009114000C7001DBB87 /* needleandshadow.png in Resources */ = {isa = PBXBuildFile; fileRef = F452E008114000C7001DBB87 /* needleandshadow.png */; };
 		F455FCDA11A27B6E005716FB /* map_mask.png in Resources */ = {isa = PBXBuildFile; fileRef = F455FCD911A27B6E005716FB /* map_mask.png */; };
 		F467B73711AD3B41000FEEB9 /* arrowdown.png in Resources */ = {isa = PBXBuildFile; fileRef = F467B73611AD3B41000FEEB9 /* arrowdown.png */; };
+		F4A7B27311B6A3190052FFF7 /* location_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A7B27211B6A3190052FFF7 /* location_icon.png */; };
+		F4E15FB711D9800C0085DA9E /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = F4E15FB611D9800C0085DA9E /* Default.png */; };
 		F4FAB9FD1121698D0065CF90 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FAB9FC1121698D0065CF90 /* SenTestingKit.framework */; };
 		F4FABA9811216D650065CF90 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44F3A9D11185CF800AA2B22 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
@@ -177,6 +179,8 @@
 		F455FCD911A27B6E005716FB /* map_mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_mask.png; path = Images/map_mask.png; sourceTree = "<group>"; };
 		F467B73611AD3B41000FEEB9 /* arrowdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrowdown.png; path = Images/arrowdown.png; sourceTree = "<group>"; };
 		F4870A1711789610007F8E0C /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = Resources/zh.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F4A7B27211B6A3190052FFF7 /* location_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = location_icon.png; path = Images/location_icon.png; sourceTree = "<group>"; };
+		F4E15FB611D9800C0085DA9E /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		F4FAB9FC1121698D0065CF90 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Developer/Library/Frameworks/SenTestingKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -252,6 +256,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				F4E15FB611D9800C0085DA9E /* Default.png */,
 				F448B965116356300042B9C8 /* JSON */,
 				F41D7AA611411A5F0011145A /* icon.png */,
 				F43D8A4511452C5800DF4EE9 /* iTunesArtwork */,
@@ -332,6 +337,7 @@
 		F425E990111B208A00D2FC2A /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F4A7B27211B6A3190052FFF7 /* location_icon.png */,
 				F467B73611AD3B41000FEEB9 /* arrowdown.png */,
 				F455FCD911A27B6E005716FB /* map_mask.png */,
 				F42DB7CD11994BAD006C0870 /* lock.png */,
@@ -459,7 +465,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AugmentedMPN" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -507,6 +513,8 @@
 				F42DB7D011994BAD006C0870 /* unlock.png in Resources */,
 				F455FCDA11A27B6E005716FB /* map_mask.png in Resources */,
 				F467B73711AD3B41000FEEB9 /* arrowdown.png in Resources */,
+				F4A7B27311B6A3190052FFF7 /* location_icon.png in Resources */,
+				F4E15FB711D9800C0085DA9E /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,20 +679,22 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.1.2;
+				SDKROOT = iphoneos4.0;
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.1;
+				SDKROOT = iphoneos4.0;
 			};
 			name = Release;
 		};
@@ -756,8 +766,9 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.1;
+				SDKROOT = iphoneos4.0;
 			};
 			name = Distribution;
 		};

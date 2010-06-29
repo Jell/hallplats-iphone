@@ -20,9 +20,10 @@
 
 @interface AugmentedViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
 	IBOutlet UIView *poiOverlay;					/**< View container for Poi display */
-	IBOutlet MKMapView *gridView;						/**< Perspective Grid View */
+	IBOutlet MKMapView *groundView;						/**< Perspective Grid View */
 	IBOutlet UIButton *backgroundButton;
 	IBOutlet UIImageView *mapMask;
+	IBOutlet UIImageView *locationBubble;
 	AugmentedCalloutBubbleController *calloutBubble;	/**< Poi call out bubble controller */
 	int selectedPoi;								/**< Currently selected POI, -1 if none is selected */
 	NSMutableArray *ar_poiList;						/**< List containing the POI */
@@ -43,13 +44,13 @@
 @property(nonatomic, retain) NSMutableArray *ar_poiViews;
 @property(nonatomic, assign)  CLLocation *currentLocation;
 @property(nonatomic, assign) id delegate;
--(void)updatePoisLocations;
+-(void)updatePOILocations;
 -(void)updateProjection:(NSTimer *)theTimer;
 
 /* Moves the perspective grid according to the given orientation
  @param teta current azimuth of the user from -pi to pi 
  @param beta current pitch of the user from -pi to pi */
-static inline void translateGridWithTeta(UIView* aView, float teta, float cosb, float sinb, float verticalOffset);
+static inline void setGroundTransform(UIView* aView, float teta, float cosb, float sinb, float verticalOffset);
 
 /* Position the given view according to its azimuth and distance to current location
  @param aView the view to position
@@ -57,9 +58,9 @@ static inline void translateGridWithTeta(UIView* aView, float teta, float cosb, 
  @param beta current pitch of the user from -pi to pi
  @param distance distance of the POI represented by the view, must be greater than 0
  @param scaleEnabled If set to YES, the view is scaled to perspective*/
-static inline void translateView(UIView *aView, float teta, float cosb, float sinb, float verticalOffset, float distance);
+static inline void setViewTransfrom(UIView *aView, float teta, float cosb, float sinb, float verticalOffset, float distance);
 
--(void)setBubbleMatrixForView:(UIView *)aview;
+-(void)setBubbleTransfromForView:(UIView *)aview;
 
 -(IBAction) blankTouch:(id)view;
 
@@ -67,6 +68,6 @@ static inline void translateView(UIView *aView, float teta, float cosb, float si
 -(void) poiSelected:(id) poiViewId;
 
 /** Add a POI view to the Poi overlay */
--(void)addPoiView;
+-(void)addPoiView:(UIImage *)image;
 
 @end

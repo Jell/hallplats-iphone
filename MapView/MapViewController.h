@@ -21,7 +21,7 @@
 @interface MapViewController : UIViewController <ARViewDelegate, MKMapViewDelegate>{
 	IBOutlet MKMapView *mMapView;			/**< Google Map View */
 	IBOutlet UIImageView *arrowView;		/**< Arrow image indicating the user's orientation */
-	int selectedPoi;						/**< Currently selected Poi index */
+	int mSelectedPoi;						/**< Currently selected Poi index */
 	CLLocation *currentLocation;			/**< Current user's Location */
 	NSArray *annotationList;				/**< Annotation List */
 	float phase;							/**< Orientation Phase */

@@ -16,6 +16,7 @@
     UIWindow *window;							/**< Main Window*/
     MainViewController *mainViewController;		/**< Main Controller*/
 	UIImagePickerController *camera;			/**< Camera display*/
+	UIImageView *splashView;
 }
 
 @property (retain) IBOutlet UIWindow *window;
