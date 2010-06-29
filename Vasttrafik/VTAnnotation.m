@@ -44,7 +44,7 @@
 
 -(NSArray *)getLineList{
 	NSMutableArray *lineNumbers = [[NSMutableArray alloc] init];
-	NSMutableArray *lineList = [[NSMutableArray alloc] init];
+	NSMutableArray *lineList = [[[NSMutableArray alloc] init] autorelease];
 	for(VTForecast *forecast in forecastList){
 		NSString *lineNumber = forecast.lineNumber;
 		if(![lineNumbers containsObject:lineNumber]){
@@ -55,13 +55,12 @@
 			info.foregroundColor = forecast.foregroundColor;
 			info.imageType = forecast.imageType;
 			[lineList addObject:info];
+			[info release];
 		}
 	}
 	
-	NSArray *result = [[NSArray alloc] initWithArray:lineList];
-	[lineList release];
 	[lineNumbers release];
-	return result;
+	return (NSArray *)lineList;
 }
 
 -(void)updateDistanceFrom:(CLLocationCoordinate2D)origin

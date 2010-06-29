@@ -7,6 +7,7 @@
 //
 
 #import "AugmentedCalloutBubbleController.h"
+#define OFFSCREEN_SQUARE_SIZE		510
 
 @implementation AugmentedCalloutBubbleController
 @synthesize delegate;
@@ -97,6 +98,20 @@
     [super didReceiveMemoryWarning];
 	
 	// Release any cached data, images, etc that aren't in use.
+}
+
+-(void)setCenter:(CGPoint)apoint{
+	float padx = apoint.x;
+	if(padx > 80){
+		padx -= 80;
+	}else if(padx < -80){
+		padx += 80;
+	}else {
+		padx = 0;
+	}
+	
+	[self.view setCenter:CGPointMake(OFFSCREEN_SQUARE_SIZE/2 + padx, OFFSCREEN_SQUARE_SIZE/2 + apoint.y - 55 - POI_BUTTON_SIZE)];
+	[arrowImage setCenter:CGPointMake(apoint.x - padx + 100, arrowImage.center.y)];
 }
 
 - (void)viewDidUnload {

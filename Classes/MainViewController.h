@@ -21,6 +21,7 @@
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, UIAccelerometerDelegate, CLLocationManagerDelegate> {
 	IBOutlet UIView *viewDisplayed;									/**< The view container in which the Map View or Augmented View are displayed*/
+	IBOutlet UIView *loadingDisplay;
 	UIViewController<ARViewDelegate> *viewDisplayedController;		/**< Pointer to current display type (Map or Augmented)*/
 	
 	MapViewController *mMapViewController;							/**< Map View Controller*/

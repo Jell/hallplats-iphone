@@ -18,6 +18,8 @@
 
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
+	[window makeKeyAndVisible];
+	
     
 	MainViewController *aController = [[MainViewController alloc] initWithNibName:@"MainView" bundle:nil];
 	self.mainViewController = aController;
@@ -25,18 +27,43 @@
 	
 	camera = [[[UIImagePickerController alloc] init] autorelease];
 	camera.sourceType = UIImagePickerControllerSourceTypeCamera;
-	camera.view.frame = [UIScreen mainScreen].applicationFrame;
-	camera.cameraOverlayView = [mainViewController view];
+	
+	
+	camera.view.frame = CGRectMake(0, 0, 320, 480);
+	//camera.cameraOverlayView = [mainViewController view];
 	camera.showsCameraControls = NO;
-	camera.navigationBarHidden = YES;
-	camera.toolbarHidden = YES;
-	//camera.wantsFullScreenLayout = YES;
+	camera.toolbar.hidden = YES;
+	camera.navigationBar.hidden = YES;
 	
 	/* scale camera view to full screen */
-	camera.cameraViewTransform=CGAffineTransformScale(camera.cameraViewTransform, 1.09, 1.09); 
+	camera.cameraViewTransform=CGAffineTransformScale(camera.cameraViewTransform, 1.25, 1.25); 
+	
+	splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]];
 	
 	[window addSubview:[camera view]];
-	[window makeKeyAndVisible];
+	[window addSubview:[mainViewController view]];
+	[window addSubview:splashView];
+	
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
+	
+	[self performSelector:@selector(fadeSplash) withObject:nil afterDelay:1.5];
+	
+}
+
+-(void)fadeSplash
+{
+	[UIView beginAnimations:@"removesplash" context:nil];
+	[UIView setAnimationDuration:0.5];
+    [splashView setAlpha:0];
+    [UIView commitAnimations];
+	
+	[self performSelector:@selector(removeSplash) withObject:nil afterDelay:1.5];
+}
+
+-(void)removeSplash
+{
+	[splashView removeFromSuperview];
+	[splashView release];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application{

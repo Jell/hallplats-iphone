@@ -41,4 +41,6 @@
 /** add a tram line to the View */
 -(void)addTramLine:(NSString *)name backgroundColor:(UIColor *)backgroundColor foregroundColor:(UIColor *)foregroundColor;
 
+-(void)setCenter:(CGPoint)apoint;
+
 @end

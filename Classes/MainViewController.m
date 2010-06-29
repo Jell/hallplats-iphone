@@ -37,8 +37,8 @@
 	
 	currentLocation = nil;
 	
-	mAugmentedViewController = [[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil];
-	mMapViewController = [[MapViewController alloc] initWithNibName:@"MapView" bundle:nil];
+	mAugmentedViewController = [[[AugmentedViewController alloc] initWithNibName:@"AugmentedView" bundle:nil] retain];
+	mMapViewController = [[[MapViewController alloc] initWithNibName:@"MapView" bundle:nil] retain];
 	mMapViewController.delegate = self;
 	
 	viewDisplayedController = mAugmentedViewController;
@@ -50,8 +50,6 @@
 	mLocationManager.delegate = self; // send loc updates to myself
 	firstLocationUpdate = YES;
 	secondLocationUpdate = NO;
-	[mLocationManager startUpdatingLocation];
-	[mLocationManager startUpdatingHeading];
 	
 	//Enable Accelerometer
 	xxAverage = 0;
@@ -63,12 +61,17 @@
 		yyArray[i] = 0;
 		zzArray[i] = -1.0;
 	}
+	
+	loadingDisplay.layer.cornerRadius = 10;
 	mAccelerometer = [UIAccelerometer sharedAccelerometer];
 	[mAccelerometer setDelegate:self];
 	[mAccelerometer setUpdateInterval:1.0f / 25];
+	[mLocationManager startUpdatingLocation];
+	[mLocationManager startUpdatingHeading];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
+
 	[super viewDidAppear:animated];
 	[self becomeFirstResponder];
 }
@@ -98,6 +101,7 @@
 		[controller setAnnotationDisplayed:anAnnotation];
 	}
 	controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	[self resignFirstResponder];
 	[self presentModalViewController:controller animated:YES];
 	
 	
@@ -106,20 +110,21 @@
 
 - (void) performUpdate:(id)object{
 	//get the JSON
-	CLLocationCoordinate2D center = {57.7119, 11.9683};
 	if([self currentLocation]){
-		center = [[self currentLocation] coordinate];
+		CLLocationCoordinate2D center = [[self currentLocation] coordinate];
+		id response = [mVTApiHandler getAnnotationsFromCoordinates:center];
+		[self performSelectorOnMainThread:@selector(updatePerformed:) withObject:response waitUntilDone:YES];
 	}
 	
-	id response = [mVTApiHandler getAnnotationsFromCoordinates:center];
-		
-	[self performSelectorOnMainThread:@selector(updatePerformed:) withObject:response waitUntilDone:YES];
-		
 }
 
 - (void) beginUdpate:(id)object {
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:self];
+	[UIView beginAnimations:@"loading" context:nil];
+	[UIView setAnimationDuration:0.5];
+    loadingDisplay.transform = CGAffineTransformIdentity;
+    [UIView commitAnimations];
+	
+	NSInvocationOperation *request = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performUpdate:) object:nil];
 	[opQueue addOperation:request];
 	[request release];
 }
@@ -134,12 +139,19 @@
 		[myAlert show];
 		[myAlert release];
 	}
-	[mMapViewController setAnnotationList:(NSArray *)response];
-	[mAugmentedViewController setAnnotationList:(NSArray *)response];
 	
-	[self setAnnotationList:(NSArray *)response];
+	NSArray *newList = [(NSArray *)response retain];
+	[mMapViewController setAnnotationList:newList];
+	[mAugmentedViewController setAnnotationList:newList];
+	[self setAnnotationList:newList];
+	[newList release];
+	
 	[self becomeFirstResponder];
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	
+	[UIView beginAnimations:@"loading" context:nil];
+	[UIView setAnimationDuration:0.5];
+    loadingDisplay.transform = CGAffineTransformMakeTranslation(0, -30);
+    [UIView commitAnimations];
 	//timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerUpdate:) userInfo:nil repeats:NO];
 }
  
@@ -170,61 +182,36 @@
 		if(angle < 0.785 && angle >-0.785){
 			if(mInterfaceOrientation != UIInterfaceOrientationPortrait){
 				mInterfaceOrientation = UIInterfaceOrientationPortrait;
-				
-				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
-				CATransform3D final_transform = CATransform3DMakeRotation(M_PI, 0.0, 0.0, 1.0);
-				rotate_lock.keyPath		= @"transform";
-				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
-				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
-				rotate_lock.duration	= 0.2;
-				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
-				lockButton.layer.transform = final_transform;
+				[UIView beginAnimations:@"rotate_lock" context:nil];
+				lockButton.layer.transform = CATransform3DMakeRotation(M_PI, 0.0, 0.0, 1.0);
+				[UIView commitAnimations];
 			}
 		}
 		
 		if(angle < 2.355 && angle > 0.785){
 			if(mInterfaceOrientation != UIInterfaceOrientationLandscapeLeft){
 				mInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;
-				
-				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
-				CATransform3D final_transform = CATransform3DMakeTranslation(250.0, 0.0, 0.0);
-				final_transform = CATransform3DRotate(final_transform, -M_PI/2, 0.0, 0.0, 1.0);
-				rotate_lock.keyPath		= @"transform";
-				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
-				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
-				rotate_lock.duration	= 0.2;
-				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
-				lockButton.layer.transform = final_transform;
+				[UIView beginAnimations:@"rotate_lock" context:nil];
+				lockButton.layer.transform = CATransform3DMakeRotation(-M_PI/2, 0.0, 0.0, 1.0);
+				[UIView commitAnimations];
 			}
 		}
 		
 		if(angle < -0.785 && angle >-2.355){
 			if(mInterfaceOrientation != UIInterfaceOrientationLandscapeRight){
 				mInterfaceOrientation = UIInterfaceOrientationLandscapeRight;
-				
-				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
-				CATransform3D final_transform = CATransform3DMakeRotation(M_PI/2, 0.0, 0.0, 1.0);
-				rotate_lock.keyPath		= @"transform";
-				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
-				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
-				rotate_lock.duration	= 0.2;
-				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
-				lockButton.layer.transform = final_transform;
+				[UIView beginAnimations:@"rotate_lock" context:nil];
+				lockButton.layer.transform = CATransform3DMakeRotation(M_PI/2, 0.0, 0.0, 1.0);
+				[UIView commitAnimations];
 			}
 		}
 		
 		if(angle > 2.355 || angle <-2.355){
 			if(mInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown){
 				mInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;
-				
-				CABasicAnimation* rotate_lock = [CABasicAnimation animation];
-				CATransform3D final_transform = CATransform3DMakeRotation(0.0, 0.0, 0.0, 1.0);
-				rotate_lock.keyPath		= @"transform";
-				rotate_lock.fromValue	= [NSValue valueWithCATransform3D: lockButton.layer.transform];
-				rotate_lock.toValue		= [NSValue valueWithCATransform3D: final_transform];
-				rotate_lock.duration	= 0.2;
-				[[lockButton layer] addAnimation: rotate_lock forKey: @"rotate_lock"];
-				lockButton.layer.transform = final_transform;
+				[UIView beginAnimations:@"rotate_lock" context:nil];
+				lockButton.layer.transform = CATransform3DMakeRotation(0.0, 0.0, 0.0, 1.0);
+				[UIView commitAnimations];
 			}
 		}
 	}
@@ -260,6 +247,7 @@
 {
 	[self setCurrentLocation:newLocation];
 	//currentLocation = [[CLLocation alloc] initWithLatitude:59.330917 longitude:18.060389];
+	//currentLocation = [[CLLocation alloc] initWithLatitude:57.7118 longitude:11.967];
 	NSLog(@"%@", currentLocation);
 
 	if(secondLocationUpdate){
@@ -289,7 +277,7 @@
 }
 
 - (BOOL)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager{
-	return YES;
+	return NO;
 }
 
 	
@@ -309,22 +297,7 @@
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
 	[applicationLoadViewIn setType:kCATransitionFade];
-	/*
-	switch (mInterfaceOrientation) {
-		case UIInterfaceOrientationPortrait:
-			[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
-			break;
-		case UIInterfaceOrientationLandscapeLeft:
-			[applicationLoadViewIn setSubtype:kCATransitionFromRight];
-			break;
-		case UIInterfaceOrientationLandscapeRight:
-			[applicationLoadViewIn setSubtype:kCATransitionFromLeft];
-			break;
-		default:
-			[applicationLoadViewIn setSubtype:kCATransitionFromTop];
-			break;
-	}
-*/
+
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	
 	[self loadViewController:mMapViewController
@@ -335,21 +308,7 @@
 	CATransition *applicationLoadViewIn = [CATransition animation];
 	[applicationLoadViewIn setDuration:0.5];
 	[applicationLoadViewIn setType:kCATransitionFade];
-	/*
-	switch (mInterfaceOrientation) {
-		case UIInterfaceOrientationPortrait:
-			[applicationLoadViewIn setSubtype:kCATransitionFromTop];
-			break;
-		case UIInterfaceOrientationLandscapeLeft:
-			[applicationLoadViewIn setSubtype:kCATransitionFromLeft];
-			break;
-		case UIInterfaceOrientationLandscapeRight:
-			[applicationLoadViewIn setSubtype:kCATransitionFromRight];
-			break;
-		default:
-			[applicationLoadViewIn setSubtype:kCATransitionFromBottom];
-			break;
-	}*/
+
 	[applicationLoadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 	
 	[self loadViewController:mAugmentedViewController

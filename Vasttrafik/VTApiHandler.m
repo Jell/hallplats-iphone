@@ -26,25 +26,25 @@
 	
 	NSMutableArray *annotationList = [NSMutableArray arrayWithCapacity:tobeparsed.count];
 	for(NSDictionary *dictionary in tobeparsed){
-		[dictionary retain];
+		//[dictionary retain];
 		CLLocationCoordinate2D location = {[[dictionary valueForKey:@"lat"] floatValue], [[dictionary valueForKey:@"lng"] floatValue]};
-		VTAnnotation *anAnnotation = [[[VTAnnotation alloc] initWithCoordinate:location] retain];
+		VTAnnotation *anAnnotation = [[VTAnnotation alloc] initWithCoordinate:location];
 	
 		[anAnnotation setTitle:[dictionary valueForKey:@"name"] subtitle:@" "];
 	
 		anAnnotation.stop_name = [dictionary valueForKey:@"name"];
 		
 		NSArray *forecast_json = [dictionary valueForKey:@"forecast"];
-		NSMutableArray *forecastList = [[NSMutableArray arrayWithCapacity:forecast_json.count] retain];
+		NSMutableArray *forecastList = [NSMutableArray arrayWithCapacity:forecast_json.count];
 	
 		for(NSArray *forecast_bundle in forecast_json){
-			VTForecast *aForecast = [[[VTForecast alloc] init] retain];
+			VTForecast *aForecast = [[VTForecast alloc] init];
 			
 			NSDictionary *forecast_info = [forecast_bundle objectAtIndex:1];
 			
 			aForecast.lineNumber		= [forecast_bundle objectAtIndex:0];
-			aForecast.foregroundColor	= [self stringToColor:[forecast_info valueForKey:@"color"]];
-			aForecast.backgroundColor	= [self stringToColor:[forecast_info valueForKey:@"background_color"]];
+			aForecast.foregroundColor	= stringToColor([forecast_info valueForKey:@"color"]);
+			aForecast.backgroundColor	= stringToColor([forecast_info valueForKey:@"background_color"]);
 			aForecast.destination		= [forecast_info valueForKey:@"destination"];
 			aForecast.nastaTime			= [forecast_info valueForKey:@"next_trip"];
 			aForecast.nastaHandicap		= [[forecast_info valueForKey:@"next_handicap"] boolValue];
@@ -83,8 +83,9 @@
 		urlData = [NSURLConnection sendSynchronousRequest:urlRequest
 										returningResponse:&response
 													error:&error];
+
 		// Construct a String around the Data from the response
-		if(!error){
+		if(urlData){
 			return [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
 		}
 	}
@@ -199,7 +200,7 @@
 	return result;
 }
 
--(int)charHexToInt:(unichar)charValue{
+int charHexToInt(unichar charValue){
 	int result = charValue - 48;
 	if(result>9){
 		result -= 7;
@@ -211,14 +212,17 @@
 	}
 }
 
--(UIColor *)stringToColor:(NSString *)stringColor{
+UIColor * stringToColor(NSString *stringColor){
 	NSString *capitalLetters = [stringColor uppercaseString];
-	float red = [self charHexToInt:[capitalLetters characterAtIndex:1]]*16 +
-				[self charHexToInt:[capitalLetters characterAtIndex:2]];
-	float green = [self charHexToInt:[capitalLetters characterAtIndex:3]]*16 +
-				[self charHexToInt:[capitalLetters characterAtIndex:4]];
-	float blue = [self charHexToInt:[capitalLetters characterAtIndex:5]]*16 +
-				[self charHexToInt:[capitalLetters characterAtIndex:6]];
+	
+	float red =		charHexToInt([capitalLetters characterAtIndex:1])*16 +
+					charHexToInt([capitalLetters characterAtIndex:2]);
+	
+	float green =	charHexToInt([capitalLetters characterAtIndex:3])*16 +
+					charHexToInt([capitalLetters characterAtIndex:4]);
+	
+	float blue =	charHexToInt([capitalLetters characterAtIndex:5])*16 +
+					charHexToInt([capitalLetters characterAtIndex:6]);
 	
 	return [UIColor colorWithRed:red/255.0 green:green/255.0 blue:blue/255.0 alpha:1.0];
 }

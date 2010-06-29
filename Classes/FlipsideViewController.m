@@ -39,7 +39,7 @@
 
 -(void)setAnnotationDisplayed:(VTAnnotation *)anAnnotation{
 	annotationDisplayed = anAnnotation;
-	lineList = [anAnnotation getLineList];
+	lineList = [[anAnnotation getLineList] retain];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -134,6 +134,11 @@
 }
 
 - (void)dealloc {
+	[tmpCell release];
+	[flipsideTitle release];
+	[mTableView release];
+	[footerText release];
+	[lineList release];
     [super dealloc];
 }
 
