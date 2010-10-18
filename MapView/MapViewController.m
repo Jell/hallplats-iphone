@@ -41,8 +41,8 @@
 	location.longitude = 11.9683;
 	//starting span (=zoom)
 	MKCoordinateSpan span;
-	span.latitudeDelta = 0.02;
-	span.longitudeDelta = 0.02;
+	span.latitudeDelta = 0.01;
+	span.longitudeDelta = 0.01;
 	MKCoordinateRegion region;
 	region.center = location;
 	region.span = span;

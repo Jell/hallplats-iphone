@@ -61,7 +61,7 @@
 	groundView.mapType=MKMapTypeStandard;
 	groundView.zoomEnabled=FALSE;
 	groundView.scrollEnabled =FALSE;
-	groundView.showsUserLocation = YES;
+	groundView.showsUserLocation = FALSE;
 	groundView.userInteractionEnabled = FALSE;
 	groundView.delegate = self;
 	groundView.clipsToBounds = NO;
